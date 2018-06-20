@@ -65,30 +65,6 @@ import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_l
 import districts from '../horrible_seed_data/bwa.districts.json'
 import villages from '../horrible_seed_data/bwa.villages.json'
 
-const spatial_hierarchy = {
-    "data_version": 10,
-    "markers": {
-      "planning_level_name": "villages",
-      "record_location_selection_level_name": "villages",
-      "denominator_fields": {
-        "estimated_rooms": "Num_Rooms"
-      }
-    },
-    "levels": [
-      {
-        "field_name": "ID_2",
-        "display_field_name": "NAME_2",
-        "name": "districts"
-      },
-      {
-        "group_by_field": "name_2",
-        "field_name": "Id", 
-        "display_field_name": "VILLAGE",
-        "name": "villages"
-      }
-    ]
-  }
-
 export default Vue.extend({
   data() {
     return {
@@ -109,7 +85,30 @@ export default Vue.extend({
           validation_status: '',
           field_summary: []
         }
-      ]
+      ],
+      spatial_hierarchy: {
+        data_version: 10,
+        markers: {
+          planning_level_name: "villages",
+          record_location_selection_level_name: "villages",
+          denominator_fields: {
+            estimated_rooms: "Num_Rooms"
+          }
+        },
+        levels: [
+          {
+            field_name: "ID_2",
+            display_field_name: "NAME_2",
+            name: "districts"
+          },
+          {
+            group_by_field: "name_2",
+            field_name: "Id", 
+            display_field_name: "VILLAGE",
+            name: "villages"
+          }
+        ]
+      }
     }
   },
   methods: {
@@ -127,7 +126,7 @@ export default Vue.extend({
       this.$set(this.tableData, index, {...this.tableData[index], validation_status})
     },
     validate_spatial_hierarchy() {
-      const result = validate_spatial_hierarchy(spatial_hierarchy, {
+      const result = validate_spatial_hierarchy(this.spatial_hierarchy, {
         villages,
         districts
       })
@@ -140,7 +139,7 @@ export default Vue.extend({
       console.log('result', result);
     },
     generate_location_selection() {
-      const result = generate_location_selection(spatial_hierarchy, {
+      const result = generate_location_selection(this.spatial_hierarchy, {
         villages,
         districts
       })
