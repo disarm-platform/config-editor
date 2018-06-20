@@ -108,11 +108,13 @@ export default {
   },
   methods: {
     summarise(layer_name: string, index: number) {
+      // TODO: Don't hard-code geodata layer
       const layer = layer_name === 'districts' ? districts : villages
       const result = summarise(layer)
       this.$set(this.tableData, index, {...this.tableData[index], field_summary: result})
     },
     validate_layer_schema(layer_name: string, index: number) {
+      // TODO: Don't hard-code geodata layer
       const layer = layer_name === 'districts' ? districts : villages
       const result = validate_layer_schema(layer)
       const validation_status = result.status.startsWith('Green') ? 'success' : 'warning'
@@ -136,6 +138,8 @@ export default {
         villages,
         districts
       })
+      
+      // TODO: Change how we determine succes, waiting for https://github.com/locational/geodata-support/issues/1
 
       const message = result.message ? result.message : 'Successfully generated location selection'
       const type = result.status ? 'warning' : 'success'
