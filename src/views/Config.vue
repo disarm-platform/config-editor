@@ -20,7 +20,7 @@ import validBwaConfig from '../data/bwa_config.json'
 export default {
   data() {
     return {
-      config:validBwaConfig
+      config: JSON.stringify(validBwaConfig)
     };
   },
   methods: {
