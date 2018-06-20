@@ -22,7 +22,12 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  props: ['config_valid', 'instance_id', 'instance', 'version'],
+  props: {
+    config_valid: Boolean, 
+    instance_id: String, 
+    instance: String,
+    version: String
+  },
   methods: {
    save_update() {
      console.log('save or update')

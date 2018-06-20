@@ -18,7 +18,9 @@
 import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 export default Vue.extend({
-  props:['config'],
+  props: {
+    config: String // should probably be Object
+  },
   data() {
     return {
     };

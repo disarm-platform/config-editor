@@ -64,7 +64,10 @@ import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_l
 
 
 export default Vue.extend({
-  props:['villages','districts'],
+  props:{
+    villages: Object,
+    districts: Object
+  },
   data() {
     return {
       alert: {
