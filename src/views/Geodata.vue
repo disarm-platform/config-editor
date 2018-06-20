@@ -146,6 +146,10 @@ export default {
       }
 
       console.log('result', result);
+
+      if (!result.status) { // this means success
+        this.$store.commit('set_location_selection', result)
+      }
     },
     // ui
     tableRowClassName({row, rowIndex}) {
