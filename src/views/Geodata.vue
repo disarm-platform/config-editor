@@ -61,8 +61,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_location_selection} from '@locational/geodata-support'
-import districts from '../horrible_seed_data/bwa.districts.json'
-import villages from '../horrible_seed_data/bwa.villages.json'
+
 
 export default Vue.extend({
   data() {
