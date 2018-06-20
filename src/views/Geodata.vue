@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>This is the geodata page</h1>
 
   <el-alert
     v-if="alert.message"

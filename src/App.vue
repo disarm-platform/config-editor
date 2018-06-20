@@ -1,14 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <el-menu class="el-menu-demo" mode="horizontal">
-        <el-menu-item index="1" @click="$router.push('/')">
-          Geodata
-        </el-menu-item>
-        <el-menu-item index="2" @click="$router.push('/config')">
-          Config
-        </el-menu-item>
-      </el-menu>
+      <h2>DiSARM Registry</h2>
     </el-header>
     
     <el-main>

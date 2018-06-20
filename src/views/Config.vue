@@ -15,6 +15,7 @@
   </div>
 </template>
 <script lang="ts">
+import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 import validBwaConfig from '../horrible_seed_data/bwa_config.json'
 export default Vue.extend({
