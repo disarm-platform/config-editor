@@ -27,7 +27,7 @@
         activeName: 'geodata',
         districts,
         villages,
-        validBwaConfig
+        validBwaConfig:JSON.stringify(validBwaConfig)
       };
     }
   };
