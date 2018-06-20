@@ -17,7 +17,7 @@
 <script lang="ts">
 import {validate} from '@locational/config-validation'
 import validBwaConfig from '../horrible_seed_data/bwa_config.json'
-export default {
+export default Vue.extend({
   data() {
     return {
       config: JSON.stringify(validBwaConfig)
@@ -32,5 +32,5 @@ export default {
       this.$message(message);
     }
   }
-};
+});
 </script>
