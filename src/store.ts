@@ -9,7 +9,7 @@ export default new Vuex.Store({
   },
   mutations: {
     set_location_selection(state, location_selection) {
-      state.location_selection = location_selection
+      state.location_selection = location_selection;
     },
   },
   actions: {
