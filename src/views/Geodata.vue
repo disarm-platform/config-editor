@@ -45,6 +45,12 @@
     </el-table-column>
   </el-table>
 
+  <!-- TODO: Fix this, auto uploads to action props -->
+  <el-upload style="margin-top: 2em;" @on-success="on_upload_file" action="#">
+    <el-button slot="trigger" size="small" type="primary">select file</el-button>
+    <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 500kb</div>
+  </el-upload>
+
   <el-row style="margin-top: 2em;">
     <el-button @click="validate_spatial_hierarchy()">Validate</el-button>
     <el-button @click="generate_location_selection()">Generate location selection</el-button>
@@ -154,6 +160,9 @@ export default {
       if (!result.status) { // this means success
         this.$store.commit('set_location_selection', result)
       }
+    },
+    on_upload_file(response, file, fileList) {
+      console.log(response, file, fileList)
     },
     // ui
     tableRowClassName({row, rowIndex}) {
