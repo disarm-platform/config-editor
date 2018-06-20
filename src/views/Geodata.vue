@@ -2,10 +2,27 @@
   <div>
     <h1>This is the geodata page</h1>
 
+  <el-alert
+    v-if="alert.message"
+    :title="alert.message"
+    :type="alert.type">
+  </el-alert>
 
     <el-table
     :data="tableData"
-    style="width: 800px">
+    style="width: 900px"
+    :row-class-name="tableRowClassName">
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <h2>Field Summary</h2>
+        <p v-for="field in props.row.field_summary">
+          <b>{{field.field_name}}</b> <br>
+          Type:  {{field.type}} <br>
+          Exists on all:  {{field.exists_on_all}} <br>
+          Unique:  {{field.unique}} <br>
+        </p>
+      </template>
+    </el-table-column>
     <el-table-column
       prop="name"
       label="Layer name"
@@ -18,13 +35,12 @@
     </el-table-column>
     <el-table-column
       label="Operations"
-      width="400">
+      width="500">
       <template slot-scope="scope">
-        <el-button @click="validate_layer_schema('villages')" type="text" size="small">Validate</el-button>
-        <el-button @click="summarise('villages')" type="text" size="small">Summarise</el-button>
-        <el-button disabled type="text" size="small">Upload</el-button>
-        <el-button disabled type="text" size="small">Delete</el-button>
-
+        <el-button @click="validate_layer_schema(scope.row.name, scope.$index)" type="text" size="small">Validate</el-button>
+        <el-button @click="summarise(scope.row.name, scope.$index)" type="text" size="small">Summarise</el-button>
+        <el-button disabled icon="el-icon-upload" size="small"></el-button>
+        <el-button disabled icon="el-icon-delete" size="small"></el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -32,7 +48,7 @@
   <el-row style="margin-top: 2em;">
     <el-button @click="validate_spatial_hierarchy()">Validate</el-button>
     <el-button @click="generate_location_selection()">Generate location selection</el-button>
-    <el-button>Save</el-button>
+    <el-button disabled>Save</el-button>
   </el-row>
 
   </div>
@@ -40,74 +56,110 @@
 <script lang="ts">
 
 import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_location_selection} from '@locational/geodata-support'
-import constituencies from '../geojson/nam.constituencies.json'
-import villages from '../geojson/nam.villages.json'
+import districts from '../geojson/bwa.districts.json'
+import villages from '../geojson/bwa.villages.json'
 
 const spatial_hierarchy = {
-  "data_version": 4,
-  "markers": {
-    "planning_level_name": "villages",
-    "record_location_selection_level_name": "villages",
-    "denominator_fields": {
-      "structures": "NumStructu"
-    }
-  },
-  "levels": [
-    {
-      "group_by_field": "REGION",
-      "field_name": "OBJECTID",
-      "display_field_name": "CONST",
-      "name": "constituencies"
+    "data_version": 10,
+    "markers": {
+      "planning_level_name": "villages",
+      "record_location_selection_level_name": "villages",
+      "denominator_fields": {
+        "estimated_rooms": "Num_Rooms"
+      }
     },
-    {
-      "group_by_field": "CONSTIT",
-      "field_name": "uID",
-      "display_field_name": "mp_NAME",
-      "name": "villages"
-    }
-  ]
-}
+    "levels": [
+      {
+        "field_name": "ID_2",
+        "display_field_name": "NAME_2",
+        "name": "districts"
+      },
+      {
+        "group_by_field": "name_2",
+        "field_name": "Id", 
+        "display_field_name": "VILLAGE",
+        "name": "villages"
+      }
+    ]
+  }
 
 export default {
   data() {
     return {
+      alert: {
+        message: '',
+        type: '' // warning or success
+      },
       tableData: [
         {          
-          name: 'structures',
-          filename: 'nam.structures.geojson'
+          name: 'districts',
+          filename: 'bwa.districts.geojson',
+          validation_status: '',
+          field_summary: []
         },
         {          
           name: 'villages',
-          filename: 'nam.villages.geojson'
+          filename: 'bwa.villages.geojson',
+          validation_status: '',
+          field_summary: []
         }
       ]
     }
   },
   methods: {
-    summarise(layer_name) {
-      const layer = layer_name === 'constituencies' ? constituencies : villages
+    summarise(layer_name: string, index: number) {
+      const layer = layer_name === 'districts' ? districts : villages
       const result = summarise(layer)
-      console.log('result', result);
+      this.$set(this.tableData, index, {...this.tableData[index], field_summary: result})
     },
-    validate_layer_schema(layer_name) {
-      const layer = layer_name === 'constituencies' ? constituencies : villages
+    validate_layer_schema(layer_name: string, index: number) {
+      const layer = layer_name === 'districts' ? districts : villages
       const result = validate_layer_schema(layer)
-      console.log('result', result);
+      const validation_status = result.status.startsWith('Green') ? 'success' : 'warning'
+      this.$set(this.tableData, index, {...this.tableData[index], validation_status})
     },
     validate_spatial_hierarchy() {
       const result = validate_spatial_hierarchy(spatial_hierarchy, {
         villages,
-        constituencies
+        districts
       })
+
+      this.alert = {
+        message: result.message,
+        type: result.status.startsWith('Green') ? 'success' : 'warning'
+      }
+
       console.log('result', result);
     },
     generate_location_selection() {
       const result = generate_location_selection(spatial_hierarchy, {
         villages,
-        constituencies
+        districts
       })
+
+      const message = result.message ? result.message : 'Successfully generated location selection'
+      const type = result.status ? 'warning' : 'success'
+
+      this.alert = {
+        message,
+        type
+      }
+
       console.log('result', result);
+    },
+    // ui
+    tableRowClassName({row, rowIndex}) {
+        return row.validation_status
     }
   }
 }
 </script>
+<style>
+  .el-table .warning {
+    background: oldlace;
+  }
+
+  .el-table .success {
+    background: #f0f9eb;
+  }
+</style>
