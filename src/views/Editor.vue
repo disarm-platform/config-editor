@@ -6,12 +6,16 @@
     <el-tab-pane label="Config" name="config">
       <Config :config="validBwaConfig"/>
     </el-tab-pane>
+    <el-tab-pane label="Publish" name="publish">
+      <Publish />
+    </el-tab-pane>
   </el-tabs>
 </template>
 
 <script lang="ts">
   import Geodata from './Geodata.vue';
   import Config from './Config.vue';
+  import Publish from './Publish.vue';
 
   import districts from '../horrible_seed_data/bwa.districts.json'
   import villages from '../horrible_seed_data/bwa.villages.json'
@@ -20,14 +24,15 @@
   export default {
     components: {
       Config,
-      Geodata
+      Geodata,
+      Publish
     },
     data() {
       return {
         activeName: 'geodata',
         districts,
         villages,
-        validBwaConfig:JSON.stringify(validBwaConfig)
+        validBwaConfig:JSON.stringify(validBwaConfig),
       };
     }
   };
