@@ -15,7 +15,7 @@
 
   import districts from '../horrible_seed_data/bwa.districts.json'
   import villages from '../horrible_seed_data/bwa.villages.json'
-  import validBwaConfig from '../horrible_seed_data/bwa_config.json'
+  import validBwaConfig from '../horrible_seed_data/small_valid_config.json'
 
   export default {
     components: {
