@@ -60,7 +60,7 @@
   </div>
 </template>
 <script lang="ts">
-
+import Vue from 'vue'
 import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_location_selection} from '@locational/geodata-support'
 import districts from '../geojson/bwa.districts.json'
 import villages from '../geojson/bwa.villages.json'
@@ -89,7 +89,7 @@ const spatial_hierarchy = {
     ]
   }
 
-export default {
+export default Vue.extend({
   data() {
     return {
       alert: {
@@ -165,7 +165,7 @@ export default {
         return row.validation_status
     }
   }
-}
+})
 </script>
 <style>
   .el-table .warning {
