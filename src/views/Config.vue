@@ -16,7 +16,7 @@
 </template>
 <script lang="ts">
 import {validate} from '@locational/config-validation'
-import {validBwaConfig} from '../data/bwa_config_copy'
+import validBwaConfig from '../data/bwa_config.json'
 export default {
   data() {
     return {
