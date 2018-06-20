@@ -144,21 +144,17 @@ export default {
         villages,
         districts
       })
-      
-      // TODO: Change how we determine succes, waiting for https://github.com/locational/geodata-support/issues/1
-
-      const message = result.message ? result.message : 'Successfully generated location selection'
-      const type = result.status ? 'warning' : 'success'
-
-      this.alert = {
-        message,
-        type
-      }
-
       console.log('result', result);
 
-      if (!result.status) { // this means success
-        this.$store.commit('set_location_selection', result)
+      const success = result.status.startsWith('Green')
+    
+      this.alert = {
+        message: result.message,
+        type: success ?  'success' : 'warning'
+      }
+
+      if (success) {
+        this.$store.commit('set_location_selection', result.location_selection)
       }
     },
     on_upload_file(response, file, fileList) {
