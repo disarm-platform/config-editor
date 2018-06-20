@@ -14,10 +14,10 @@
   "config_id": "id",
   "config_version": "version",
   "form": {
-    "elements": [{
-      "pages": [{
-        "name": "q1",
-        "type": "text"
+    "pages": [{
+      "elements":[{
+      "name": "q1",
+      "type": "text"
       }],
       "name": "p1"
     }]
