@@ -12,7 +12,7 @@
           <el-input placeholder="Version" v-model="version"></el-input>
         </div>
         <div style="margin-top:1em;">
-          <el-button type="primary">Save/update</el-button>
+          <el-button :disabled="!config_valid" type="primary" @click="save_update">Save/update</el-button>
         </div>
       </div>
     </el-card>
@@ -22,15 +22,11 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  data() {
-    return {
-      instance_id: 'bwa',
-      instance: 'Botswana',
-      version: '1.0.0'
-    }
-  },
+  props: ['config_valid', 'instance_id', 'instance', 'version'],
   methods: {
-    
+   save_update() {
+     console.log('save or update')
+   } 
   }
 });
 </script>

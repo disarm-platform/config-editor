@@ -7,7 +7,7 @@
       <Config :config="validBwaConfig"/>
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
-      <Publish />
+      <Publish :config_valid="false" instance_id="bwa" instance="Botswana" version="1.0.0" />
     </el-tab-pane>
   </el-tabs>
 </template>
