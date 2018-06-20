@@ -16,17 +16,21 @@
 </template>
 <script lang="ts">
 import {validate} from '@locational/config-validation'
+import {validBwaConfig} from '../data/bwa_config_copy'
 export default {
   data() {
     return {
-      config:""
+      config:validBwaConfig
     };
   },
   methods: {
     validate_config(){
       let validation_result = validate(JSON.parse(this.config))
-      console.log(validation_result);
-    }
+      this.popup(JSON.stringify(validation_result));
+    },      
+    popup(message:string) {
+        this.$message(message);
+      }
   }
 };
 </script>
