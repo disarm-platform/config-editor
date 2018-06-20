@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <el-card>
   <el-alert
     v-if="alert.message"
     :title="alert.message"
@@ -55,7 +55,7 @@
     <el-button @click="generate_location_selection()">Generate location selection</el-button>
     <el-button disabled>Save</el-button>
   </el-row>
-
+  </el-card>
   </div>
 </template>
 <script lang="ts">
