@@ -1,6 +1,6 @@
 <template>
   <div>
-
+    <el-card>
   <el-alert
     v-if="alert.message"
     :title="alert.message"
@@ -55,7 +55,7 @@
     <el-button @click="generate_location_selection()">Generate location selection</el-button>
     <el-button disabled>Save</el-button>
   </el-row>
-
+  </el-card>
   </div>
 </template>
 <script lang="ts">
@@ -64,7 +64,10 @@ import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_l
 
 
 export default Vue.extend({
-  props:['villages','districts'],
+  props:{
+    villages: Object,
+    districts: Object
+  },
   data() {
     return {
       alert: {
