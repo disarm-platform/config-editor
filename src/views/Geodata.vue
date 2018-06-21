@@ -130,6 +130,10 @@ export default Vue.extend({
       this.$emit('geodata_validation', valid)
 
       console.log('result', result);
+
+      if (valid) {
+        this.$emit('spatial_hierarchy', this.spatial_hierarchy)
+      }
     },
     generate_location_selection() {
       const result = generate_location_selection(this.spatial_hierarchy, this.geodata_for_validation)

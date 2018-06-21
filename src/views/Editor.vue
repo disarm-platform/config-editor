@@ -6,7 +6,7 @@
         <i v-else class="el-icon-close"></i>
         Geodata
       </span>
-      <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation" @location_selection="set_location_selection"/>
+      <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation" @location_selection="set_location_selection" @spatial_hierarchy="set_spatial_hierarchy"/>
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
       <span slot="label">
@@ -60,7 +60,8 @@
             field_summary: []
           }
         ],
-        location_selection: null
+        location_selection: null,
+        spatial_hierarchy: null
       };
     },
     methods: {
@@ -71,8 +72,12 @@
       assemble_config() {
         return {
           ...this.config,
-          location_selection: this.location_selection
+          location_selection: this.location_selection,
+          spatial_hierarchy: this.spatial_hierarchy
         }
+      },
+      set_spatial_hierarchy(spatial_hierarchy) {
+        this.spatial_hierarchy = spatial_hierarchy
       },
       set_location_selection(location_selection) {
         this.location_selection = location_selection
