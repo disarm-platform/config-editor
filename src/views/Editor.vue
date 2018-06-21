@@ -4,7 +4,7 @@
         <Geodata :districts="districts" :villages="villages"/>
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
-      <Config :config="validBwaConfig"/>
+      <Config :config="config"/>
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
       <Publish :config_valid="false" instance_id="bwa" instance="Botswana" version="1.0.0" />
@@ -19,7 +19,7 @@
 
   import districts from '../horrible_seed_data/bwa.districts.json'
   import villages from '../horrible_seed_data/bwa.villages.json'
-  import validBwaConfig from '../horrible_seed_data/small_valid_config.json'
+  import config from '../horrible_seed_data/small_valid_config.json'
 
   export default {
     components: {
@@ -32,7 +32,7 @@
         activeName: 'geodata',
         districts,
         villages,
-        validBwaConfig:JSON.stringify(validBwaConfig),
+        config,
       };
     }
   };

@@ -9,7 +9,7 @@
         type="textarea"
         :rows="20"
         placeholder="Please input"
-        v-model="config">
+        v-model="formatted_config">
       </el-input>
     </el-card>
   </div>
@@ -19,11 +19,21 @@ import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 export default Vue.extend({
   props: {
-    config: String // should probably be Object
+    config: Object // should probably be Object
   },
   data() {
     return {
     };
+  },
+  computed: {
+    formatted_config: {
+      get() {
+        return JSON.stringify(this.config, undefined, 2);
+      },
+      set (val) {
+        this.config = JSON.parse(val)
+      }
+    }
   },
   methods: {
     validate_config(){
