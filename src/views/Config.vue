@@ -27,6 +27,7 @@ export default Vue.extend({
   },
   methods: {
     validate_config(){
+      console.log(this.config)
       let validation_result = validate(JSON.parse(this.config))
       this.popup(JSON.stringify(validation_result));
     },      
