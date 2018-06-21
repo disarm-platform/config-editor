@@ -5,6 +5,13 @@
         <span>Config</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="validate_config">Validate</el-button>
       </div>
+      <div>
+        <el-alert
+          v-if="validation_result"
+          :title="validation_result"
+          type="warning">
+        </el-alert>
+      </div>
       <el-input
         type="textarea"
         :rows="20"
@@ -23,6 +30,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      validation_result: ''
     };
   },
   computed: {
@@ -37,12 +45,9 @@ export default Vue.extend({
   },
   methods: {
     validate_config(){
-      console.log(this.config)
-      let validation_result = validate(JSON.parse(this.config))
-      this.popup(JSON.stringify(validation_result));
-    },      
-    popup(message:string) {
-      this.$message(message);
+      let validation_result = validate(this.config)
+      this.$emit('config_validation', true);
+      this.validation_result = JSON.stringify(validation_result);
     }
   }
 });

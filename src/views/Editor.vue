@@ -1,13 +1,13 @@
 <template>
   <el-tabs v-model="activeName">
     <el-tab-pane label="Geodata" name="geodata">
-        <Geodata :geodata_layers="geodata_layers"/>
+        <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation"/>
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
-      <Config :config="config"/>
+      <Config :config="config" @config_validation="set_config_validation"/>
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
-      <Publish :config_valid="false" instance_id="bwa" instance="Botswana" version="1.0.0" />
+      <Publish :config_valid="config_valid" :geodata_valid="geodata_valid" instance_id="bwa" instance="Botswana" version="1.0.0" />
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -30,6 +30,9 @@
     data() {
       return {
         activeName: 'geodata',
+        config_valid: false,
+        geodata_valid: false,
+
         config,
         geodata_layers: [
           {
@@ -48,6 +51,14 @@
           }
         ]
       };
+    },
+    methods: {
+      set_geodata_validation(geodata_valid: boolean) {
+        this.geodata_valid = geodata_valid
+      },
+      set_config_validation(config_valid: boolean) {
+        this.config_valid = config_valid
+      }
     }
   };
 </script>

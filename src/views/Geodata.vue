@@ -120,10 +120,14 @@ export default Vue.extend({
     validate_spatial_hierarchy() {
       const result = validate_spatial_hierarchy(this.spatial_hierarchy, this.geodata_for_validation)
 
+      const valid = result.status.startsWith('Green')
+
       this.alert = {
         message: result.message,
-        type: result.status.startsWith('Green') ? 'success' : 'warning'
+        type: valid ? 'success' : 'warning'
       }
+
+      this.$emit('geodata_validation', valid)
 
       console.log('result', result);
     },
