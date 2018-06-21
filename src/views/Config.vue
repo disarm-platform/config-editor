@@ -26,7 +26,9 @@ import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 export default Vue.extend({
   props: {
-    config: Object // should probably be Object
+    config: Object, // should probably be Object
+    spatial_hierarchy: Object,
+    location_selection: Object
   },
   data() {
     return {
@@ -35,10 +37,10 @@ export default Vue.extend({
   },
   computed: {
     formatted_config: {
-      get() {
+      get():string {
         return JSON.stringify(this.config, undefined, 2);
       },
-      set (val) {
+      set (val:string) { 
         this.config = JSON.parse(val)
       }
     }

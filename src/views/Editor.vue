@@ -14,7 +14,7 @@
         <i v-else class="el-icon-close"></i>
         Config
       </span>
-      <Config :config="config" @config_validation="set_config_validation"/>
+      <Config :config="config" @config_validation="set_config_validation" :location_selection="location_selection" :spatial_hierarchy="spatial_hierarchy" />
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
       <Publish :config_valid="config_valid" :geodata_valid="geodata_valid" instance_id="bwa" instance="Botswana" version="1.0.0" @save_config="save_config"/>
