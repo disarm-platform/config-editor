@@ -1,9 +1,19 @@
 <template>
   <el-tabs v-model="activeName">
-    <el-tab-pane label="Geodata" name="geodata">
-        <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation"/>
+    <el-tab-pane name="geodata">
+      <span slot="label">
+        <i v-if="geodata_valid" class="el-icon-check"></i>
+        <i v-else class="el-icon-close"></i>
+        Geodata
+      </span>
+      <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation"/>
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
+      <span slot="label">
+        <i v-if="config_valid" class="el-icon-check"></i>
+        <i v-else class="el-icon-close"></i>
+        Config
+      </span>
       <Config :config="config" @config_validation="set_config_validation"/>
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
