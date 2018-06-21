@@ -143,7 +143,7 @@ export default Vue.extend({
       }
 
       if (success) {
-        this.$store.commit('set_location_selection', result.location_selection)
+        this.$emit('location_selection', result.location_selection)
       }
     },
     on_upload_file(response, file, fileList) {

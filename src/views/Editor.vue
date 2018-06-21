@@ -6,7 +6,7 @@
         <i v-else class="el-icon-close"></i>
         Geodata
       </span>
-      <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation"/>
+      <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation" @location_selection="set_location_selection"/>
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
       <span slot="label">
@@ -17,7 +17,7 @@
       <Config :config="config" @config_validation="set_config_validation"/>
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
-      <Publish :config_valid="config_valid" :geodata_valid="geodata_valid" instance_id="bwa" instance="Botswana" version="1.0.0" />
+      <Publish :config_valid="config_valid" :geodata_valid="geodata_valid" instance_id="bwa" instance="Botswana" version="1.0.0" @save_config="save_config"/>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -59,10 +59,24 @@
             validation_status: '',
             field_summary: []
           }
-        ]
+        ],
+        location_selection: null
       };
     },
     methods: {
+      save_config() {
+        const assembled_config = this.assemble_config()
+        console.log('assembled_config', assembled_config);
+      },
+      assemble_config() {
+        return {
+          ...this.config,
+          location_selection: this.location_selection
+        }
+      },
+      set_location_selection(location_selection) {
+        this.location_selection = location_selection
+      },
       set_geodata_validation(geodata_valid: boolean) {
         this.geodata_valid = geodata_valid
       },

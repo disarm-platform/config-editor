@@ -13,7 +13,7 @@
           title="Configuration is not valid"
           type="warning">
         </el-alert>
-        
+
         <div style="margin-top:1em;">
           <el-input placeholder="Instance id" v-model="instance_id"></el-input>
         </div>
@@ -48,7 +48,7 @@ export default Vue.extend({
   },
   methods: {
    save_update() {
-     console.log('save or update')
+     this.$emit('save_config')
    } 
   }
 });
