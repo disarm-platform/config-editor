@@ -24,11 +24,11 @@
 <script>
 import Vue from 'vue'
 import {validate} from '@locational/config-validation'
+import {generate_location_selection} from '@locational/geodata-support'
 export default Vue.extend({
   props: {
-    config: Object, // should probably be Object
-    spatial_hierarchy: Object,
-    location_selection: Object
+    config: Object, // should probably be Object,
+    geodata_layers: Array,
   },
   data() {
     return {
@@ -41,13 +41,25 @@ export default Vue.extend({
         return JSON.stringify(this.config, undefined, 2);
       },
       set (val) { 
+        // TODO: want to emit an event that sets config on Editor
         this.config = JSON.parse(val)
       }
     }
   },
   methods: {
     validate_config(){
-      // need to generate location_selection before we validate
+      // create geodata in correct format
+      const geodata = {}
+      for (const layer of this.geodata_layers) {
+        geodata[layer.name] = layer.geojson
+      }
+      
+
+      const location_selection = generate_location_selection(this.config.spatial_hierarchy, geodata)
+      const config = {
+        ...this.config,
+        location_selection
+      }
       let validation_result = validate(this.config)
       this.$emit('config_validation', true);
       this.validation_result = JSON.stringify(validation_result);

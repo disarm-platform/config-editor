@@ -10,7 +10,7 @@
       <span slot="label">
         Config
       </span>
-      <Config :config="config" @config_validation="set_config_validation" :location_selection="location_selection" />
+      <Config :config="config" @config_validation="set_config_validation" :geodata_layers="geodata_layers" />
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
       <Publish :config_valid="config_valid" instance_id="bwa" instance="Botswana" version="1.0.0" @save_config="save_config"/>

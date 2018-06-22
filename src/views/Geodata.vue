@@ -76,12 +76,14 @@ export default Vue.extend({
     summarise(layer_name, index) {
       const layer = this.geodata_layers.find(l => l.name === layer_name)
       const result = summarise(layer.geojson)
+      // TODO: Emit event, instead of setting parent data
       this.$set(this.geodata_layers, index, {...this.geodata_layers[index], field_summary: result})
     },
     validate_layer_schema(layer_name, index) {
       const layer = this.geodata_layers.find(l => l.name === layer_name)
       const result = validate_layer_schema(layer.geojson)
       const validation_status = result.status.startsWith('Green') ? 'success' : 'warning'
+      // TODO: Emit event, instead of setting parent data
       this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
     },
     on_upload_file(response, file, fileList) {
