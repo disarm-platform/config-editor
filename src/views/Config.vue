@@ -7,8 +7,8 @@
       </div>
       <div>
         <el-alert
-            v-if="validation_result"
-            :title="validation_result"
+            v-if="validation_result_message"
+            :title="validation_result_message"
             type="warning">
         </el-alert>
       </div>
@@ -17,8 +17,10 @@
           v-for="{name, node_name} in component_defs"
           :key='name'
           v-bind:is='name'
+
           :config="config"
           :node_name="node_name"
+          :validation_result="validation_result"
       >
       </component>
     </el-card>
@@ -66,7 +68,8 @@
     },
     data() {
       return {
-        validation_result: '',
+        validation_result: {},
+        validation_result_message: '',
         component_defs,
       };
     },
@@ -110,14 +113,14 @@
 
 
         // TODO: Save result, it contains info about which nodes are failing.
-        const result = validate(config);
-        const validation_result = determine_validation_result(result);
+        this.validation_result = validate(config);
+        const validation_result = determine_validation_result(this.validation_result);
 
         if (validation_result.passed) {
           this.$emit('config_validation', true);
-          this.validation_result = 'Configuration passed all validations';
+          this.validation_result_message = 'Configuration passed all validations';
         } else {
-          this.validation_result = 'Schema validation failed ' + JSON.stringify(validation_result.support_messages);
+          this.validation_result_message = 'Schema validation failed ' + JSON.stringify(validation_result.support_messages);
           this.$emit('config_validation', false);
         }
       },
