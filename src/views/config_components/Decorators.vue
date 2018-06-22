@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-  import ConfigNodeMixin from '@/lib/ConfigNodePlugin';
+  import ConfigNodeMixin from '@/lib/ConfigNodeMixin';
 
   export default ConfigNodeMixin.extend({
 
