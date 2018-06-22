@@ -1,5 +1,5 @@
 <template>
-  {{config}}
+  <div>{{config}}</div>
 </template>
 
 <script>
