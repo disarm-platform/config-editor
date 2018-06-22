@@ -61,7 +61,8 @@ export default Vue.extend({
         ...this.config.spatial_hierarchy,
         geodata_summary
       }
-      
+      // TODO: Think through, do we want to generate location_selection here?
+      // Do we even want to do the validations here at all? Might want to move to Editor.vue
       const location_selection_result = generate_location_selection(spatial_hierarchy, geodata)
       const location_selection = location_selection_result.location_selection
 
