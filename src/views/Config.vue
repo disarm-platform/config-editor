@@ -13,10 +13,7 @@
         </el-alert>
       </div>
 
-      <Aggregations :config="config" node_name='aggregations' @change="handle_change"></Aggregations>
-      <Applets :config="config" node_name='applets' @change="handle_change"></Applets>
-      <FormNode :config="config" node_name='form' @change="handle_change"></FormNode>
-      <MapFocus :config="config" node_name='mapfocus' @change="handle_change"></MapFocus>
+      <component v-for="component in component_names" v-bind:is='component' :key='component'></component>
 
     </el-card>
   </div>
@@ -31,11 +28,17 @@
 
   import Aggregations from './config_components/Aggregations';
   import Applets from './config_components/Applets';
-  import FormNode from './config_components/FormNode';
+  import Decorators from './config_components/Decorators';
+  import Form from './config_components/Form';
+  import Instance from './config_components/Instance';
   import MapFocus from './config_components/MapFocus';
+  import SpatialHierarchy from './config_components/SpatialHierarchy';
+  import Validations from './config_components/Validations';
+
+  const component_list = {Instance, SpatialHierarchy, MapFocus, Aggregations, Applets, Decorators, Form,  Validations};
 
   export default Vue.extend({
-  components: {Aggregations, Applets, FormNode, MapFocus},
+  components: component_list,
   props: {
     config: Object,
     geodata_layers: Array,
@@ -43,6 +46,7 @@
   data() {
     return {
       validation_result: '',
+      component_names: Object.keys(component_list),
     };
   },
   methods: {
