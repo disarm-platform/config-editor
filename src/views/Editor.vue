@@ -22,7 +22,7 @@
   </el-tabs>
 </template>
 
-<script lang="ts">
+<script>
   import Geodata from './Geodata.vue';
   import Config from './Config.vue';
   import Publish from './Publish.vue';
@@ -82,10 +82,10 @@
       set_location_selection(location_selection) {
         this.location_selection = location_selection
       },
-      set_geodata_validation(geodata_valid: boolean) {
+      set_geodata_validation(geodata_valid) {
         this.geodata_valid = geodata_valid
       },
-      set_config_validation(config_valid: boolean) {
+      set_config_validation(config_valid) {
         this.config_valid = config_valid
       }
     }

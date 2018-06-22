@@ -21,7 +21,7 @@
     </el-card>
   </div>
 </template>
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 export default Vue.extend({
@@ -37,10 +37,10 @@ export default Vue.extend({
   },
   computed: {
     formatted_config: {
-      get():string {
+      get() {
         return JSON.stringify(this.config, undefined, 2);
       },
-      set (val:string) { 
+      set (val) { 
         this.config = JSON.parse(val)
       }
     }
