@@ -2,22 +2,18 @@
   <el-tabs v-model="activeName">
     <el-tab-pane name="geodata">
       <span slot="label">
-        <i v-if="geodata_valid" class="el-icon-check"></i>
-        <i v-else class="el-icon-close"></i>
         Geodata
       </span>
-      <Geodata :geodata_layers="geodata_layers" @geodata_validation="set_geodata_validation" @location_selection="set_location_selection" @spatial_hierarchy="set_spatial_hierarchy"/>
+      <Geodata :geodata_layers="geodata_layers"/>
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
       <span slot="label">
-        <i v-if="config_valid" class="el-icon-check"></i>
-        <i v-else class="el-icon-close"></i>
         Config
       </span>
-      <Config :config="config" @config_validation="set_config_validation" :location_selection="location_selection" :spatial_hierarchy="spatial_hierarchy" />
+      <Config :config="config" @config_validation="set_config_validation" :geodata_layers="geodata_layers" />
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
-      <Publish :config_valid="config_valid" :geodata_valid="geodata_valid" instance_id="bwa" instance="Botswana" version="1.0.0" @save_config="save_config"/>
+      <Publish :config_valid="config_valid" instance_id="bwa" instance="Botswana" version="1.0.0" @save_config="save_config"/>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -41,8 +37,6 @@
       return {
         activeName: 'geodata',
         config_valid: false,
-        geodata_valid: false,
-
         config,
         geodata_layers: [
           {
@@ -60,8 +54,7 @@
             field_summary: []
           }
         ],
-        location_selection: null,
-        spatial_hierarchy: null
+        location_selection: null
       };
     },
     methods: {
@@ -73,17 +66,10 @@
         return {
           ...this.config,
           location_selection: this.location_selection,
-          spatial_hierarchy: this.spatial_hierarchy
         }
-      },
-      set_spatial_hierarchy(spatial_hierarchy) {
-        this.spatial_hierarchy = spatial_hierarchy
       },
       set_location_selection(location_selection) {
         this.location_selection = location_selection
-      },
-      set_geodata_validation(geodata_valid) {
-        this.geodata_valid = geodata_valid
       },
       set_config_validation(config_valid) {
         this.config_valid = config_valid
