@@ -1,5 +1,5 @@
 <template>
-  
+  <h1>Aggregations</h1>
 </template>
 
 <script>

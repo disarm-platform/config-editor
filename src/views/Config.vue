@@ -22,10 +22,12 @@
   import {generate_location_selection} from '@locational/geodata-support'
   import ConfigTextArea from './config_components/ConfigTextarea.vue'
   import {determine_validation_result} from '../helpers/determine_validation_result_for_ui'
+
   import {thing} from '@/src/lib/basic'
+  import {Aggregations} from './config_components'
 
   export default Vue.extend({
-    components: {ConfigTextArea},
+    components: {ConfigTextArea, Aggregations},
     props: {
       config: Object, // should probably be Object,
       geodata_layers: Array,
