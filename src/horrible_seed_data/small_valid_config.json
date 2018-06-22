@@ -27,13 +27,6 @@
     "slug": "loc",
     "title": "title"
   },
-  "location_selection": {
-    "villages": [{
-      "category": "",
-      "id": "id",
-      "name": "name"
-    }]
-  },
   "spatial_hierarchy":{
     "data_version": 1,
     "markers": {
