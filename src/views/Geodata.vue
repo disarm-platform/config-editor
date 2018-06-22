@@ -14,7 +14,7 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <h2>Field Summary</h2>
-          <p v-for="field in props.row.field_summary">
+          <p v-for="field in props.row.field_summary" :key="field.field_name">
             <b>{{field.field_name}}</b> <br>
             Type:  {{field.type}} <br>
             Exists on all:  {{field.exists_on_all}} <br>
@@ -58,7 +58,7 @@
   </el-card>
   </div>
 </template>
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_location_selection} from '@locational/geodata-support'
 
@@ -106,12 +106,12 @@ export default Vue.extend({
     }
   },
   methods: {
-    summarise(layer_name: string, index: number) {
+    summarise(layer_name, index) {
       const layer = this.geodata_layers.find(l => l.name === layer_name)
       const result = summarise(layer.geojson)
       this.$set(this.geodata_layers, index, {...this.geodata_layers[index], field_summary: result})
     },
-    validate_layer_schema(layer_name: string, index: number) {
+    validate_layer_schema(layer_name, index) {
       const layer = this.geodata_layers.find(l => l.name === layer_name)
       const result = validate_layer_schema(layer.geojson)
       const validation_status = result.status.startsWith('Green') ? 'success' : 'warning'
