@@ -2,17 +2,12 @@
 
 </template>
 
-<script>
-//
-//
-//
-//
+<script lang="ts">
+  import ConfigNodeMixin from '@/lib/ConfigNodePlugin';
 
-import {ConfigNodeMixin} from 'src/lib/ConfigNodePlugin';
+  export default ConfigNodeMixin.extend({
 
-export default {
-  mixin: [ConfigNodeMixin],
-};
+  });
 </script>
 
 <style scoped>

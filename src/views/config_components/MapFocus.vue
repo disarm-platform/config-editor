@@ -2,14 +2,13 @@
   <h3>MapFocus</h3>
 </template>
 
-<script>
-  import {ConfigNodeMixin} from '@/lib/ConfigNodePlugin';
+<script lang="ts">
+  import ConfigNodeMixin from '@/lib/ConfigNodePlugin';
 
-  export default {
-    mixins: [ConfigNodeMixin],
-  };
+  export default ConfigNodeMixin.extend({
+
+  });
 </script>
-
 <style scoped>
 
 </style>

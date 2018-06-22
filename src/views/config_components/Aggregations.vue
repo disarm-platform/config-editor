@@ -2,12 +2,12 @@
   <h1>Aggregations</h1>
 </template>
 
-<script>
-  import {ConfigNodeMixin} from '@/lib/ConfigNodePlugin';
+<script lang="ts">
+  import ConfigNodeMixin from '@/lib/ConfigNodePlugin';
 
-  export default {
-    mixins: [ConfigNodeMixin],
-  };
+  export default ConfigNodeMixin.extend({
+
+  });
 </script>
 
 <style scoped>

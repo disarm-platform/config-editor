@@ -1,13 +1,13 @@
 <template>
-  <div>{{$configNode()}}</div>
+  <div>{{node_config}}</div>
 </template>
 
-<script>
-  import {ConfigNodeMixin} from '@/lib/ConfigNodePlugin';
+<script lang="ts">
+  import ConfigNodeMixin from '@/lib/ConfigNodePlugin';
 
-  export default {
-    mixins: [ConfigNodeMixin],
-  };
+  export default ConfigNodeMixin.extend({
+
+  });
 </script>
 
 <style scoped>

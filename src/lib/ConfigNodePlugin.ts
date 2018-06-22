@@ -1,15 +1,7 @@
-import _Vue from 'vue'; // <-- notice the changed import
+import Vue from 'vue';
 import {get} from 'lodash';
 
-// export type PluginFunction<T> = (Vue: typeof _Vue, options?: T) => void;
-export function ConfigNodePlugin(Vue: typeof _Vue, options?: any): void {
-  Vue.prototype.$configNode = function() {
-    console.log('config, path', this.config, this.node_name);
-    return get(this.config, this.node_name);
-  };
-}
-
-export const ConfigNodeMixin = {
+export default Vue.extend({
   props: {
     config: Object,
     node_name: String,
@@ -17,9 +9,10 @@ export const ConfigNodeMixin = {
   data() {
     return {
       node_config: {},
-    }
+    };
   },
   created() {
-    this.node_config = get(this.config, this.node_name)
-  }
-};
+    this.node_config = get(this.config, this.node_name);
+    if (!this.node_config) console.warn(`Cannot find configuration for node_name "${this.node_name}}"`, this.config);
+  },
+});
