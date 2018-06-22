@@ -12,12 +12,7 @@
           type="warning">
         </el-alert>
       </div>
-      <el-input
-        type="textarea"
-        :rows="20"
-        placeholder="Please input"
-        v-model="formatted_config">
-      </el-input>
+      <ConfigTextArea :config="config" path="root" @change="handle_change"/>
     </el-card>
   </div>
 </template>
@@ -25,7 +20,10 @@
 import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 import {generate_location_selection} from '@locational/geodata-support'
+import ConfigTextArea from '../components/ConfigTextarea.vue'
+
 export default Vue.extend({
+  components: {ConfigTextArea},
   props: {
     config: Object, // should probably be Object,
     geodata_layers: Array,
@@ -35,18 +33,19 @@ export default Vue.extend({
       validation_result: ''
     };
   },
-  computed: {
-    formatted_config: {
-      get() {
-        return JSON.stringify(this.config, undefined, 2);
-      },
-      set (val) { 
-        // TODO: want to emit an event that sets config on Editor
-        this.config = JSON.parse(val)
-      }
-    }
-  },
   methods: {
+    handle_change(piece_of_config, path) {
+      if (path === 'root') {
+        // TODO: dont' mutate directly
+        this.config = {
+          ...this.config,
+          ...piece_of_config
+        }
+      } else {
+        //something like this
+        this.config[path] = piece_of_config
+      }
+    },
     validate_config(){
       // create geodata in correct format
       const geodata = {}
