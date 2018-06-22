@@ -36,14 +36,14 @@ export default Vue.extend({
   methods: {
     handle_change(piece_of_config, path) {
       if (path === 'root') {
-        // TODO: dont' mutate directly
-        this.config = {
-          ...this.config,
-          ...piece_of_config
-        }
+        this.$emit('config', piece_of_config)
       } else {
-        //something like this
-        this.config[path] = piece_of_config
+        // something like this, haven't tested this
+        const new_config = {
+          ...this.config,
+          [path]: piece_of_config
+        }
+        this.$emit('config', new_config)
       }
     },
     validate_config(){

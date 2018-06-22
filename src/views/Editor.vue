@@ -10,7 +10,7 @@
       <span slot="label">
         Config
       </span>
-      <Config :config="config" @config_validation="set_config_validation" :geodata_layers="geodata_layers" />
+      <Config :config="config" @config_validation="set_config_validation" :geodata_layers="geodata_layers" @config="set_config" />
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
       <Publish :config_valid="config_valid" instance_id="bwa" instance="Botswana" version="1.0.0" @save_config="save_config"/>
@@ -58,15 +58,11 @@
       };
     },
     methods: {
-      save_config() {
-        const assembled_config = this.assemble_config()
-        console.log('assembled_config', assembled_config);
+      set_config(new_config) {
+        this.config = new_config
       },
-      assemble_config() {
-        return {
-          ...this.config,
-          location_selection: this.location_selection,
-        }
+      save_config() {
+        console.log('config', this.config);
       },
       set_location_selection(location_selection) {
         this.location_selection = location_selection
