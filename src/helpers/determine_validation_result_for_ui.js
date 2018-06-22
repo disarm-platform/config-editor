@@ -1,4 +1,9 @@
-export function determine_validation_result(response: any) {
+/**
+ *
+ * @param response
+ * @returns {any}
+ */
+export function determine_validation_result(response) {
   if (response.status.startsWith('Red')) {
     return {
       passed: false,
@@ -11,8 +16,8 @@ export function determine_validation_result(response: any) {
   const messages_to_show = edge_statuses_that_fail.map(e => {
     if (e.custom_edge_responses.length) {
       const custom_message = e.custom_edge_responses
-        .filter((cer: {status: string}) => cer.status.startsWith('Red'))
-        .map((cer: {message: string}) => cer.message)
+        .filter((cer) => cer.status.startsWith('Red'))
+        .map((cer) => cer.message)
       return {
         message: custom_message.join(','),
         nodes: [e.source_node_name, e.target_node_name]
