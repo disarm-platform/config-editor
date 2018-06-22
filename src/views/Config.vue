@@ -20,7 +20,7 @@
 import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 import {generate_location_selection} from '@locational/geodata-support'
-import ConfigTextArea from '../components/ConfigTextarea.vue'
+import ConfigTextArea from './config_components/ConfigTextarea.vue'
 import {determine_validation_result} from '../helpers/determine_validation_result_for_ui'
 
 export default Vue.extend({
