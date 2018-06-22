@@ -34,15 +34,25 @@
       "name": "name"
     }]
   },
-  "spatial_hierarchy": {
+  "spatial_hierarchy":{
     "data_version": 1,
     "markers": {
-      "planning_level_name": "a",
-      "record_location_selection_level_name": "b",
-      "denominator_fields": {
-        "something": "else"
-      }
+      "planning_level_name": "cities",
+      "record_location_selection_level_name": "cities",
+      "denominator_fields": {}
     },
-    "levels": []
+    "levels": [
+      {
+        "field_name": "province_id",
+        "display_field_name": "province",
+        "name": "provinces"
+      },
+      {
+        "group_by_field": "province",
+        "field_name": "city_id", 
+        "display_field_name": "name",
+        "name": "cities"
+      }
+    ]
   }
 }

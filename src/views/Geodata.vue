@@ -51,8 +51,6 @@
     </el-upload>
 
     <el-row style="margin-top: 2em;">
-      <el-button @click="validate_spatial_hierarchy()">Validate</el-button>
-      <el-button @click="generate_location_selection()">Generate location selection</el-button>
       <el-button disabled>Save</el-button>
     </el-row>
   </el-card>
@@ -60,8 +58,7 @@
 </template>
 <script>
 import Vue from 'vue'
-import {validate_layer_schema, summarise, validate_spatial_hierarchy, generate_location_selection} from '@locational/geodata-support'
-
+import {validate_layer_schema, summarise} from '@locational/geodata-support'
 
 export default Vue.extend({
   props:{
@@ -73,36 +70,6 @@ export default Vue.extend({
         message: '',
         type: '' // warning or success
       },
-      spatial_hierarchy: {
-        data_version: 1,
-        markers: {
-          planning_level_name: "cities",
-          record_location_selection_level_name: "cities",
-          denominator_fields: {}
-        },
-        levels: [
-          {
-            field_name: "province_id",
-            display_field_name: "province",
-            name: "provinces"
-          },
-          {
-            group_by_field: "province",
-            field_name: "city_id", 
-            display_field_name: "name",
-            name: "cities"
-          }
-        ]
-      }
-    }
-  },
-  computed: {
-    geodata_for_validation() {
-      let geodata = {}
-      for (const layer of this.geodata_layers) {
-        geodata[layer.name] = layer.geojson
-      }
-      return geodata
     }
   },
   methods: {
@@ -117,45 +84,12 @@ export default Vue.extend({
       const validation_status = result.status.startsWith('Green') ? 'success' : 'warning'
       this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
     },
-    validate_spatial_hierarchy() {
-      const result = validate_spatial_hierarchy(this.spatial_hierarchy, this.geodata_for_validation)
-
-      const valid = result.status.startsWith('Green')
-
-      this.alert = {
-        message: result.message,
-        type: valid ? 'success' : 'warning'
-      }
-
-      this.$emit('geodata_validation', valid)
-
-      console.log('result', result);
-
-      if (valid) {
-        this.$emit('spatial_hierarchy', this.spatial_hierarchy)
-      }
-    },
-    generate_location_selection() {
-      const result = generate_location_selection(this.spatial_hierarchy, this.geodata_for_validation)
-      console.log('result', result);
-
-      const success = result.status.startsWith('Green')
-    
-      this.alert = {
-        message: result.message,
-        type: success ?  'success' : 'warning'
-      }
-
-      if (success) {
-        this.$emit('location_selection', result.location_selection)
-      }
-    },
     on_upload_file(response, file, fileList) {
       console.log(response, file, fileList)
     },
     // ui
     tableRowClassName({row, rowIndex}) {
-        return row.validation_status
+      return row.validation_status
     }
   }
 })

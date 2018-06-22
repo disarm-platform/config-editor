@@ -47,6 +47,7 @@ export default Vue.extend({
   },
   methods: {
     validate_config(){
+      // need to generate location_selection before we validate
       let validation_result = validate(this.config)
       this.$emit('config_validation', true);
       this.validation_result = JSON.stringify(validation_result);
