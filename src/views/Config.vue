@@ -13,23 +13,24 @@
         </el-alert>
       </div>
       <ConfigTextArea :config="config" path="root" @change="handle_change"/>
-      <MapFocus></MapFocus>
+      <Form :config="config" @change="handle_change"></Form>
+      <MapFocus :config="config" @change="handle_change"></MapFocus>
     </el-card>
   </div>
 </template>
 <script>
   import Vue from 'vue'
+
   import {validate} from '@locational/config-validation'
   import {generate_location_selection} from '@locational/geodata-support'
   import {determine_validation_result} from '../helpers/determine_validation_result_for_ui'
 
   import Aggregations from './config_components/Aggregations'
+  import Form from './config_components/Form'
   import MapFocus from './config_components/MapFocus'
-  import ConfigTextArea from './config_components/ConfigTextarea'
-  import {thing} from '@/lib/basic'
 
   export default Vue.extend({
-    components: {ConfigTextArea, MapFocus},
+    components: {Aggregations, Form, MapFocus},
     props: {
       config: Object, // should probably be Object,
       geodata_layers: Array,
