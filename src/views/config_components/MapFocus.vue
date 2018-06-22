@@ -3,16 +3,11 @@
 </template>
 
 <script>
-//
-//
-//
-//
+  import {ConfigNodeMixin} from '@/lib/ConfigNodePlugin';
 
-import {ConfigNodeMixin} from 'src/lib/ConfigNodePlugin';
-
-export default {
-  mixin: [ConfigNodeMixin],
-};
+  export default {
+    mixin: [ConfigNodeMixin],
+  };
 </script>
 
 <style scoped>

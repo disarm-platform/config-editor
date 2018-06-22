@@ -8,31 +8,21 @@
 </template>
 
 <script>
-//
-//
-//
-//
-//
-//
-//
-//
-//
+  import {ConfigNodeMixin} from 'src/lib/ConfigNodePlugin.js';
 
-import {ConfigNodeMixin} from 'src/lib/ConfigNodePlugin';
-
-export default {
-  mixin: [ConfigNodeMixin],
-  computed: {
-    formatted_config: {
-      get() {
-        return JSON.stringify(this.config, undefined, 2);
-      },
-      set(val) {
-        this.$emit('change', JSON.parse(val), this.path);
+  export default {
+    mixin: [ConfigNodeMixin],
+    computed: {
+      formatted_config: {
+        get() {
+          return JSON.stringify(this.config, undefined, 2);
+        },
+        set(val) {
+          this.$emit('change', JSON.parse(val), this.path);
+        },
       },
     },
-  },
-  methods: {},
-};
+    methods: {},
+  };
 </script>
 

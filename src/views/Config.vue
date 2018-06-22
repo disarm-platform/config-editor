@@ -45,9 +45,6 @@
       validation_result: '',
     };
   },
-  mounted() {
-    console.log('mounted');
-  },
   methods: {
     handle_change(piece_of_config, path) {
       if (path === 'root') {
