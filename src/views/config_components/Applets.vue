@@ -1,10 +1,9 @@
 <template>
-  <h1>Aggregations</h1>
+  <div>bunch of applets</div>
 </template>
 
 <script>
   export default {
-    name: 'validations'
   }
 </script>
 
