@@ -13,9 +13,16 @@
         </el-alert>
       </div>
 
-      <component v-for="component in component_names" v-bind:is='component' :key='component'></component>
-
+      <component
+          v-for="{name, node_name} in component_defs"
+          :key='name'
+          v-bind:is='name'
+          :config="config"
+          :node_name="node_name"
+      >
+      </component>
     </el-card>
+
   </div>
 </template>
 
@@ -35,71 +42,85 @@
   import SpatialHierarchy from './config_components/SpatialHierarchy';
   import Validations from './config_components/Validations';
 
-  const component_list = {Instance, SpatialHierarchy, MapFocus, Aggregations, Applets, Decorators, Form,  Validations};
+  const component_defs = [
+    {name: 'Instance', node_name: 'instance', component: Instance},
+    {name: 'Applets', node_name: 'applets', component: Applets},
+    {name: 'SpatialHierarchy', node_name: 'spatial_hierarchy', component: SpatialHierarchy},
+    {name: 'MapFocus', node_name: 'map_focus', component: MapFocus},
+    {name: 'Form', node_name: 'form', component: Form},
+    {name: 'Aggregations', node_name: 'aggregations', component: Aggregations},
+    {name: 'Decorators', node_name: 'decorators', component: Decorators},
+    {name: 'Validations', node_name: 'validations', component: Validations},
+  ];
+
+  const component_list = component_defs.reduce((acc, c) => {
+    acc[c.name] = c.component;
+    return acc;
+  }, {});
 
   export default Vue.extend({
-  components: component_list,
-  props: {
-    config: Object,
-    geodata_layers: Array,
-  },
-  data() {
-    return {
-      validation_result: '',
-      component_names: Object.keys(component_list),
-    };
-  },
-  methods: {
-    handle_change(piece_of_config, path) {
-      if (path === 'root') {
-        this.$emit('config', piece_of_config);
-      } else {
-        // something like this, haven't tested this
-        const new_config = {
-          ...this.config,
-          [path]: piece_of_config,
+    components: component_list,
+    props: {
+      config: Object,
+      geodata_layers: Array,
+    },
+    data() {
+      return {
+        validation_result: '',
+        component_defs,
+      };
+    },
+    methods: {
+      handle_change(piece_of_config, path) {
+        if (path === 'root') {
+          this.$emit('config', piece_of_config);
+        } else {
+          // something like this, haven't tested this
+          const new_config = {
+            ...this.config,
+            [path]: piece_of_config,
+          };
+          this.$emit('config', new_config);
+        }
+      },
+      validate_config() {
+        // start formatting of config, move to separate function?
+        const geodata = {};
+        const geodata_summary = {};
+        for (const layer of this.geodata_layers) {
+          geodata[layer.name] = layer.geojson;
+          geodata_summary[layer.name] = layer.field_summary;
+        }
+
+
+        const spatial_hierarchy = {
+          ...this.config.spatial_hierarchy,
+          geodata_summary,
         };
-        this.$emit('config', new_config);
-      }
+        // TODO: Think through, do we want to generate location_selection here?
+        // Do we even want to do the validations here at all? Might want to move to Editor.vue
+        const location_selection_result = generate_location_selection(spatial_hierarchy, geodata);
+        const location_selection = location_selection_result.location_selection;
+
+        const config = {
+          ...this.config,
+          location_selection,
+        };
+        // finish formatting of config
+
+
+        // TODO: Save result, it contains info about which nodes are failing.
+        const result = validate(config);
+        const validation_result = determine_validation_result(result);
+
+        if (validation_result.passed) {
+          this.$emit('config_validation', true);
+          this.validation_result = 'Configuration passed all validations';
+        } else {
+          this.validation_result = 'Schema validation failed ' + JSON.stringify(validation_result.support_messages);
+          this.$emit('config_validation', false);
+        }
+      },
     },
-    validate_config() {
-      // start formatting of config, move to separate function?
-      const geodata = {};
-      const geodata_summary = {};
-      for (const layer of this.geodata_layers) {
-        geodata[layer.name] = layer.geojson;
-        geodata_summary[layer.name] = layer.field_summary;
-      }
-
-
-      const spatial_hierarchy = {
-        ...this.config.spatial_hierarchy,
-        geodata_summary,
-      };
-      // TODO: Think through, do we want to generate location_selection here?
-      // Do we even want to do the validations here at all? Might want to move to Editor.vue
-      const location_selection_result = generate_location_selection(spatial_hierarchy, geodata);
-      const location_selection = location_selection_result.location_selection;
-
-      const config = {
-        ...this.config,
-        location_selection,
-      };
-      // finish formatting of config
-
-
-      // TODO: Save result, it contains info about which nodes are failing.
-      const result = validate(config);
-      const validation_result = determine_validation_result(result);
-
-      if (validation_result.passed) {
-        this.$emit('config_validation', true);
-        this.validation_result = 'Configuration passed all validations';
-      } else {
-        this.validation_result = 'Schema validation failed ' + JSON.stringify(validation_result.support_messages);
-        this.$emit('config_validation', false);
-      }
-    },
-  },
-});
+  });
 </script>
