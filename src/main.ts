@@ -7,9 +7,12 @@ import router from './router';
 import store from './store';
 import './registerServiceWorker';
 
+import {ConfigNodePlugin} from './lib/ConfigNodePlugin';
+
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
+Vue.use(ConfigNodePlugin);
 
 new Vue({
   router,

@@ -12,9 +12,12 @@
             type="warning">
         </el-alert>
       </div>
-      <ConfigTextArea :config="config" path="root" @change="handle_change"/>
-      <Form :config="config" @change="handle_change"></Form>
-      <MapFocus :config="config" @change="handle_change"></MapFocus>
+
+      <Aggregations :config="config" node_name='aggregations' @change="handle_change"></Aggregations>
+      <Applets :config="config" node_name='applets' @change="handle_change"></Applets>
+      <Form :config="config" node_name='form' @change="handle_change"></Form>
+      <MapFocus :config="config" node_name='mapfocus' @change="handle_change"></MapFocus>
+
     </el-card>
   </div>
 </template>
@@ -27,11 +30,12 @@
   import {determine_validation_result} from '../helpers/determine_validation_result_for_ui';
 
   import Aggregations from './config_components/Aggregations';
+  import Applets from './config_components/Applets';
   import Form from './config_components/Form';
   import MapFocus from './config_components/MapFocus';
 
   export default Vue.extend({
-  components: {Aggregations, Form, MapFocus},
+  components: {Aggregations, Applets, Form, MapFocus},
   props: {
     config: Object, // should probably be Object,
     geodata_layers: Array,

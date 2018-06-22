@@ -3,12 +3,16 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      config: Object,
-      path: String,
-    },
-  };
+//
+//
+//
+//
+
+import {ConfigNodeMixin} from 'src/lib/ConfigNodePlugin';
+
+export default {
+  mixin: [ConfigNodeMixin],
+};
 </script>
 
 <style scoped>

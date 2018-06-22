@@ -15,7 +15,7 @@
     "ordered-imports": false,
     "object-literal-sort-keys": false,
     "no-consecutive-blank-lines": false,
-    "variable-name": [true, "allow-snake-case"],
+    "variable-name": [true, "allow-snake-case", "allow-pascal-case"],
     "no-console": false
   }
 }
