@@ -21,6 +21,7 @@ import Vue from 'vue'
 import {validate} from '@locational/config-validation'
 import {generate_location_selection} from '@locational/geodata-support'
 import ConfigTextArea from '../components/ConfigTextarea.vue'
+import {determine_validation_result} from '../helpers/determine_validation_result_for_ui'
 
 export default Vue.extend({
   components: {ConfigTextArea},
@@ -47,7 +48,7 @@ export default Vue.extend({
       }
     },
     validate_config(){
-      // create geodata in correct format
+      // start formatting of config, move to separate function?
       const geodata = {}
       const geodata_summary =  {}
       for (const layer of this.geodata_layers) {
@@ -68,9 +69,12 @@ export default Vue.extend({
         ...this.config,
         location_selection
       }
+      // finish formatting of config
 
-      const a = validate(config)
-      const validation_result = this.determine_validation_result(a)
+
+      // TODO: Save result, it contains info about which nodes are failing.
+      const result = validate(config)
+      const validation_result = determine_validation_result(result)
 
       if (validation_result.passed) {
         this.$emit('config_validation', true);
@@ -78,37 +82,6 @@ export default Vue.extend({
       } else {
         this.validation_result = 'Schema validation failed ' + JSON.stringify(validation_result.support_messages)
         this.$emit('config_validation', false);
-      }
-    },
-    determine_validation_result(response) {
-      if (response.status.startsWith('Red')){
-        return {
-          passed: false,
-          support_messages: response.support_messages
-        }
-      }
-
-      const edge_statuses_that_fail = response.edge_messages.filter(e => e.status.startsWith('Red'))
-
-      const messages_to_show = edge_statuses_that_fail.map(e => {
-        if (e.custom_edge_responses.length) {
-          const custom_message = e.custom_edge_responses
-            .filter(cer => cer.status.startsWith('Red'))
-            .map(cer => cer.message)
-          return {
-            message: custom_message.join(','),
-            nodes: [e.source_node_name, e.target_node_name]
-          }
-        } else {
-          return {
-            message: e.message,
-            nodes: []
-          }
-        }
-      })
-      return {
-        passed: edge_statuses_that_fail.length === 0,
-        support_messages: edge_statuses_that_fail
       }
     }
   }
