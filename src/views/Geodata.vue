@@ -39,7 +39,7 @@
           <el-button @click="validate_layer_schema(scope.row.name, scope.$index)" type="text" size="small">Validate</el-button>
           <el-button @click="summarise(scope.row.name, scope.$index)" type="text" size="small">Summarise</el-button>
           <el-button disabled icon="el-icon-upload" size="small"></el-button>
-          <el-button disabled icon="el-icon-delete" size="small"></el-button>
+          <el-button @click="delete_layer(scope.row.name, scope.$index)" icon="el-icon-delete" size="small"></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -98,6 +98,10 @@ export default Vue.extend({
       const validation_status = result.status.startsWith('Green') ? 'success' : 'warning'
       // TODO: Emit event, instead of setting parent data
       this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
+    },
+    delete_layer(layer_name, index) {
+      this.geodata_layers.splice(index, 1)
+      // this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
     },
     async save_new_layer() {
       const geojson = await upload_file_as_text(this.file.raw)
