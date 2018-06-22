@@ -1,11 +1,11 @@
 <template>
-  <div >
+  <div>
     <el-card>
       <div>
         <el-alert
-          v-if="!config_valid"
-          title="Configuration is not valid"
-          type="warning">
+            v-if="!config_valid"
+            title="Configuration is not valid"
+            type="warning">
         </el-alert>
 
         <div style="margin-top:1em;">
@@ -24,20 +24,21 @@
     </el-card>
   </div>
 </template>
-<script>
-import Vue from 'vue'
 
-export default Vue.extend({
-  props: {
-    config_valid: Boolean,
-    instance_id: String, 
-    instance: String,
-    version: String
-  },
-  methods: {
-   save_update() {
-     this.$emit('save_config')
-   } 
-  }
-});
+<script>
+  import Vue from 'vue';
+
+  export default Vue.extend({
+    props: {
+      config_valid: Boolean,
+      instance_id: String,
+      instance: String,
+      version: String,
+    },
+    methods: {
+      save_update() {
+        this.$emit('save_config');
+      },
+    },
+  });
 </script>

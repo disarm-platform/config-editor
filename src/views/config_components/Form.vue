@@ -7,8 +7,8 @@
     props: {
       config: Object,
       path: String,
-    }
-  }
+    },
+  };
 </script>
 
 <style scoped>
