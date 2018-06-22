@@ -15,7 +15,7 @@
 
       <Aggregations :config="config" node_name='aggregations' @change="handle_change"></Aggregations>
       <Applets :config="config" node_name='applets' @change="handle_change"></Applets>
-      <Form :config="config" node_name='form' @change="handle_change"></Form>
+      <FormNode :config="config" node_name='form' @change="handle_change"></FormNode>
       <MapFocus :config="config" node_name='mapfocus' @change="handle_change"></MapFocus>
 
     </el-card>
@@ -31,13 +31,13 @@
 
   import Aggregations from './config_components/Aggregations';
   import Applets from './config_components/Applets';
-  import Form from './config_components/Form';
+  import FormNode from './config_components/FormNode';
   import MapFocus from './config_components/MapFocus';
 
   export default Vue.extend({
-  components: {Aggregations, Applets, Form, MapFocus},
+  components: {Aggregations, Applets, FormNode, MapFocus},
   props: {
-    config: Object, // should probably be Object,
+    config: Object,
     geodata_layers: Array,
   },
   data() {

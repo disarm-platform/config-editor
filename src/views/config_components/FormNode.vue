@@ -1,12 +1,12 @@
 <template>
-  <div>{{config}}</div>
+  <div>{{$configNode()}}</div>
 </template>
 
 <script>
   import {ConfigNodeMixin} from '@/lib/ConfigNodePlugin';
 
   export default {
-    mixin: [ConfigNodeMixin],
+    mixins: [ConfigNodeMixin],
   };
 </script>
 

@@ -14,7 +14,12 @@ export const ConfigNodeMixin = {
     config: Object,
     node_name: String,
   },
-  created() {
-    console.log('created', this);
+  data() {
+    return {
+      node_config: {},
+    }
   },
+  created() {
+    this.node_config = get(this.config, this.node_name)
+  }
 };

@@ -6,7 +6,7 @@
   import {ConfigNodeMixin} from '@/lib/ConfigNodePlugin';
 
   export default {
-    mixin: [ConfigNodeMixin],
+    mixins: [ConfigNodeMixin],
   };
 </script>
 
