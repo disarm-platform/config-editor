@@ -38,7 +38,8 @@
       {
         "field_name": "province_id",
         "display_field_name": "province",
-        "name": "provinces"
+        "name": "provinces",
+        "group_by_field": "country"
       },
       {
         "group_by_field": "province",

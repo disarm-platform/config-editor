@@ -61,7 +61,6 @@ export default Vue.extend({
         ...this.config.spatial_hierarchy,
         geodata_summary
       }
-      debugger
       
       const location_selection_result = generate_location_selection(spatial_hierarchy, geodata)
       const location_selection = location_selection_result.location_selection
