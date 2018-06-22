@@ -13,6 +13,8 @@ export default Vue.extend({
   },
   created() {
     this.node_config = get(this.config, this.node_name);
-    if (!this.node_config) console.warn(`Cannot find configuration for node_name "${this.node_name}}"`, this.config);
+    if (!this.node_config) {
+      console.warn(`Cannot find configuration for node_name "${this.node_name}}"`, this.config);
+    }
   },
 });
