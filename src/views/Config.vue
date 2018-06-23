@@ -39,7 +39,7 @@
   import {validate} from '@locational/config-validation';
   import {generate_location_selection} from '@locational/geodata-support';
   import {determine_validation_result} from '../helpers/determine_validation_result_for_ui';
-  import {component_defs, component_list} from '@/views/nodex';
+  import {component_defs, component_list} from '@/views/component_defs';
 
   export default Vue.extend({
     components: component_list,
