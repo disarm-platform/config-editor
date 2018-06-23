@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import {get} from 'lodash';
-import {TCustomEdgeResponse} from "@locational/config-validation/build/main/lib/TCustomEdgeResponse";
-import {TUnifiedResponse} from "@locational/config-validation/build/module/lib/TUnifiedResponse";
-import {TStandardEdgeResponse} from "@locational/config-validation/build/module/lib/TStandardEdgeResponse";
+import {TCustomEdgeResponse} from '@locational/config-validation/build/main/lib/TCustomEdgeResponse';
+import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
+import {TStandardEdgeResponse} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 export default Vue.extend({
   props: {

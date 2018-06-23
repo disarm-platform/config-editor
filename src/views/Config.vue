@@ -3,7 +3,12 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Config</span>
-        <el-button style="float: right; padding: 3px 0" type="text" @click="validate_config">Validate</el-button>
+        <el-button
+            style="float: right; padding: 3px 0"
+            type="text"
+            @click="validate_config"
+        >Validate</el-button>
+
       </div>
       <div>
         <el-alert
@@ -120,7 +125,8 @@
           this.$emit('config_validation', true);
           this.validation_result_message = 'Configuration passed all validations';
         } else {
-          this.validation_result_message = 'Schema validation failed ' + JSON.stringify(validation_result.support_messages);
+          this.validation_result_message =
+            `Schema validation failed ${JSON.stringify(validation_result.support_messages)}`;
           this.$emit('config_validation', false);
         }
       },
