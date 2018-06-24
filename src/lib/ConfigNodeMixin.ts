@@ -3,10 +3,11 @@ import {get} from 'lodash';
 import {TCustomEdgeResponse} from '@locational/config-validation/build/main/lib/TCustomEdgeResponse';
 import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import {TStandardEdgeResponse} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 export default Vue.extend({
   props: {
-    config: Object,
+    config: Object as () => TConfig,
     node_name: String,
     validation_result: Object as () => TUnifiedResponse,
   },
