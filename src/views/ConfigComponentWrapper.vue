@@ -34,6 +34,12 @@ import ComponentMessages from './ComponentMessages.vue';
 import ComponentActions from './ComponentActions.vue';
 import {component_list} from '@/views/component_defs';
 
+interface NodeComponent extends Vue {
+  // TODO: Cannot access ConfigNodeMixin for some reason, so recreating the required parts here
+  reset: () => void;
+  tell_me: () => void;
+}
+
 export default Vue.extend({
   components: {...component_list, ComponentMessages, ComponentActions},
   props: {
@@ -55,14 +61,14 @@ export default Vue.extend({
       this.$emit('change', this.get_node_config(), this.path_name);
     },
     reset() {
-      this.$refs.actual_component.reset();
+      (this.$refs.actual_component as NodeComponent).reset();
     },
     get_node_config() {
-      return this.$refs.actual_component.tell_me();
+      return (this.$refs.actual_component as NodeComponent).tell_me();
     },
     tell_me() {
       console.log('value is', JSON.stringify(this.get_node_config()));
-    }
+    },
   },
 });
 </script>
