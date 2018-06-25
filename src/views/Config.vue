@@ -19,20 +19,27 @@
         </el-alert>
       </div>
 
-      <ConfigComponentWrapper
-          v-for="{display_name, component_name, node_name, path_name} in component_defs"
-          :key='component_name'
+      <el-tabs tab-position="left" style="height: 400px;">
+        <el-tab-pane
+            v-for="{display_name, component_name, node_name, path_name} in component_defs"
+            :key='component_name'
+            :label="display_name"
+        >
+          <ConfigComponentWrapper
 
-          :display_name="display_name"
-          :config="config"
-          :node_name="node_name"
-          :path_name="path_name"
-          :component_name="component_name"
+              :display_name="display_name"
+              :config="config"
+              :node_name="node_name"
+              :path_name="path_name"
+              :component_name="component_name"
 
-          :validation_result="validation_result"
-          @change="handle_change"
-      >
-      </ConfigComponentWrapper>
+              :validation_result="validation_result"
+              @change="handle_change"
+          >
+          </ConfigComponentWrapper>
+        </el-tab-pane>
+      </el-tabs>
+
     </el-card>
 
   </div>

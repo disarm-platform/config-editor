@@ -49,7 +49,7 @@
     data() {
       return {
         other: 'thing',
-        activeName: 'geodata',
+        activeName: 'config',
         config_valid: false,
         config,
         geodata_layers: [
