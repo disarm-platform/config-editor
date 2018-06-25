@@ -16,13 +16,16 @@ export interface SupportMessageHere {
 }
 
 export function determine_validation_result(response: TUnifiedResponse): ValidationResult {
-  if (response.status.startsWith('Red')) {
+  if (response.status.startsWith('Red') && response.support_messages) {
     return {
       passed: false,
-      support_messages: response.support_messages,
+      support_messages: response.support_messages.map((m) => {
+        return {
+          message: m,
+        };
+      }),
     };
   }
-
   const edge_statuses_that_fail = response.edge_messages.filter((e) => e.status.startsWith('Red'));
 
   const messages_to_show = edge_statuses_that_fail.map((e) => {

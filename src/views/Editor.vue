@@ -32,7 +32,6 @@
 </template>
 
 <script>
-  import {cloneDeep, set} from 'lodash';
   import Geodata from './Geodata.vue';
   import Config from './Config.vue';
   import Publish from './Publish.vue';
@@ -74,7 +73,7 @@
     },
     methods: {
       change(updated_config, pathname) {
-        console.warn('changing but not triggering watcher in mixin: updated_config, pathname', updated_config, pathname)
+        console.warn('change but not trigger watcher in mixin: updated_config, pathname', updated_config, pathname);
         this.$set(this.config, pathname, updated_config);
       },
       save_config() {

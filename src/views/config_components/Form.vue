@@ -6,26 +6,26 @@
 </template>
 
 <script lang="ts">
-  import ConfigNodeMixin from '@/lib/ConfigNodeMixin';
+import ConfigNodeMixin from '@/lib/ConfigNodeMixin';
 
-  export default ConfigNodeMixin.extend({
-    data() {
-      return {
-        form_content: '',
-      };
+export default ConfigNodeMixin.extend({
+  data() {
+    return {
+      form_content: '',
+    };
+  },
+  created() {
+    this.form_content = JSON.stringify(this.node_config, null, 2);
+  },
+  methods: {
+    update() {
+      this.$emit('change', JSON.parse(this.form_content));
     },
-    created() {
-      this.form_content = JSON.stringify(this.node_config, null, 2);
+    tell_me() {
+      return JSON.parse(this.form_content);
     },
-    methods: {
-      update() {
-        this.$emit('change', JSON.parse(this.form_content));
-      },
-      tell_me() {
-        return JSON.parse(this.form_content);
-      }
-    },
-  });
+  },
+});
 </script>
 
 <style scoped>
