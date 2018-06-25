@@ -7,6 +7,7 @@ import {TConfig} from '@locational/config-validation/build/module/lib/config_typ
 
 export default Vue.extend({
   props: {
+    display_name: String,
     config: Object as () => TConfig,
     node_name: String,
     validation_result: Object as () => TUnifiedResponse,

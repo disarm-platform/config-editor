@@ -19,10 +19,11 @@
       </div>
 
       <component
-          v-for="{name, node_name} in component_defs"
-          :key='name'
-          v-bind:is='name'
+          v-for="{display_name, component_name, node_name} in component_defs"
+          :key='component_name'
+          v-bind:is='component_name'
 
+          :display_name="display_name"
           :config="config"
           :node_name="node_name"
           :validation_result="validation_result"
