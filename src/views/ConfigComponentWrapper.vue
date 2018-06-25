@@ -6,6 +6,7 @@
     <component-messages :messages="messages" v-if="messages.length"></component-messages>
 
     <!-- Component itself -->
+    <h4>Component content</h4>
     <component
         v-bind:is="component_name"
         :config="config"
@@ -16,7 +17,7 @@
 
     <!-- Actions: save, confirm, reset, etc. -->
     <component-actions @click="click"></component-actions>
-  
+
   </div>
 </template>
 
@@ -41,7 +42,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      messages: [],
+      messages: ['No messages'],
     };
   },
   methods: {

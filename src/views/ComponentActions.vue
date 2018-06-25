@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Actions</h1>
+    <h4>Actions</h4>
     <el-button @click="$emit('click')">Cluck</el-button>
   </div>
 </template>
