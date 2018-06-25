@@ -15,7 +15,7 @@
   export default Vue.extend({
     props: {
       disabled: Boolean,
-    }
+    },
   });
 </script>
 
