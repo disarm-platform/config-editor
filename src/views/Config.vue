@@ -52,7 +52,7 @@
     data() {
       return {
         validation_result: {},
-        validation_result_message: <String>'',
+        validation_result_message: '',
         component_defs,
       };
     },
