@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h3>{{display_name}}</h3>
     <div>{{node_config}}</div>
   </div>
 </template>

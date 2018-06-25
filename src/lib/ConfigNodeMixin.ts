@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import {get} from 'lodash';
+import {cloneDeep, get} from 'lodash';
 import {TCustomEdgeResponse} from '@locational/config-validation/build/main/lib/TCustomEdgeResponse';
 import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import {TStandardEdgeResponse} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
@@ -7,9 +7,10 @@ import {TConfig} from '@locational/config-validation/build/module/lib/config_typ
 
 export default Vue.extend({
   props: {
-    display_name: String,
-    config: Object as () => TConfig,
     node_name: String,
+    path_name: String,
+
+    config: Object as () => TConfig,
     validation_result: Object as () => TUnifiedResponse,
   },
   data() {
@@ -18,9 +19,11 @@ export default Vue.extend({
     };
   },
   created() {
-    this.node_config = get(this.config, this.node_name);
-    if (!this.node_config) {
-      console.warn(`Cannot find configuration for node_name "${this.node_name}}"`, this.config);
+    const found_config = cloneDeep(get(this.config, this.path_name));
+    if (!found_config) {
+      console.warn(`Cannot find configuration for node_name "${this.node_name}"`, this.config);
+    } else {
+      this.node_config = found_config;
     }
   },
   computed: {

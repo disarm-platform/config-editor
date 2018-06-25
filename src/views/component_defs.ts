@@ -16,6 +16,7 @@ export interface ComponentDefinition {
   display_name: string;
   component_name: string;
   node_name: string;
+  path_name: string;
   component: VueConstructor;
 }
 
@@ -28,67 +29,77 @@ export const component_defs: ComponentDefinition[] = [
     display_name: 'Instance',
     component_name: 'Instance',
     node_name: 'instance',
+    path_name: 'instance',
     component: Instance,
   },
   {
-    display_name: 'Spatial Hierarchy'
-    , component_name: 'SpatialHierarchy'
-    , node_name: 'spatial_hierarchy'
-    , component: SpatialHierarchy,
+    display_name: 'Spatial Hierarchy',
+    component_name: 'SpatialHierarchy',
+    node_name: 'spatial_hierarchy',
+    path_name: 'spatial_hierarchy',
+    component: SpatialHierarchy,
   },
   {
-    display_name: 'Map Focus'
-    , component_name: 'MapFocus'
-    , node_name: 'map_focus'
-    , component: MapFocus,
+    display_name: 'Map Focus',
+    component_name: 'MapFocus',
+    node_name: 'map_focus',
+    path_name: 'map_focus',
+    component: MapFocus,
   },
   {
     display_name: 'Form',
     component_name: 'Form',
     node_name: 'form',
+    path_name: 'form',
     component: Form,
   },
   {
     display_name: 'Aggregations',
     component_name: 'Aggregations',
     node_name: 'aggregations',
+    path_name: 'aggregations',
     component: Aggregations,
   },
   {
     display_name: 'Decorators',
     component_name: 'Decorators',
     node_name: 'decorators',
+    path_name: 'decorators',
     component: Decorators,
   },
   {
     display_name: 'Validations',
     component_name: 'Validations',
     node_name: 'validations',
+    path_name: 'validations',
     component: Validations,
   },
-  // TODO: Give node_name for applets below as path, eg. irs_monitor insteads of applets.irs_monitor
   {
     display_name: 'Monitor',
     component_name: 'IrsMonitor',
     node_name: 'applets.irs_monitor',
+    path_name: 'irs_monitor',
     component: IrsMonitor,
   },
   {
     display_name: 'Plan',
     component_name: 'IrsPlan',
-    node_name: 'applets.irs_plan' +
-    '', component: IrsPlan,
+    node_name: 'applets.irs_plan',
+    path_name: 'irs_plan',
+    component: IrsPlan,
   },
   {
     display_name: 'Record (point)',
     component_name: 'IrsRecordPoint',
     node_name: 'applets.irs_record_point',
+    path_name: 'irs_record_point',
     component: IrsRecordPoint,
   },
   {
     display_name: 'Tasker',
     component_name: 'IrsTasker',
     node_name: 'applets.irs_tasker',
+    path_name: 'irs_tasker',
     component: IrsTasker,
   },
 ];

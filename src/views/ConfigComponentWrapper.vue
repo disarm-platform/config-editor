@@ -3,40 +3,55 @@
     <h1>{{display_name}}</h1>
 
     <!-- Messages: incl. links to jump to related nodes -->
+    <component-messages :messages="messages" v-if="messages.length"></component-messages>
 
     <!-- Component itself -->
     <component
         v-bind:is="component_name"
+        :config="config"
+        :node_name="node_name"
+        :path_name="path_name"
+        @change="emit_change"
     ></component>
 
     <!-- Actions: save, confirm, reset, etc. -->
-    <el-button @click="click">CLICK</el-button>
+    <component-actions @click="click"></component-actions>
   </div>
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
+import Vue from 'vue';
+import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
-  import {component_list} from '@/views/component_defs';
+import ComponentMessages from './ComponentMessages.vue';
+import ComponentActions from './ComponentActions.vue';
+import {component_list} from '@/views/component_defs';
 
-  export default Vue.extend({
-    components: component_list,
-    props: {
-      component_name: String,
-      display_name: String,
-      config: Object as () => TConfig,
-      node_name: String,
+export default Vue.extend({
+  components: {...component_list, ComponentMessages, ComponentActions},
+  props: {
+    component_name: String,
+
+    display_name: String,
+    node_name: String,
+    path_name: String,
+
+    config: Object as () => TConfig,
+  },
+  data() {
+    return {
+      messages: [],
+    };
+  },
+  methods: {
+    emit_change() {
+      this.$emit('change', 'piece_of_config', this.node_name);
     },
-    methods: {
-      click() {
-        console.log('click from', this.component_name);
-      },
-      emit_change() {
-        this.$emit('change', 'something changed')
-      },
+    click() {
+      console.log('cluck');
     },
-  });
+  },
+});
 </script>
 
 <style scoped>

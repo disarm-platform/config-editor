@@ -20,13 +20,16 @@
       </div>
 
       <ConfigComponentWrapper
-          v-for="{display_name, component_name, node_name} in component_defs"
+          v-for="{display_name, component_name, node_name, path_name} in component_defs"
           :key='component_name'
+
           :display_name="display_name"
           :config="config"
           :node_name="node_name"
-          :validation_result="validation_result"
+          :path_name="path_name"
           :component_name="component_name"
+
+          :validation_result="validation_result"
           @change="handle_change"
       >
       </ConfigComponentWrapper>

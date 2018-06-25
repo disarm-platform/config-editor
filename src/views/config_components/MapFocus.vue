@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h3>{{display_name}}</h3>
-
     <span>Lat</span>
     <el-input-number v-model="node_config.centre.lat"></el-input-number>
     <span>Lng</span>

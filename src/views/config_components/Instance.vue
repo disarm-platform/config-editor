@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h3>{{display_name}}</h3>
-
     <span>title</span>
     <el-input v-model="node_config.title"></el-input>
 
