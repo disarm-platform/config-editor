@@ -9,8 +9,8 @@
             @click="validate_config"
         >Validate
         </el-button>
-
       </div>
+
       <div>
         <el-alert
             v-if="validation_result_message"

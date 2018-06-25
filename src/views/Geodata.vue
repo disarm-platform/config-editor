@@ -1,6 +1,15 @@
 <template>
   <div>
     <el-card>
+      <div slot="header">
+        <span>Geodata</span>
+        <el-button
+            style="float: right; padding: 3px 0"
+            type="text"
+        >Check
+        </el-button>
+      </div>
+
       <el-alert
           v-if="alert.message"
           :title="alert.message"

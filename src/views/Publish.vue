@@ -1,8 +1,16 @@
 <template>
   <div>
     <el-card>
-      <div>
-        <el-alert
+      <div slot="header">
+        <span>Check and Publish</span>
+        <el-button
+            style="float: right; padding: 3px 0"
+            type="text"
+        >Do
+        </el-button>
+      </div>
+
+      <el-alert
             title="Unsaved changes"
             type="warning">
         </el-alert>
@@ -25,7 +33,6 @@
         <div style="margin-top:1em;">
           <el-button :disabled="!config_valid" type="primary" @click="save_update">Save/update</el-button>
         </div>
-      </div>
     </el-card>
   </div>
 </template>
