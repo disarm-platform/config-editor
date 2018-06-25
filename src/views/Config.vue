@@ -27,6 +27,7 @@
           :node_name="node_name"
           :validation_result="validation_result"
           :component_name="component_name"
+          @change="handle_change"
       >
       </ConfigComponentWrapper>
     </el-card>
