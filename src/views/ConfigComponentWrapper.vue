@@ -17,6 +17,7 @@
   export default Vue.extend({
     components: component_list,
     props: {
+      component_name: String,
       display_name: String,
       config: Object as () => TConfig,
       node_name: String,

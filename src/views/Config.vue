@@ -41,6 +41,7 @@
   import {determine_validation_result} from '../helpers/determine_validation_result_for_ui';
   import {component_defs, component_list} from '@/views/component_defs';
   import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
+  import {TConfig} from "@locational/config-validation/build/module/lib/config_types/TConfig"
 
   export default Vue.extend({
     components: {ConfigComponentWrapper, ...component_list},
@@ -51,7 +52,7 @@
     data() {
       return {
         validation_result: {},
-        validation_result_message: '',
+        validation_result_message: <String>'',
         component_defs,
       };
     },
@@ -90,7 +91,7 @@
         const config = {
           ...this.config,
           location_selection,
-        };
+        } as TConfig;
         // finish formatting of config
 
 
@@ -102,8 +103,7 @@
           this.$emit('config_validation', true);
           this.validation_result_message = 'Configuration passed all validations';
         } else {
-          this.validation_result_message =
-            `Schema validation failed ${JSON.stringify(validation_result.support_messages)}`;
+          this.validation_result_message = `Schema validation failed ${JSON.stringify(validation_result.support_messages)}`;
           this.$emit('config_validation', false);
         }
       },
