@@ -14,20 +14,31 @@
   "config_id": "id",
   "config_version": "version",
   "form": {
-    "pages": [{
-      "elements":[{
-      "name": "q1",
-      "type": "text"
-      }],
-      "name": "p1"
-    }]
+    "pages": [
+      {
+        "elements": [
+          {
+            "name": "q1",
+            "type": "text"
+          }
+        ],
+        "name": "p1"
+      }
+    ]
   },
   "instance": {
     "location_name": "Location",
     "slug": "loc",
     "title": "title"
   },
-  "spatial_hierarchy":{
+  "map_focus": {
+    "centre": {
+      "lat": 0,
+      "lng": 0
+    },
+    "zoom": 0
+  },
+  "spatial_hierarchy": {
     "data_version": 1,
     "markers": {
       "planning_level_name": "cities",
@@ -43,7 +54,7 @@
       },
       {
         "group_by_field": "province",
-        "field_name": "city_id", 
+        "field_name": "city_id",
         "display_field_name": "name",
         "name": "cities"
       }
