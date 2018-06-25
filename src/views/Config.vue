@@ -18,32 +18,32 @@
         </el-alert>
       </div>
 
-      <component
+      <ConfigComponentWrapper
           v-for="{display_name, component_name, node_name} in component_defs"
           :key='component_name'
-          v-bind:is='component_name'
-
           :display_name="display_name"
           :config="config"
           :node_name="node_name"
           :validation_result="validation_result"
+          :component_name="component_name"
       >
-      </component>
+      </ConfigComponentWrapper>
     </el-card>
 
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import Vue from 'vue';
 
   import {validate} from '@locational/config-validation';
   import {generate_location_selection} from '@locational/geodata-support';
   import {determine_validation_result} from '../helpers/determine_validation_result_for_ui';
   import {component_defs, component_list} from '@/views/component_defs';
+  import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 
   export default Vue.extend({
-    components: component_list,
+    components: {ConfigComponentWrapper, ...component_list},
     props: {
       config: Object,
       geodata_layers: Array,
