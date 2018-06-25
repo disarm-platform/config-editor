@@ -9,25 +9,25 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  import {TConfig} from "@locational/config-validation/build/module/lib/config_types/TConfig";
+import Vue from 'vue';
+import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
-  import {component_list} from '@/views/component_defs';
+import {component_list} from '@/views/component_defs';
 
-  export default Vue.extend({
-    components: component_list,
-    props: {
-      component_name: String,
-      display_name: String,
-      config: Object as () => TConfig,
-      node_name: String,
+export default Vue.extend({
+  components: component_list,
+  props: {
+    component_name: String,
+    display_name: String,
+    config: Object as () => TConfig,
+    node_name: String,
+  },
+  methods: {
+    click() {
+      console.log('click from', this.component_name);
     },
-    methods: {
-      click() {
-        console.log('click from', this.component_name)
-      }
-    }
-  })
+  },
+});
 </script>
 
 <style scoped>
