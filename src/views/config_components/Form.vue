@@ -21,6 +21,9 @@
       update() {
         this.$emit('change', JSON.parse(this.form_content));
       },
+      tell_me() {
+        return JSON.parse(this.form_content);
+      }
     },
   });
 </script>

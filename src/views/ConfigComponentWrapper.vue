@@ -12,11 +12,16 @@
         :config="config"
         :node_name="node_name"
         :path_name="path_name"
-        @change="emit_change"
+
+        ref="actual_component"
     ></component>
 
     <!-- Actions: save, confirm, reset, etc. -->
-    <component-actions @click="click"></component-actions>
+    <component-actions
+        @save="save"
+        @tell_me="tell_me"
+        @reset="reset"
+    ></component-actions>
 
   </div>
 </template>
@@ -46,13 +51,18 @@ export default Vue.extend({
     };
   },
   methods: {
-    emit_change(changed_config) {
-      console.log('emit_change', changed_config, this.node_name)
-      // this.$emit('change', 'piece_of_config', this.node_name);
+    save() {
+      this.$emit('change', this.get_node_config(), this.path_name);
     },
-    click() {
-      console.log('cluck');
+    reset() {
+      this.$refs.actual_component.reset();
     },
+    get_node_config() {
+      return this.$refs.actual_component.tell_me();
+    },
+    tell_me() {
+      console.log('value is', JSON.stringify(this.get_node_config()));
+    }
   },
 });
 </script>

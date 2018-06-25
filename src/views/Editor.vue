@@ -4,23 +4,35 @@
       <span slot="label">
         Geodata
       </span>
-      <Geodata :geodata_layers="geodata_layers"/>
+      <Geodata
+          :geodata_layers="geodata_layers"
+      />
     </el-tab-pane>
     <el-tab-pane label="Config" name="config">
       <span slot="label">
         Config
       </span>
-      <Config :config="config" @config_validation="set_config_validation" :geodata_layers="geodata_layers"
-              @config="set_config"/>
+      <Config
+          :config="config"
+          @config_validation="set_config_validation"
+          :geodata_layers="geodata_layers"
+          @change="change"
+      />
     </el-tab-pane>
     <el-tab-pane label="Publish" name="publish">
-      <Publish :config_valid="config_valid" instance_id="bwa" instance="Botswana" version="1.0.0"
-               @save_config="save_config"/>
+      <Publish
+          :config_valid="config_valid"
+          instance_id="bwa"
+          instance="Botswana"
+          version="1.0.0"
+          @save_config="save_config"
+      />
     </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
+  import {cloneDeep, set} from 'lodash';
   import Geodata from './Geodata.vue';
   import Config from './Config.vue';
   import Publish from './Publish.vue';
@@ -60,11 +72,11 @@
       };
     },
     methods: {
-      set_config(new_config) {
-        this.config = new_config;
+      change(updated_config, pathname) {
+        this.$set(this.config, pathname, updated_config);
       },
       save_config() {
-        console.log('config', this.config);
+        console.log('save_config', this.config);
       },
       set_location_selection(location_selection) {
         this.location_selection = location_selection;
@@ -72,6 +84,7 @@
       set_config_validation(config_valid) {
         this.config_valid = config_valid;
       },
+
     },
   };
 </script>

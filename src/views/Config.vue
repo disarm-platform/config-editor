@@ -60,8 +60,11 @@
       };
     },
     methods: {
-      handle_change(piece_of_config: TConfig, path: string) {
-        this.$emit('change config at', path, 'to', piece_of_config);
+      handle_change(updated_config: {}, path_name: string) {
+        // console.log('config changed:', JSON.stringify(updated_config), 'at pathname', path_name);
+        // this.$set(this.config, path_name, updated_config);
+        // console.log('this.config changed', this.config)
+        this.$emit('change', updated_config, path_name);
       },
       validate_config() {
         console.log('validate_config', this.config);
