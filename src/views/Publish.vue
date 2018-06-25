@@ -3,6 +3,11 @@
     <el-card>
       <div>
         <el-alert
+            title="Unsaved changes"
+            type="warning">
+        </el-alert>
+
+        <el-alert
             v-if="!config_valid"
             title="Configuration is not valid"
             type="warning">

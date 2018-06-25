@@ -5,8 +5,8 @@ import {TStandardEdgeResponse} from '@locational/config-validation/build/module/
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 /**
- * All of these end up with a data property called `node_config` that they
- * can mutate.
+ * All of these end up with a data property called `node_config` that they can mutate,
+ * OR they can override a `tell_me` method which returns the value of the `node_config`
  */
 export default Vue.extend({
   props: {
@@ -55,9 +55,7 @@ export default Vue.extend({
       this.node_config = cloneDeep(this.backup_config);
     },
     make_backup() {
-      const old = cloneDeep(this.backup_config);
       const got = get(this.config, this.path_name);
-      console.log('make_backup  got:', JSON.stringify(got), 'old', old);
       this.backup_config = cloneDeep(got);
     },
   },

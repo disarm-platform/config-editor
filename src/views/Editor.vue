@@ -1,33 +1,43 @@
 <template>
-  <el-tabs v-model="activeName">
+  <el-tabs v-model="active_tab" type="border-card">
+
     <el-tab-pane name="geodata">
-      <span slot="label">
+      <span slot="label" style="color: red;">
         Geodata
+        <i class="el-icon-error"></i>
       </span>
       <Geodata
           :geodata_layers="geodata_layers"
-      />
+      ></Geodata>
     </el-tab-pane>
-    <el-tab-pane label="Config" name="config">
+
+    <el-tab-pane name="config">
       <span slot="label">
         Config
+        <i class="el-icon-success"></i>
       </span>
       <Config
           :config="config"
           @config_validation="set_config_validation"
           :geodata_layers="geodata_layers"
           @change="change"
-      />
+      ></Config>
     </el-tab-pane>
-    <el-tab-pane label="Publish" name="publish">
+
+    <el-tab-pane name="publish">
+      <span slot="label">
+        Publish
+        <i class="el-icon-edit"></i>
+      </span>
       <Publish
           :config_valid="config_valid"
           instance_id="bwa"
           instance="Botswana"
           version="1.0.0"
           @save_config="save_config"
-      />
+      ></Publish>
     </el-tab-pane>
+
   </el-tabs>
 </template>
 
@@ -48,8 +58,7 @@
     },
     data() {
       return {
-        other: 'thing',
-        activeName: 'config',
+        active_tab: 'config',
         config_valid: false,
         config,
         geodata_layers: [
@@ -73,7 +82,6 @@
     },
     methods: {
       change(updated_config, pathname) {
-        console.warn('change but not trigger watcher in mixin: updated_config, pathname', updated_config, pathname);
         this.$set(this.config, pathname, updated_config);
       },
       save_config() {
