@@ -19,7 +19,7 @@
         </el-alert>
       </div>
 
-      <el-tabs tab-position="left" style="height: 400px;">
+      <el-tabs tab-position="left" style="height: 400px; overflow: scroll;">
         <el-tab-pane
             v-for="{display_name, component_name, node_name, path_name} in component_defs"
             :key='component_name'
@@ -68,9 +68,6 @@
     },
     methods: {
       handle_change(updated_config: {}, path_name: string) {
-        // console.log('config changed:', JSON.stringify(updated_config), 'at pathname', path_name);
-        // this.$set(this.config, path_name, updated_config);
-        // console.log('this.config changed', this.config)
         this.$emit('change', updated_config, path_name);
       },
       validate_config() {

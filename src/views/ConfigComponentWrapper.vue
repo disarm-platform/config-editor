@@ -2,8 +2,12 @@
   <div>
     <h1>{{display_name}}</h1>
 
+    <el-collapse accordion>
+      <el-collapse-item title="Messages" name="1" v-if="messages.length">
+        <component-messages :messages="messages"></component-messages>
+      </el-collapse-item>
+    </el-collapse>
     <!-- Messages: incl. links to jump to related nodes -->
-    <component-messages :messages="messages" v-if="messages.length"></component-messages>
 
     <!-- Component itself -->
     <h4>Component content</h4>
@@ -18,6 +22,7 @@
 
     <!-- Actions: save, confirm, reset, etc. -->
     <component-actions
+        :disabled="messages.length > 0"
         @save="save"
         @tell_me="tell_me"
         @reset="reset"
@@ -53,7 +58,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      messages: ['No messages'],
+      messages: [],
     };
   },
   methods: {

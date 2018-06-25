@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h4>Messages</h4>
     {{messages}}
   </div>
 </template>
