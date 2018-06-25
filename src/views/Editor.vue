@@ -49,6 +49,7 @@
     },
     data() {
       return {
+        other: 'thing',
         activeName: 'geodata',
         config_valid: false,
         config,
@@ -73,6 +74,7 @@
     },
     methods: {
       change(updated_config, pathname) {
+        console.warn('changing but not triggering watcher in mixin: updated_config, pathname', updated_config, pathname)
         this.$set(this.config, pathname, updated_config);
       },
       save_config() {
@@ -84,7 +86,6 @@
       set_config_validation(config_valid) {
         this.config_valid = config_valid;
       },
-
     },
   };
 </script>

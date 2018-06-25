@@ -23,8 +23,11 @@ export default Vue.extend({
     };
   },
   watch: {
-    config: (a, b) => {
-      console.log('a,b,c', a, b);
+    config: {
+      handler() {
+        this.make_backup();
+      },
+      deep: true,
     },
   },
   created() {
