@@ -16,6 +16,7 @@
 
     <!-- Actions: save, confirm, reset, etc. -->
     <component-actions @click="click"></component-actions>
+  
   </div>
 </template>
 
@@ -44,8 +45,9 @@ export default Vue.extend({
     };
   },
   methods: {
-    emit_change() {
-      this.$emit('change', 'piece_of_config', this.node_name);
+    emit_change(changed_config) {
+      console.log('emit_change', changed_config, this.node_name)
+      // this.$emit('change', 'piece_of_config', this.node_name);
     },
     click() {
       console.log('cluck');

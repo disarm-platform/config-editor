@@ -19,7 +19,7 @@
     },
     methods: {
       update() {
-        // this.$emit('change', this.form_content)
+        this.$emit('change', JSON.parse(this.form_content));
       },
     },
   });

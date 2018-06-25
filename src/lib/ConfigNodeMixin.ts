@@ -5,6 +5,12 @@ import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/T
 import {TStandardEdgeResponse} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
+
+/**
+ * All of these end up with a data property called `node_config`,
+ * and they need to emit a `change` event with the updated `node_config`
+ * as it is changed.
+ */
 export default Vue.extend({
   props: {
     node_name: String,
