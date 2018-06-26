@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-  import ConfigNodeMixin from '../../../lib/ConfigNodeMixin';
+  import ConfigNodeMixin from '../ConfigNodeMixin';
 
   export default ConfigNodeMixin.extend({
   });
