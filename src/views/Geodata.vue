@@ -70,9 +70,10 @@
   </div>
 </template>
 
-<script>
+<script lang='ts'>
   import Vue from 'vue';
-  import {validate_layer_schema, summarise} from '@locational/geodata-support';
+  import {summarise, validate_layer_schema} from '@locational/geodata-support';
+  import {TGeodataLayer} from "@locational/geodata-support/build/module/config_types/TGeodata"
 
   function upload_file_as_text(file) {
     return new Promise((resolve) => {
@@ -86,7 +87,7 @@
 
   export default Vue.extend({
     props: {
-      geodata_layers: Array,
+      geodata_layers: Array as () => TGeodataLayer[],
     },
     data() {
       return {
@@ -141,6 +142,7 @@
     },
   });
 </script>
+
 <style>
   .el-table .warning {
     background: oldlace;
