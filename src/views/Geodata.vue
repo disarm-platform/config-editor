@@ -6,7 +6,7 @@
         <el-button
             style="float: right; padding: 3px 0"
             type="text"
-        >Check
+        >Summarise all
         </el-button>
       </div>
 

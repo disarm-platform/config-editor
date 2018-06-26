@@ -48,7 +48,7 @@
 <script lang="ts">
   import Vue from 'vue';
   // import {determine_validation_result} from '../helpers/determine_validation_result_for_ui';
-  import {component_defs, component_list} from '@/views/component_defs';
+  import {component_defs, component_list} from '@/views/Config/component_defs';
   import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
   import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
   import {TGeodataLayer} from '@locational/geodata-support/build/module/config_types/TGeodata';
@@ -73,7 +73,7 @@
       validate_config() {
         console.log('validate_config', this.config);
         return true;
-        // // start formatting of config, move to separate function?
+        // // start formatting of Config, move to separate function?
         // const geodata = {};
         // const geodata_summary = {};
         // for (const layer of this.geodata_layers) {
@@ -83,7 +83,7 @@
         //
         //
         // const spatial_hierarchy = {
-        //   ...this.config.spatial_hierarchy,
+        //   ...this.Config.spatial_hierarchy,
         //   geodata_summary,
         // };
         // // TODO: Think through, do we want to generate location_selection here?
@@ -91,15 +91,15 @@
         // const location_selection_result = generate_location_selection(spatial_hierarchy, geodata);
         // const location_selection = location_selection_result.location_selection;
         //
-        // const config = {
-        //   ...this.config,
+        // const Config = {
+        //   ...this.Config,
         //   location_selection,
         // } as TConfig;
-        // // finish formatting of config
+        // // finish formatting of Config
         //
         //
         // // TODO: Save result, it contains info about which nodes are failing.
-        // this.validation_result = validate(config);
+        // this.validation_result = validate(Config);
         // const validation_result = determine_validation_result(this.validation_result);
         //
         // if (validation_result.passed) {

@@ -42,13 +42,13 @@
 </template>
 
 <script>
-  import Geodata from './Geodata.vue';
-  import Config from './Config.vue';
-  import Publish from './Publish.vue';
+  import Geodata from './views/Geodata.vue';
+  import Config from './views/Config/Config.vue';
+  import Publish from './views/Publish.vue';
 
-  import provinces from '../horrible_seed_data/swz.provinces.json';
-  import cities from '../horrible_seed_data/swz.cities.json';
-  import config from '../horrible_seed_data/small_valid_config.json';
+  import provinces from './horrible_seed_data/swz.provinces.json';
+  import cities from './horrible_seed_data/swz.cities.json';
+  import config from './horrible_seed_data/small_valid_config.json';
 
   export default {
     components: {

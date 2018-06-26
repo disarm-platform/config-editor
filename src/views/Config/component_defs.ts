@@ -1,16 +1,16 @@
 import {VueConstructor} from 'vue/types/vue';
 
-import Aggregations from './config_components/Aggregations.vue';
-import Decorators from './config_components/Decorators.vue';
-import Form from './config_components/Form.vue';
-import Instance from './config_components/Instance.vue';
-import MapFocus from './config_components/MapFocus.vue';
-import SpatialHierarchy from './config_components/SpatialHierarchy.vue';
-import Validations from './config_components/Validations.vue';
-import IrsMonitor from './config_components/IrsMonitor.vue';
-import IrsPlan from './config_components/IrsPlan.vue';
-import IrsRecordPoint from './config_components/IrsRecordPoint.vue';
-import IrsTasker from './config_components/IrsTasker.vue';
+import Aggregations from './components/Aggregations.vue';
+import Decorators from './components/Decorators.vue';
+import Form from './components/Form.vue';
+import Instance from './components/Instance.vue';
+import MapFocus from './components/MapFocus.vue';
+import SpatialHierarchy from './components/SpatialHierarchy.vue';
+import Validations from './components/Validations.vue';
+import IrsMonitor from './components/IrsMonitor.vue';
+import IrsPlan from './components/IrsPlan.vue';
+import IrsRecordPoint from './components/IrsRecordPoint.vue';
+import IrsTasker from './components/IrsTasker.vue';
 
 export interface ComponentDefinition {
   display_name: string;
