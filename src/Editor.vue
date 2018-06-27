@@ -81,8 +81,12 @@
       };
     },
     methods: {
-      change(updated_config, pathname) {
-        this.$set(this.config, pathname, updated_config);
+      change(updated_config, pathname, included) {
+        if (included) {
+          this.$set(this.config, pathname, updated_config);
+        } else {
+          this.$delete(this.config, pathname)
+        }
       },
       save_config() {
         console.log('save_config', this.config);

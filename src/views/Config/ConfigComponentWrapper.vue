@@ -11,6 +11,10 @@
 
     <!-- Component itself -->
     <h4>Component content</h4>
+
+      <el-checkbox v-model="included" @change="save">Include</el-checkbox>
+
+
     <component
         v-bind:is="component_name"
         :config="config"
@@ -59,11 +63,13 @@ export default Vue.extend({
   data() {
     return {
       messages: [],
+      // TODO: need to determine included when we load the component first time
+      included: true,
     };
   },
   methods: {
     save() {
-      this.$emit('change', this.get_node_config(), this.path_name);
+      this.$emit('change', this.get_node_config(), this.path_name, this.included);
     },
     reset() {
       (this.$refs.actual_component as NodeComponent).reset();

@@ -67,8 +67,8 @@
       };
     },
     methods: {
-      handle_change(updated_config: {}, path_name: string) {
-        this.$emit('change', updated_config, path_name);
+      handle_change(updated_config: {}, path_name: string, included: boolean) {
+        this.$emit('change', updated_config, path_name, included);
       },
       validate_config() {
         console.log('validate_config', this.config);
