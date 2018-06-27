@@ -64,6 +64,7 @@ export default Vue.extend({
     };
   },
   mounted() {
+    // TODO: maybe this should go into the ConfigNodeMixing, together with `included`
     const config = this.get_node_config()
     if (!config) {
       this.included = false
