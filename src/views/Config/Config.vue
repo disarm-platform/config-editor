@@ -52,6 +52,9 @@
   import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
   import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
   import {TGeodataLayer} from '@locational/geodata-support/build/module/config_types/TGeodata';
+  import { geodata_cache } from '@/geodata_cache';
+  import { generate_location_selection } from '@locational/geodata-support'
+  import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
 
   export default Vue.extend({
     components: {ConfigComponentWrapper, ...component_list},
@@ -71,8 +74,28 @@
         this.$emit('change', updated_config, path_name, included);
       },
       validate_config() {
-        console.log('validate_config', this.config);
-        return true;
+        // 1. Attempt to create location_selection, if needed for full validation
+        const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
+        
+        // 2. Attach location_selection to config
+        const config = {
+          ...this.config,
+
+          // should check location_selection_result.status is EValidationStatus.Green
+          location_selection: location_selection_result.location_selection
+        }
+
+        // 3. Run config validation
+
+        // 4. Shape validation result for consumption
+
+        // 5. Emit errors if any
+
+        // 6. Send validation result to parent component
+
+        
+        console.log('validate_config', config);
+        return;
         // // start formatting of Config, move to separate function?
         // const geodata = {};
         // const geodata_summary = {};
