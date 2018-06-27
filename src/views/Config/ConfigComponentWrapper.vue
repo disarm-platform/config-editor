@@ -63,6 +63,14 @@ export default Vue.extend({
       included: true,
     };
   },
+  mounted() {
+    const config = this.get_node_config()
+    if (!config) {
+      this.included = false
+    } else {
+      this.included = !!(Object.keys(config).length)
+    }
+  },
   methods: {
     save() {
       this.$emit('change', this.get_node_config(), this.path_name, this.included);
