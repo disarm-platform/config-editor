@@ -35,9 +35,6 @@
         <div style="margin-top:1em;">
           <el-input placeholder="Version" v-model="version"></el-input>
         </div>
-        <div style="margin-top:1em;">
-          <el-button ></el-button>
-        </div>
     </el-card>
   </div>
 </template>
