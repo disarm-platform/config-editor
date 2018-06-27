@@ -118,11 +118,13 @@
         // this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
       },
       async save_new_layer() {
-        const geojson = await upload_file_as_text(this.file.raw as File);
+        const geojson = await upload_file_as_text((this.file as any).raw as File);
 
+        // @ts-ignore
+        // TODO: fix when defition in geodata-support is updated
         const new_layer: TGeodataLayer = {
           name: this.new_layer_name,
-          file_name: this.file.name,
+          file_name: (this.file as any).name,
           geojson: JSON.parse(geojson),
           validation_status: '',
           field_summary: [],
@@ -134,6 +136,7 @@
         this.$refs.upload.clearFiles();
       },
       on_upload_file(file: File, fileList: File[]) {
+        // @ts-ignore
         this.file = file;
       },
       // ui
