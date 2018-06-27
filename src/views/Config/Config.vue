@@ -19,7 +19,7 @@
         </el-alert>
       </div>
 
-      <el-tabs tab-position="left" style="height: 400px; overflow: scroll;">
+      <el-tabs tab-position="left" style="height: 800px; overflow: scroll;">
         <el-tab-pane
             v-for="{display_name, component_name, node_name, path_name} in component_defs"
             :key='component_name'
