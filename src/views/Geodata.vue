@@ -45,12 +45,8 @@
             label="Operations"
             width="500">
           <template slot-scope="scope">
-            <el-button @click="validate_layer_schema(scope.row.name, scope.$index)" type="text" size="small">Validate
-            </el-button>
-            <el-button @click="summarise(scope.row.name, scope.$index)" type="text" size="small">Summarise</el-button>
             <el-button disabled icon="el-icon-upload" size="small"></el-button>
-            <el-button @click="delete_layer(scope.row.name, scope.$index)" icon="el-icon-delete"
-                       size="small"></el-button>
+            <el-button @click="delete_layer(scope.row.name, scope.$index)" icon="el-icon-delete" size="small"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -73,24 +69,32 @@
 <script lang='ts'>
   import Vue from 'vue';
   import {summarise, validate_layer_schema} from '@locational/geodata-support';
-  import {TGeodataLayer} from "@locational/geodata-support/build/module/config_types/TGeodata"
-
-  function upload_file_as_text(file: File) : Promise<string> {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result);
-      };
-      reader.readAsText(file);
-    });
-  }
+  import {TGeodataLayer, TGeodataLayerDefinition} from "@locational/geodata-support/build/module/config_types/TGeodata"
+  import { EValidationStatus } from '@locational/geodata-support/build/main/config_types/TValidationResponse';
+  import { geodata_cache } from '../geodata_cache'
+  import { TFieldSummary } from '@locational/geodata-support/build/main/config_types/TGeodataSummary';
+  import {upload_file_as_text} from '../helpers/upload_file_as_text'
+  
+  import provinces from '../horrible_seed_data/swz.provinces.json';
+  import cities from '../horrible_seed_data/swz.cities.json';
 
   export default Vue.extend({
-    props: {
-      geodata_layers: Array as () => TGeodataLayer[],
-    },
     data() {
       return {
+        geodata_layers: [
+           {
+            name: 'provinces',
+            file_name: 'swz.provinces.geojson',
+            validation_status: EValidationStatus.Green,
+            field_summary: [],
+          },
+          {
+            name: 'cities',
+            file_name: 'swz.cities.geojson',
+            validation_status: EValidationStatus.Green,
+            field_summary: [],
+          }
+        ],
         new_layer_name: '',
         file: null,
         alert: {
@@ -99,41 +103,52 @@
         },
       };
     },
+    mounted() {
+      // only for debug
+      geodata_cache['provinces'] = provinces
+      geodata_cache['cities'] = cities
+    },
     methods: {
-      summarise(layer_name: string, index: number) {
-        const layer = this.geodata_layers.find((l) => l.name === layer_name) as TGeodataLayer;
-        const result = summarise(layer.geojson);
-        // TODO: Emit event, instead of setting parent data
-        this.$set(this.geodata_layers, index, {...this.geodata_layers[index], field_summary: result});
-      },
-      validate_layer_schema(layer_name: string, index: number) {
-        const layer = this.geodata_layers.find((l) => l.name === layer_name) as TGeodataLayer;
-        const result = validate_layer_schema(layer.geojson);
-        const validation_status = result.status.startsWith('Green') ? 'success' : 'warning';
-        // TODO: Emit event, instead of setting parent data
-        this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status});
-      },
       delete_layer(layer_name: string, index: number) {
         this.geodata_layers.splice(index, 1);
-        // this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
       },
       async save_new_layer() {
-        const geojson = await upload_file_as_text((this.file as any).raw as File);
+        // 1. Upload geojson file   
+        const geojson_string = await upload_file_as_text((this.file as any).raw as File);
+        const geojson = JSON.parse(geojson_string) as TGeodataLayer
 
-        // @ts-ignore
-        // TODO: fix when defition in geodata-support is updated
-        const new_layer: TGeodataLayer = {
+        // 2. Internally validate the geojson file
+        const result = validate_layer_schema(geojson);
+
+        if (result.status === EValidationStatus.Red) {
+          this.alert = {
+            type: 'warning',
+            message: result.message
+          }
+          return
+        }
+
+        // 3. generate summary
+        const field_summary = summarise(geojson)// as TFieldSummary[]
+
+        // 4. Emit TGeodataLayerDefinition
+        const new_layer: TGeodataLayerDefinition = {
           name: this.new_layer_name,
           file_name: (this.file as any).name,
-          geojson: JSON.parse(geojson),
-          validation_status: '',
-          field_summary: [],
+          validation_status: result.status,
+          field_summary,
         };
 
+        // @ts-ignore, not sure why this complains
         this.geodata_layers.push(new_layer);
 
+        // 5. Store geojson in cache somewhere outside vue
+        geodata_cache[this.new_layer_name] = geojson
+
+        // 6. reset ui
         // @ts-ignore
         this.$refs.upload.clearFiles();
+        this.new_layer_name = ''
       },
       on_upload_file(file: File, fileList: File[]) {
         // @ts-ignore

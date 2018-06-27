@@ -8,6 +8,7 @@
       </span>
       <Geodata
           :geodata_layers="geodata_layers"
+          @geodata_layers="set_geodata_layers"
       ></Geodata>
     </el-tab-pane>
 
@@ -44,8 +45,6 @@
   import Config from './views/Config/Config.vue';
   import Publish from './views/Publish.vue';
 
-  import provinces from './horrible_seed_data/swz.provinces.json';
-  import cities from './horrible_seed_data/swz.cities.json';
   import config from './horrible_seed_data/small_valid_config.json';
 
   export default {
@@ -59,22 +58,7 @@
         active_tab: 'config',
         config_valid: false,
         config,
-        geodata_layers: [
-          {
-            name: 'provinces',
-            file_name: 'swz.provinces.geojson',
-            geojson: provinces,
-            validation_status: '',
-            field_summary: [],
-          },
-          {
-            name: 'cities',
-            file_name: 'swz.cities.geojson',
-            geojson: cities,
-            validation_status: '',
-            field_summary: [],
-          },
-        ],
+        geodata_layers: [],
         location_selection: null,
       };
     },
@@ -88,6 +72,9 @@
       },
       save_config() {
         console.log('save_config', this.config);
+      },
+      set_geodata_layers(geodata_layers) {
+        this.geodata_layers = geodata_layers;
       },
       set_location_selection(location_selection) {
         this.location_selection = location_selection;
