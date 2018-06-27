@@ -1,26 +1,22 @@
 <template>
   <div>
     <h1>{{display_name}}</h1>
+    
+    <el-checkbox v-model="included" @change="save" style="margin-bottom: 1em;">Include</el-checkbox>
 
-    <el-collapse accordion>
-      <el-collapse-item title="Messages" name="1" v-if="messages.length">
+    <!-- Messages: incl. links to jump to related nodes -->
+    <el-collapse accordion v-if="messages.length">
+      <el-collapse-item title="Messages" name="1">
         <component-messages :messages="messages"></component-messages>
       </el-collapse-item>
     </el-collapse>
-    <!-- Messages: incl. links to jump to related nodes -->
 
     <!-- Component itself -->
-    <h4>Component content</h4>
-
-      <el-checkbox v-model="included" @change="save">Include</el-checkbox>
-
-
     <component
         v-bind:is="component_name"
         :config="config"
         :node_name="node_name"
         :path_name="path_name"
-
         ref="actual_component"
     ></component>
 
