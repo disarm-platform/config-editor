@@ -18,8 +18,7 @@
 
       <el-table
           :data="geodata_layers"
-          style="width: 900px"
-          :row-class-name="tableRowClassName">
+          style="width: 900px">
         <el-table-column type="expand">
           <template slot-scope="props">
             <h2>Field Summary</h2>
@@ -111,6 +110,7 @@
     methods: {
       delete_layer(layer_name: string, index: number) {
         this.geodata_layers.splice(index, 1);
+        this.emit_changes()
       },
       async save_new_layer() {
         // 1. Upload geojson file   
@@ -131,7 +131,7 @@
         // 3. generate summary
         const field_summary = summarise(geojson)// as TFieldSummary[]
 
-        // 4. Emit TGeodataLayerDefinition
+        // 4. Create new TGeodataLayerDefinition
         const new_layer: TGeodataLayerDefinition = {
           name: this.new_layer_name,
           file_name: (this.file as any).name,
@@ -149,15 +149,17 @@
         // @ts-ignore
         this.$refs.upload.clearFiles();
         this.new_layer_name = ''
+
+        // 7. Emit changes to parent so we can use new layer
+        this.emit_changes()
+      },
+      emit_changes() {
+        this.$emit('geodata_layers', this.geodata_layers)
       },
       on_upload_file(file: File, fileList: File[]) {
         // @ts-ignore
         this.file = file;
-      },
-      // ui
-      tableRowClassName({row, rowIndex}: any) {
-        return row.validation_status;
-      },
+      }
     },
   });
 </script>
