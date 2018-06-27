@@ -1,11 +1,19 @@
 <template>
   <div>
-    <span>Lat</span>
-    <el-input-number v-model="node_config.centre.lat"></el-input-number>
-    <span>Lng</span>
-    <el-input-number v-model="node_config.centre.lng"></el-input-number>
-    <span>Zoom</span>
-    <el-input-number v-model="node_config.zoom"></el-input-number>
+    <el-form>
+      
+      <el-form-item label="Latitude">
+        <el-input type="number" v-model="node_config.centre.lat"></el-input>
+      </el-form-item>
+
+      <el-form-item label="Longitude">
+        <el-input v-model="node_config.centre.lng"></el-input>
+      </el-form-item>
+
+      <el-form-item label="Zoom">
+        <el-input-number :min="0" :max="50" v-model="node_config.zoom"></el-input-number>
+      </el-form-item>
+    </el-form>
 
   </div>
 </template>
