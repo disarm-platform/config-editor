@@ -31,9 +31,7 @@
       </span>
       <Publish
           :config_valid="config_valid"
-          instance_id="bwa"
-          instance="Botswana"
-          version="1.0.0"
+          :version="42"
           @save_config="save_config"
       ></Publish>
     </el-tab-pane>
