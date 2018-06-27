@@ -2,9 +2,9 @@
   <el-tabs v-model="active_tab" type="border-card">
 
     <el-tab-pane name="geodata">
-      <span slot="label" style="color: red;">
+      <span slot="label">
         Geodata
-        <i class="el-icon-error"></i>
+        <i class="el-icon-success"></i>
       </span>
       <Geodata
           :geodata_layers="geodata_layers"
@@ -13,9 +13,9 @@
     </el-tab-pane>
 
     <el-tab-pane name="config">
-      <span slot="label">
+      <span slot="label" style="color: red;">
         Config
-        <i class="el-icon-success"></i>
+        <i class="el-icon-error"></i>
       </span>
       <Config
           :config="config"
