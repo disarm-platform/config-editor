@@ -75,7 +75,7 @@
   import {summarise, validate_layer_schema} from '@locational/geodata-support';
   import {TGeodataLayer} from "@locational/geodata-support/build/module/config_types/TGeodata"
 
-  function upload_file_as_text(file) {
+  function upload_file_as_text(file: File) : Promise<string> {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -100,27 +100,27 @@
       };
     },
     methods: {
-      summarise(layer_name, index) {
-        const layer = this.geodata_layers.find((l) => l.name === layer_name);
+      summarise(layer_name: string, index: number) {
+        const layer = this.geodata_layers.find((l) => l.name === layer_name) as TGeodataLayer;
         const result = summarise(layer.geojson);
         // TODO: Emit event, instead of setting parent data
         this.$set(this.geodata_layers, index, {...this.geodata_layers[index], field_summary: result});
       },
-      validate_layer_schema(layer_name, index) {
-        const layer = this.geodata_layers.find((l) => l.name === layer_name);
+      validate_layer_schema(layer_name: string, index: number) {
+        const layer = this.geodata_layers.find((l) => l.name === layer_name) as TGeodataLayer;
         const result = validate_layer_schema(layer.geojson);
         const validation_status = result.status.startsWith('Green') ? 'success' : 'warning';
         // TODO: Emit event, instead of setting parent data
         this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status});
       },
-      delete_layer(layer_name, index) {
+      delete_layer(layer_name: string, index: number) {
         this.geodata_layers.splice(index, 1);
         // this.$set(this.geodata_layers, index, {...this.geodata_layers[index], validation_status})
       },
       async save_new_layer() {
-        const geojson = await upload_file_as_text(this.file.raw);
+        const geojson = await upload_file_as_text(this.file.raw as File);
 
-        const new_layer = {
+        const new_layer: TGeodataLayer = {
           name: this.new_layer_name,
           file_name: this.file.name,
           geojson: JSON.parse(geojson),
@@ -130,13 +130,14 @@
 
         this.geodata_layers.push(new_layer);
 
+        // @ts-ignore
         this.$refs.upload.clearFiles();
       },
-      on_upload_file(file, fileList) {
+      on_upload_file(file: File, fileList: File[]) {
         this.file = file;
       },
       // ui
-      tableRowClassName({row, rowIndex}) {
+      tableRowClassName({row, rowIndex}: any) {
         return row.validation_status;
       },
     },
