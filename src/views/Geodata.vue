@@ -3,11 +3,6 @@
     <el-card>
       <div slot="header">
         <span>Geodata</span>
-        <el-button
-            style="float: right; padding: 3px 0"
-            type="text"
-        >Summarise all
-        </el-button>
       </div>
 
       <el-alert
@@ -53,12 +48,11 @@
       <div style="margin-top: 2em;">
 
         <el-input style="margin: 1em 0;" placeholder="Layer name" v-model="new_layer_name"></el-input>
-        <!-- TODO: Fix this, auto uploads to action props -->
+        
         <el-upload ref="upload" :limit="1" :auto-upload="false" :on-change="on_upload_file" action="#">
           <el-button slot="trigger" size="small" type="primary">select file</el-button>
-          <el-button style="margin-left: 10px;" size="small" type="success" @click="save_new_layer">Save layer
-          </el-button>
-          <!-- <div class="el-upload__tip" slot="tip">jpg/png files with a size less than 500kb</div> -->
+          <el-button style="margin-left: 10px;" size="small" type="success" @click="save_new_layer">Save layer</el-button>
+          <div class="el-upload__tip" slot="tip">file must be a geojson feature collection</div>
         </el-upload>
       </div>
     </el-card>
