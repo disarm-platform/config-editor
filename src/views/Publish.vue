@@ -4,18 +4,23 @@
       <div slot="header">
         <span>Check and Publish</span>
         <el-button
-            style="float: right; padding: 3px 0"
-            type="text"
-        >Do
+          style="float: right; padding: 3px 0"
+          type="text"
+          :disabled="!config_valid"
+          @click="save_update"
+          >
+          Save/update
         </el-button>
       </div>
 
-      <el-alert
-            title="Unsaved changes"
-            type="warning">
+        <el-alert
+          class="alerts"
+          title="Unsaved changes"
+          type="warning">
         </el-alert>
 
         <el-alert
+            class="alerts"
             v-if="!config_valid"
             title="Configuration is not valid"
             type="warning">
@@ -31,7 +36,7 @@
           <el-input placeholder="Version" v-model="version"></el-input>
         </div>
         <div style="margin-top:1em;">
-          <el-button :disabled="!config_valid" type="primary" @click="save_update">Save/update</el-button>
+          <el-button ></el-button>
         </div>
     </el-card>
   </div>
@@ -54,3 +59,9 @@
     },
   });
 </script>
+<style>
+  .alerts {
+    margin: 0.5em 0;
+  }
+</style>
+
