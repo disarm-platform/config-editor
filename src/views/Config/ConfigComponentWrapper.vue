@@ -1,15 +1,10 @@
 <template>
   <div>
-    <h1>{{display_name}}</h1>
     
-    <el-checkbox v-model="included" @change="save" style="margin-bottom: 1em;">Include</el-checkbox>
-
-    <!-- Messages: incl. links to jump to related nodes -->
-    <el-collapse accordion v-if="messages.length">
-      <el-collapse-item title="Messages" name="1">
-        <component-messages :messages="messages"></component-messages>
-      </el-collapse-item>
-    </el-collapse>
+    <div style="display: flex; justify-content: space-between;">
+      <h1 style="margin-top: 0;">{{display_name}}</h1>
+      <el-checkbox v-model="included" @change="save" style="margin-top: 0.5em;margin-bottom: 1em;">Include</el-checkbox>
+    </div>
 
     <ComponentMessages :errors="errors" :warnings="warnings" :success="success"/>
 
@@ -23,12 +18,12 @@
     ></component>
 
     <!-- Actions: save, confirm, reset, etc. -->
-    <component-actions
+    <!-- <component-actions
         :disabled="messages.length > 0"
         @save="save"
         @tell_me="tell_me"
         @reset="reset"
-    ></component-actions>
+    ></component-actions> -->
 
   </div>
 </template>
