@@ -11,6 +11,38 @@
       </el-collapse-item>
     </el-collapse>
 
+    <div>
+      <div>
+        <el-alert
+          class="alert"
+          v-for="(s, i) in success"
+          :key="i"
+          :title="s.message"
+          type="success">
+        </el-alert>
+      </div>
+      
+      <div>
+        <el-alert
+          class="alert"
+          v-for="(w, i) in warnings"
+          :key="i"
+          :title="w.message"
+          type="warning">
+        </el-alert>
+      </div>
+
+      <div>
+        <el-alert
+          class="alert"
+          v-for="(e, i) in errors"
+          :key="i"
+          :title="e.message"
+          type="error">
+        </el-alert>
+      </div>
+    </div>
+
     <!-- Component itself -->
     <component
         v-bind:is="component_name"
@@ -38,6 +70,8 @@ import {TConfig} from '@locational/config-validation/build/module/lib/config_typ
 import ComponentMessages from './ComponentMessages.vue';
 import ComponentActions from './ComponentActions.vue';
 import {component_list} from '@/views/Config/component_defs';
+import { TShapedValidationResult } from '@/helpers/shape_validation_result_for_ui';
+import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 interface NodeComponent extends Vue {
   // TODO: Cannot access ConfigNodeMixin for some reason, so recreating the required parts here
@@ -55,16 +89,32 @@ export default Vue.extend({
     path_name: String,
 
     config: Object as () => TConfig,
+    validation_result: Object as () => TShapedValidationResult
   },
   data() {
     return {
       messages: [],
-      // TODO: need to determine included when we load the component first time
       included: true,
     };
   },
+  computed: {
+    errors(): TStandardEdgeResponse[] {
+      return this.validation_result.errors.filter(response => {
+        return response.source_node_name === this.node_name || response.target_node_name === this.node_name
+      })
+    },
+    warnings(): TStandardEdgeResponse[] {
+      return this.validation_result.warnings.filter(response => {
+        return response.source_node_name === this.node_name || response.target_node_name === this.node_name
+      })
+    },
+    success(): TStandardEdgeResponse[]{
+      return this.validation_result.success.filter(response => {
+        return response.source_node_name === this.node_name || response.target_node_name === this.node_name
+      })
+    }
+  },
   mounted() {
-    // TODO: maybe this should go into the ConfigNodeMixing, together with `included`
     const config = this.get_node_config()
     if (!config) {
       this.included = false
@@ -90,5 +140,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-
+  .alert {
+    margin-bottom: 0.5em;
+  }
 </style>
