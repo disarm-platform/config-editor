@@ -1,9 +1,11 @@
 <template>
   <div>
 
+    <Applet :node_config="node_config"/>
+
     <el-checkbox v-model="node_config.metadata.show">Show metadata page</el-checkbox>
 
-    <h5>Optional fields</h5>
+    <h5>Custom fields (optional_fields)</h5>
 
     <ul>
       <li v-for="(field, index) in node_config.metadata.optional_fields" :key="index">
@@ -27,8 +29,10 @@
 
 <script lang="ts">
   import ConfigNodeMixin from '../ConfigNodeMixin';
+  import Applet from './Applet.vue'
 
   export default ConfigNodeMixin.extend({
+    components: {Applet},
     data() {
       return {
         field: ''
