@@ -47,8 +47,8 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  import {shape_validation_result} from '../../helpers/shape_validation_result_for_ui';
-  import {component_defs, component_list} from '@/views/Config/component_defs';
+  import {shape_validation_result, TShapedValidationResult} from '../../helpers/shape_validation_result_for_ui';
+  import {component_defs, component_list, ComponentDefinition} from '@/views/Config/component_defs';
   import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
   import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
   import {TGeodataLayer} from '@locational/geodata-support/build/module/config_types/TGeodata';
@@ -58,15 +58,22 @@
   import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
   import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
 
+  export interface Data {
+    validation_result: TShapedValidationResult;
+    validation_result_message: string;
+    component_defs: ComponentDefinition[];
+  }
+
   export default Vue.extend({
     components: {ConfigComponentWrapper, ...component_list},
     props: {
       config: {} as () => TConfig,
       geodata_layers: Array as () => TGeodataLayer[],
     },
-    data() {
+    data(): Data {
       return {
         validation_result: {
+          passed: false,
           errors: [],
           warnings: [],
           success: []
