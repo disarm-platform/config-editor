@@ -79,6 +79,11 @@ interface NodeComponent extends Vue {
   tell_me: () => void;
 }
 
+export interface Data {
+  messages: string[];
+  included: boolean;
+}
+
 export default Vue.extend({
   components: {...component_list, ComponentMessages, ComponentActions},
   props: {
@@ -91,7 +96,7 @@ export default Vue.extend({
     config: Object as () => TConfig,
     validation_result: Object as () => TShapedValidationResult
   },
-  data() {
+  data(): Data {
     return {
       messages: [],
       included: true,
