@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" v-model="form_content"></el-input>
+    <el-input rows="20" type="textarea" v-model="form_content"></el-input>
   </div>
 </template>
 

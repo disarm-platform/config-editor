@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>{{node_config}}</div>
+    <el-input rows="20" type="textarea" v-model="spatial_hiearchy"></el-input>
   </div>
 </template>
 
@@ -8,6 +8,19 @@
   import ConfigNodeMixin from '../ConfigNodeMixin';
 
   export default ConfigNodeMixin.extend({
+    data() {
+      return {
+        spatial_hiearchy: '',
+      };
+    },
+    created() {
+      this.spatial_hiearchy = JSON.stringify(this.node_config, null, 2);
+    },
+    methods: {
+      tell_me() {
+        return JSON.parse(this.spatial_hiearchy);
+      },
+    },
   });
 </script>
 

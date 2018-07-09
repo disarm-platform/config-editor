@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>{{node_config}}</div>
+    <el-input type="textarea" v-model="aggregations"></el-input>
   </div>
 </template>
 
@@ -8,6 +8,19 @@
   import ConfigNodeMixin from '../ConfigNodeMixin';
 
   export default ConfigNodeMixin.extend({
+    data() {
+      return {
+        aggregations: '',
+      };
+    },
+    created() {
+      this.aggregations = JSON.stringify(this.node_config, null, 2);
+    },
+    methods: {
+      tell_me() {
+        return JSON.parse(this.aggregations);
+      },
+    },
   });
 </script>
 
