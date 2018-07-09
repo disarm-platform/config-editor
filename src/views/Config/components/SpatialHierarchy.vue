@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input rows="20" type="textarea" v-model="spatial_hiearchy"></el-input>
+    <el-input rows="20" type="textarea" v-model="spatial_hiearchy" @input="emit_change()"></el-input>
   </div>
 </template>
 

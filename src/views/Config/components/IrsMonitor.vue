@@ -12,11 +12,6 @@
 
   export default ConfigNodeMixin.extend({
     components: {Applet},
-    methods: {
-      emit_change() {
-        this.$emit('change')
-      }
-    }
   });
 </script>
 

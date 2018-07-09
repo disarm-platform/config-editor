@@ -48,9 +48,6 @@
       remove(index) {
         this.node_config.metadata.optional_fields.splice(index, 1)
         this.emit_change()
-      },
-      emit_change() {
-        this.$emit('change')
       }
     }
   });

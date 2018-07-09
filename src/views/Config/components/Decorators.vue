@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" v-model="decorators"></el-input>
+    <el-input type="textarea" v-model="decorators" @input="emit_change()"></el-input>
   </div>
 </template>
 

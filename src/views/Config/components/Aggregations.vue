@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" v-model="aggregations"></el-input>
+    <el-input type="textarea" v-model="aggregations" @input="emit_change()"></el-input>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input rows="20" type="textarea" v-model="form_content"></el-input>
+    <el-input rows="20" type="textarea" v-model="form_content" @input="emit_change()"></el-input>
   </div>
 </template>
 
@@ -19,7 +19,7 @@
     methods: {
       tell_me() {
         return JSON.parse(this.form_content);
-      },
+      }
     },
   });
 </script>

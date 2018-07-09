@@ -58,5 +58,8 @@ export default Vue.extend({
       const got = get(this.config, this.path_name);
       this.backup_config = cloneDeep(got);
     },
+    emit_change() {
+      this.$emit('change');
+    },
   },
 });
