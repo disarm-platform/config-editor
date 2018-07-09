@@ -30,6 +30,7 @@
 <script lang="ts">
   import ConfigNodeMixin from '../ConfigNodeMixin';
   import Applet from './Applet.vue'
+  import { TIrsRecordPoint } from '@locational/config-validation/build/module/lib/config_types/TIrsRecordPoint';
 
   export default ConfigNodeMixin.extend({
     components: {Applet},
@@ -40,13 +41,13 @@
     },
     methods: {
       add(e: Event) {
-        e.preventDefault()
-        this.node_config.metadata.optional_fields.push(this.field);
+        e.preventDefault();
+        (this.node_config as TIrsRecordPoint).metadata.optional_fields.push(this.field);
         this.field = ''
         this.emit_change()
       },
-      remove(index) {
-        this.node_config.metadata.optional_fields.splice(index, 1)
+      remove(index: number) {
+        (this.node_config as TIrsRecordPoint).metadata.optional_fields.splice(index, 1)
         this.emit_change()
       }
     }
