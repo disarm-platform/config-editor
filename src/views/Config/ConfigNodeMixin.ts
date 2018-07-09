@@ -41,6 +41,13 @@ export default Vue.extend({
     }
   },
   computed: {
+    node_config_string(): string | undefined {
+      try {
+        return JSON.stringify(this.node_config);
+      } catch (e) {
+        return undefined;
+      }
+    },
     relevant_messages(): TStandardEdgeResponse[] {
       return this.validation_result.edge_messages.filter((message) => {
         return message.source_node_name === this.node_name || message.target_node_name === this.node_name;
@@ -48,6 +55,12 @@ export default Vue.extend({
     },
   },
   methods: {
+    set_node_config_from_string(val: string): void {
+      try {
+        this.node_config = JSON.parse(val);
+        this.emit_change();
+      } catch (e) {}
+    },
     tell_me() {
       return this.node_config;
     },
@@ -57,6 +70,9 @@ export default Vue.extend({
     make_backup() {
       const got = get(this.config, this.path_name);
       this.backup_config = cloneDeep(got);
+    },
+    emit_change() {
+      this.$emit('change');
     },
   },
 });
