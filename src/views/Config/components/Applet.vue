@@ -1,11 +1,11 @@
 <template>
     <el-form>
       <el-form-item label="Title">
-        <el-input v-model="node_config.title"></el-input>
+        <el-input :value="value.title" @input="on_change('title', $event)"></el-input>
       </el-form-item>
 
       <el-form-item label="Icon">
-        <el-input v-model="node_config.icon"></el-input>
+        <el-input :value="value.icon" @input="on_change('icon', $event)"></el-input>
       </el-form-item>
     </el-form>
 </template>
@@ -16,7 +16,20 @@
 
   export default Vue.extend({
     props: {
-      node_config: Object
+      value: Object
+    },
+    methods: {
+      on_change(field_name: string, incoming_value: string) {
+        const config = this.value
+
+        if (incoming_value) {
+          config[field_name] = incoming_value
+        } else {
+          delete config[field_name]
+        }
+
+        this.$emit('input', config)
+      }
     }
   });
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <Applet :node_config="node_config"/>
+    <Applet v-model="node_config" @input="emit_change"/>
 
     <el-checkbox v-model="node_config.metadata.show">Show metadata page</el-checkbox>
 
@@ -43,9 +43,14 @@
         e.preventDefault()
         this.node_config.metadata.optional_fields.push(this.field);
         this.field = ''
+        this.emit_change()
       },
       remove(index) {
         this.node_config.metadata.optional_fields.splice(index, 1)
+        this.emit_change()
+      },
+      emit_change() {
+        this.$emit('change')
       }
     }
   });
