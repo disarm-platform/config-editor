@@ -1,7 +1,15 @@
 <template>
   <el-tabs v-model="active_tab" type="border-card">
 
-    <el-tab-pane name="geodata">
+    <el-tab-pane name="login">
+      <span slot="label">
+        Login
+        <i class="el-icon-success"></i>
+      </span>
+      <Login></Login>
+    </el-tab-pane>
+
+    <el-tab-pane name="geodata" :disabled="!user">
       <span slot="label">
         Geodata
         <i class="el-icon-success"></i>
@@ -12,7 +20,7 @@
       ></Geodata>
     </el-tab-pane>
 
-    <el-tab-pane name="config">
+    <el-tab-pane name="config" :disabled="!user">
       <span slot="label" style="color: red;">
         Config
         <i class="el-icon-error"></i>
@@ -25,7 +33,7 @@
       ></Config>
     </el-tab-pane>
 
-    <el-tab-pane name="publish">
+    <el-tab-pane name="publish" :disabled="!user">
       <span slot="label">
         Publish
         <i class="el-icon-edit"></i>
@@ -47,23 +55,30 @@
   import Geodata from './views/Geodata.vue';
   import Config from './views/Config/Config.vue';
   import Publish from './views/Publish.vue';
+  import Login from './views/Login.vue';
 
   import config from './horrible_seed_data/small_valid_config.json';
 
   export default {
     components: {
+      Login,
       Config,
       Geodata,
       Publish,
     },
     data() {
       return {
-        active_tab: 'config',
+        active_tab: 'login',
         config_valid: false,
         config,
         geodata_layers: [],
         location_selection: null,
       };
+    },
+    computed: {
+      user() {
+        return this.$store.state.user
+      }
     },
     methods: {
       change(updated_config, pathname, included) {
