@@ -43,7 +43,7 @@ export default Vue.extend({
   computed: {
     node_config_string(): string | undefined {
       try {
-        return JSON.stringify(this.node_config);
+        return JSON.stringify(this.node_config, undefined, 4);
       } catch (e) {
         return undefined;
       }
