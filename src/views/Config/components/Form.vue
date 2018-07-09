@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" v-model="form_content"></el-input>
+    <el-input rows="20" type="textarea" :value="node_config_string" @input="set_node_config_from_string"></el-input>
   </div>
 </template>
 
@@ -8,19 +8,6 @@
   import ConfigNodeMixin from '../ConfigNodeMixin';
 
   export default ConfigNodeMixin.extend({
-    data() {
-      return {
-        form_content: '',
-      };
-    },
-    created() {
-      this.form_content = JSON.stringify(this.node_config, null, 2);
-    },
-    methods: {
-      tell_me() {
-        return JSON.parse(this.form_content);
-      },
-    },
   });
 </script>
 
