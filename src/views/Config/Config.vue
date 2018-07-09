@@ -13,9 +13,17 @@
 
       <div>
         <el-alert
-            v-if="validation_result_message"
-            :title="validation_result_message"
-            type="warning">
+          v-if="!validation_result.passed"
+          v-for="(error, index) of validation_result.errors"
+          :key="index"
+          :title="`${error.source_node_name || ''}:${error.target_node_name || '' } ${error.message}`"
+          type="warning">
+        </el-alert>
+
+        <el-alert
+          v-if="validation_result.passed"
+          title="Validations passed"
+          type="success">
         </el-alert>
       </div>
 

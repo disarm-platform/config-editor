@@ -19,12 +19,24 @@ export interface TShapedValidationResult {
 }
 
 export function shape_validation_result(response: TUnifiedResponse): TShapedValidationResult {
+  console.log('response', response);
   // console.log('response', response);
   const errors: TStandardEdgeResponse[] = [];
   const warnings: TStandardEdgeResponse[] = [];
   const success: TStandardEdgeResponse[] = [];
 
   const passed = response.status === EUnifiedStatus.Green;
+  
+  if (!passed && !response.edge_messages.length) {
+    // this is a schema error
+    // @ts-ignore
+    errors.push({
+      global: true,
+      // @ts-ignore
+      message: response.support_messages[0]
+    })
+
+  }
 
   for (const edge_message of response.edge_messages) {
     switch (edge_message.status) {
