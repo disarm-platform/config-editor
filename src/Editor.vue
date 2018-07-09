@@ -41,6 +41,9 @@
 </template>
 
 <script>
+  import {set, unset} from 'lodash'
+  import Vue from 'vue'
+
   import Geodata from './views/Geodata.vue';
   import Config from './views/Config/Config.vue';
   import Publish from './views/Publish.vue';
@@ -65,9 +68,25 @@
     methods: {
       change(updated_config, pathname, included) {
         if (included) {
-          this.$set(this.config, pathname, updated_config);
+          // Need to use lodash.set so nested objects get updated
+          // If not we end up with an object like:
+          // {
+          //   'applets.irs_record_point': {}
+          // }
+          // when we want:
+          // {
+          //   'applets': {'irs_record_point: {}}
+          // }
+          const new_config = {...this.config}
+          set(new_config, pathname, updated_config)
+
+          this.config = new_config
         } else {
-          this.$delete(this.config, pathname)
+          // use unset for same reason as above
+          const new_config = {...this.config}
+          unset(new_config, pathname)
+          
+          this.config = new_config
         }
       },
       save_config() {
