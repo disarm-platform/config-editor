@@ -95,6 +95,14 @@ export default Vue.extend({
   },
   methods: {
     save() {
+      let config = this.get_node_config()
+
+      // if config is not included, then it's undefined, we want an empty object so inputs don't crash
+      if (config === undefined && this.included) {
+        // @ts-ignore
+        config = {}
+      }
+
       this.$emit('change', this.get_node_config(), this.path_name, this.included);
     },
     reset() {

@@ -18,6 +18,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      node_config_string: '',
       node_config: {},
       backup_config: {},
     };
@@ -25,6 +26,8 @@ export default Vue.extend({
   watch: {
     config: {
       handler() {
+        this.node_config = get(this.config, this.path_name);
+        this.node_config_string = JSON.stringify(this.node_config);
         this.make_backup();
       },
       deep: true,
@@ -37,6 +40,7 @@ export default Vue.extend({
       console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
     } else {
       this.node_config = cloneDeep(got);
+      this.node_config_string = JSON.stringify(this.node_config);
       this.make_backup();
     }
   },
@@ -48,6 +52,11 @@ export default Vue.extend({
     },
   },
   methods: {
+    parse_set_node_config(e: string) {
+      this.node_config_string = e;
+      this.node_config = JSON.parse(this.node_config_string);
+      this.emit_change()
+    },
     tell_me() {
       return this.node_config;
     },
