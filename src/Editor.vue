@@ -2,19 +2,20 @@
   <el-tabs v-model="active_tab" type="border-card">
 
     <el-tab-pane name="geodata">
-      <span slot="label" style="color: red;">
+      <span slot="label">
         Geodata
-        <i class="el-icon-error"></i>
+        <i class="el-icon-success"></i>
       </span>
       <Geodata
           :geodata_layers="geodata_layers"
+          @geodata_layers="set_geodata_layers"
       ></Geodata>
     </el-tab-pane>
 
     <el-tab-pane name="config">
-      <span slot="label">
+      <span slot="label" style="color: red;">
         Config
-        <i class="el-icon-success"></i>
+        <i class="el-icon-error"></i>
       </span>
       <Config
           :config="config"
@@ -31,9 +32,7 @@
       </span>
       <Publish
           :config_valid="config_valid"
-          instance_id="bwa"
-          instance="Botswana"
-          version="1.0.0"
+          :version="42"
           @save_config="save_config"
       ></Publish>
     </el-tab-pane>
@@ -42,12 +41,13 @@
 </template>
 
 <script>
+  import {set, unset} from 'lodash'
+  import Vue from 'vue'
+
   import Geodata from './views/Geodata.vue';
   import Config from './views/Config/Config.vue';
   import Publish from './views/Publish.vue';
 
-  import provinces from './horrible_seed_data/swz.provinces.json';
-  import cities from './horrible_seed_data/swz.cities.json';
   import config from './horrible_seed_data/small_valid_config.json';
 
   export default {
@@ -61,31 +61,39 @@
         active_tab: 'config',
         config_valid: false,
         config,
-        geodata_layers: [
-          {
-            name: 'provinces',
-            file_name: 'swz.provinces.geojson',
-            geojson: provinces,
-            validation_status: '',
-            field_summary: [],
-          },
-          {
-            name: 'cities',
-            file_name: 'swz.cities.geojson',
-            geojson: cities,
-            validation_status: '',
-            field_summary: [],
-          },
-        ],
+        geodata_layers: [],
         location_selection: null,
       };
     },
     methods: {
-      change(updated_config, pathname) {
-        this.$set(this.config, pathname, updated_config);
+      change(updated_config, pathname, included) {
+        if (included) {
+          // Need to use lodash.set so nested objects get updated
+          // If not we end up with an object like:
+          // {
+          //   'applets.irs_record_point': {}
+          // }
+          // when we want:
+          // {
+          //   'applets': {'irs_record_point: {}}
+          // }
+          const new_config = {...this.config}
+          set(new_config, pathname, updated_config)
+
+          this.config = new_config
+        } else {
+          // use unset for same reason as above
+          const new_config = {...this.config}
+          unset(new_config, pathname)
+          
+          this.config = new_config
+        }
       },
       save_config() {
         console.log('save_config', this.config);
+      },
+      set_geodata_layers(geodata_layers) {
+        this.geodata_layers = geodata_layers;
       },
       set_location_selection(location_selection) {
         this.location_selection = location_selection;

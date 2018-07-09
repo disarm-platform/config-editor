@@ -19,7 +19,7 @@
         </el-alert>
       </div>
 
-      <el-tabs tab-position="left" style="height: 400px; overflow: scroll;">
+      <el-tabs tab-position="left" style="height: 800px; overflow: scroll;">
         <el-tab-pane
             v-for="{display_name, component_name, node_name, path_name} in component_defs"
             :key='component_name'
@@ -47,11 +47,22 @@
 
 <script lang="ts">
   import Vue from 'vue';
-  // import {determine_validation_result} from '../helpers/determine_validation_result_for_ui';
-  import {component_defs, component_list} from '@/views/Config/component_defs';
+  import {shape_validation_result, TShapedValidationResult} from '../../helpers/shape_validation_result_for_ui';
+  import {component_defs, component_list, ComponentDefinition} from '@/views/Config/component_defs';
   import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
   import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
   import {TGeodataLayer} from '@locational/geodata-support/build/module/config_types/TGeodata';
+  import { geodata_cache } from '@/geodata_cache';
+  import {validate} from '@locational/config-validation'
+  import { generate_location_selection } from '@locational/geodata-support'
+  import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
+  import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
+
+  export interface Data {
+    validation_result: TShapedValidationResult;
+    validation_result_message: string;
+    component_defs: ComponentDefinition[];
+  }
 
   export default Vue.extend({
     components: {ConfigComponentWrapper, ...component_list},
@@ -59,57 +70,57 @@
       config: {} as () => TConfig,
       geodata_layers: Array as () => TGeodataLayer[],
     },
-    data() {
+    data(): Data {
       return {
-        validation_result: {},
+        validation_result: {
+          passed: false,
+          errors: [],
+          warnings: [],
+          success: []
+        },
         validation_result_message: '',
         component_defs,
       };
     },
     methods: {
-      handle_change(updated_config: {}, path_name: string) {
-        this.$emit('change', updated_config, path_name);
+      handle_change(updated_config: {}, path_name: string, included: boolean) {
+        this.$emit('change', updated_config, path_name, included);
       },
       validate_config() {
-        console.log('validate_config', this.config);
-        return true;
-        // // start formatting of Config, move to separate function?
-        // const geodata = {};
-        // const geodata_summary = {};
-        // for (const layer of this.geodata_layers) {
-        //   geodata[layer.name] = layer.geojson;
-        //   geodata_summary[layer.name] = layer.field_summary;
-        // }
-        //
-        //
-        // const spatial_hierarchy = {
-        //   ...this.Config.spatial_hierarchy,
-        //   geodata_summary,
-        // };
-        // // TODO: Think through, do we want to generate location_selection here?
-        // // Do we even want to do the validations here at all? Might want to move to Editor.vue
-        // const location_selection_result = generate_location_selection(spatial_hierarchy, geodata);
-        // const location_selection = location_selection_result.location_selection;
-        //
-        // const Config = {
-        //   ...this.Config,
-        //   location_selection,
-        // } as TConfig;
-        // // finish formatting of Config
-        //
-        //
-        // // TODO: Save result, it contains info about which nodes are failing.
-        // this.validation_result = validate(Config);
-        // const validation_result = determine_validation_result(this.validation_result);
-        //
-        // if (validation_result.passed) {
-        //   this.$emit('config_validation', true);
-        //   this.validation_result_message = 'Configuration passed all validations';
-        // } else {
-        //   this.validation_result_message = `Schema validation failed` +
-        //    `${JSON.stringify(validation_result.support_messages)}`;
-        //   this.$emit('config_validation', false);
-        // }
+        // 1. Attempt to create location_selection, if needed for full validation
+        const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
+
+        if (location_selection_result.status === EValidationStatus.Red) {
+          // TODO: display error relating to location_selection
+          return
+        }
+        
+        // 2. Attach location_selection to config
+        const config: TConfig = {
+          ...this.config,
+          location_selection: location_selection_result.location_selection
+        }
+
+        // 3. Run config validation
+        const validation_result = validate(config);
+
+        // 4. Shape validation result for consumption
+        const shaped_result = shape_validation_result(validation_result)
+        console.log('shaped_result', shaped_result);
+        // @ts-ignore
+        this.validation_result = shaped_result
+        
+        // 5. Emit errors if any
+
+        if (!shaped_result.passed) {
+          return
+        }
+
+        // TODO: 6. Send validation result to parent component
+
+        
+        // console.log('validate_config', config);
+        return;
       },
     },
   });
