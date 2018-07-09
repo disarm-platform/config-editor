@@ -7,12 +7,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
-    user: null
+    user: null,
   },
   mutations: {
     set_user(state, user) {
       state.user = user;
-    }
+    },
   },
   actions: {
 
