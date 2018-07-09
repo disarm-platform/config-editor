@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" v-model="aggregations" @input="emit_change()"></el-input>
+    <el-input type="textarea" v-model="aggregations" @input="update_node_config()"></el-input>
   </div>
 </template>
 
@@ -17,9 +17,14 @@
       this.aggregations = JSON.stringify(this.node_config, null, 2);
     },
     methods: {
-      tell_me() {
-        return JSON.parse(this.aggregations);
-      },
+      update_node_config() {
+        try {
+          this.node_config = JSON.parse(this.aggregations)
+          this.emit_change()
+        } catch (e) {
+          // handle invalid json
+        }
+      }
     },
   });
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" v-model="validations" @input="emit_change()"></el-input>
+    <el-input type="textarea" v-model="validations" @input="update_node_config()"></el-input>
   </div>
 </template>
 
@@ -17,9 +17,14 @@
       this.validations = JSON.stringify(this.node_config, null, 2);
     },
     methods: {
-      tell_me() {
-        return JSON.parse(this.validations);
-      },
+      update_node_config() {
+        try {
+          this.node_config = JSON.parse(this.validations)
+          this.emit_change()
+        } catch (e) {
+          // handle invalid json
+        }
+      }
     },
   });
 </script>

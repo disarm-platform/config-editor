@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input rows="20" type="textarea" v-model="form_content" @input="emit_change()"></el-input>
+    <el-input rows="20" type="textarea" v-model="form_content" @input="update_node_config()"></el-input>
   </div>
 </template>
 
@@ -17,8 +17,13 @@
       this.form_content = JSON.stringify(this.node_config, null, 2);
     },
     methods: {
-      tell_me() {
-        return JSON.parse(this.form_content);
+      update_node_config() {
+        try {
+          this.node_config = JSON.parse(this.form_content)
+          this.emit_change()
+        } catch (e) {
+          // handle invalid json
+        }
       }
     },
   });

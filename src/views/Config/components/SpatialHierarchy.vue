@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input rows="20" type="textarea" v-model="spatial_hiearchy" @input="emit_change()"></el-input>
+    <el-input rows="20" type="textarea" v-model="spatial_hiearchy" @input="update_node_config()"></el-input>
   </div>
 </template>
 
@@ -17,9 +17,14 @@
       this.spatial_hiearchy = JSON.stringify(this.node_config, null, 2);
     },
     methods: {
-      tell_me() {
-        return JSON.parse(this.spatial_hiearchy);
-      },
+      update_node_config() {
+        try {
+          this.node_config = JSON.parse(this.spatial_hiearchy)
+          this.emit_change()
+        } catch (e) {
+          // handle invalid json
+        }
+      }
     },
   });
 </script>
