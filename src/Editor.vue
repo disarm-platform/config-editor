@@ -9,6 +9,14 @@
       <Login></Login>
     </el-tab-pane>
 
+    <el-tab-pane name="instances">
+      <span slot="label">
+        Instances
+        <i class="el-icon-success"></i>
+      </span>
+      <Instances />
+    </el-tab-pane>
+
     <el-tab-pane name="geodata" :disabled="!user">
       <span slot="label">
         Geodata
@@ -56,12 +64,14 @@
   import Config from './views/Config/Config.vue';
   import Publish from './views/Publish.vue';
   import Login from './views/Login.vue';
+  import Instances from './views/Instances.vue';
 
   import config from './horrible_seed_data/small_valid_config.json';
 
   export default {
     components: {
       Login,
+      Instances,
       Config,
       Geodata,
       Publish,

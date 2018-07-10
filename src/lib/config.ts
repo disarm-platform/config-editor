@@ -1,5 +1,11 @@
-const MODE = 'staging'
+import { standard_handler } from '@/lib/standard_handler';
 
-export default {
-  api_url: "https://douma-api-stage.herokuapp.com/v7", //(MODE === 'production') ? "https://douma-api.herokuapp.com/v7" : ,
+export async function get_configurations() {
+  const options = {
+    method: 'get',
+    url: '/config'
+  }
+
+  const res = await standard_handler(options)
+  return res.data;
 }

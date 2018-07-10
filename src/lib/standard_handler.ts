@@ -1,5 +1,5 @@
 import axios from 'axios'
-import COMMON from './config'
+import COMMON from './common'
 
 export const standard_handler = axios.create({
   baseURL: COMMON.api_url,
