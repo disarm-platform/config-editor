@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate'
+import { set_api_key } from '@/lib/standard_handler';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     instance: null,
@@ -22,3 +23,8 @@ export default new Vuex.Store({
 
   },
 });
+
+// @ts-ignore
+set_api_key(store.state.user.key)
+
+export default store

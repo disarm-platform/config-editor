@@ -40,6 +40,7 @@
             width="500">
           <template slot-scope="scope">
             <el-button disabled icon="el-icon-upload" size="small"></el-button>
+            <el-button @click="download_layer(scope.row.name, scope.$index)" icon="el-icon-download" size="small"></el-button>
             <el-button @click="delete_layer(scope.row.name, scope.$index)" icon="el-icon-delete" size="small"></el-button>
           </template>
         </el-table-column>
@@ -64,30 +65,17 @@
   import {summarise, validate_layer_schema} from '@locational/geodata-support';
   import {TGeodataLayer, TGeodataLayerDefinition} from "@locational/geodata-support/build/module/config_types/TGeodata"
   import { EValidationStatus } from '@locational/geodata-support/build/main/config_types/TValidationResponse';
+  import download from 'downloadjs'
+
   import { geodata_cache } from '../geodata_cache'
   import { TFieldSummary } from '@locational/geodata-support/build/main/config_types/TGeodataSummary';
   import {upload_file_as_text} from '../helpers/upload_file_as_text'
-  
-  import provinces from '../horrible_seed_data/swz.provinces.json';
-  import cities from '../horrible_seed_data/swz.cities.json';
+  import { get_levels, get_level } from '../lib/geodata'
 
   export default Vue.extend({
     data() {
       return {
-        geodata_layers: [
-           {
-            name: 'provinces',
-            file_name: 'swz.provinces.geojson',
-            validation_status: EValidationStatus.Green,
-            field_summary: [],
-          },
-          {
-            name: 'cities',
-            file_name: 'swz.cities.geojson',
-            validation_status: EValidationStatus.Green,
-            field_summary: [],
-          }
-        ],
+        geodata_layers: [],
         new_layer_name: '',
         file: null,
         alert: {
@@ -96,12 +84,44 @@
         },
       };
     },
+    computed: {
+      instance() {
+        return this.$store.state.instance
+      }
+    },
+    watch: {
+      instance() {
+        this.retrieve_geodata_for_instance() 
+      }
+    },
     mounted() {
-      // only for debug
-      geodata_cache['provinces'] = provinces
-      geodata_cache['cities'] = cities
+      this.retrieve_geodata_for_instance()
     },
     methods: {
+      async retrieve_geodata_for_instance() {
+        this.geodata_layers = []
+        const levels = await get_levels(this.instance.config_id)
+        for (const level_name of levels) {
+          const level = await get_level(this.instance.config_id, level_name)
+          
+          const geodata_layer = {
+            name: level_name,
+            file_name: '',
+            validation_status: EValidationStatus.Red,
+            field_summary: summarise(level.geodata_data)
+          }
+          this.geodata_layers.push(geodata_layer)
+
+          geodata_cache[level_name] = level.geodata_data
+
+          console.log('geodata_layer', geodata_layer);
+        }
+
+        this.emit_changes()
+      },
+      download_layer(layer_name: string, index: number) {
+        download(JSON.stringify(geodata_cache[layer_name]), `${this.instance.config_id}.${layer_name}.geojson`, "text/plain")
+      },
       delete_layer(layer_name: string, index: number) {
         this.geodata_layers.splice(index, 1);
         this.emit_changes()
