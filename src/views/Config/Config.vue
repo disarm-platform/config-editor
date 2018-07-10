@@ -90,6 +90,16 @@
         component_defs,
       };
     },
+    watch: {
+      config() {
+        this.validation_result = {
+          passed: false,
+          errors: [],
+          warnings: [],
+          success: []
+        }
+      }
+    },
     methods: {
       handle_change(updated_config: {}, path_name: string, included: boolean) {
         this.$emit('change', updated_config, path_name, included);
@@ -99,8 +109,14 @@
         const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
 
         if (location_selection_result.status === EValidationStatus.Red) {
-          // TODO: display error relating to location_selection
-          return
+          // TODO: Fix: Maybe we should continue with validation and not return
+
+          this.validation_result = {
+            errors: [{message: 'Failed to generate location_selection. Check all geodata exists.'}],
+            warnings: [],
+            success: []
+          }
+          // return
         }
         
         // 2. Attach location_selection to config
