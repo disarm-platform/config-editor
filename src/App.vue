@@ -4,12 +4,29 @@
       <h2>DiSARM Registry</h2>
     </el-header>
     
+    <el-alert
+      v-if="config"
+      :title="`Selected instance: ${config.id}`"
+      type="info">
+    </el-alert>
+    
     <el-main>
       <router-view/>
     </el-main>
 
   </el-container>
 </template>
+<script lang="ts">
+  import Vue from 'vue'
+  export default Vue.extend({
+    computed: {
+      config() {
+        return this.$store.state.instance
+      } 
+    }
+  })
+</script>
+
 
 <style lang="scss">
   html, body {
