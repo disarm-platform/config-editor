@@ -111,13 +111,14 @@
 
         if (location_selection_result.status === EValidationStatus.Red) {
           // TODO: Fix: Maybe we should continue with validation and not return
+          console.log('location_selection_result', location_selection_result);
 
           this.validation_result = {
-            errors: [{message: 'Failed to generate location_selection. Check all geodata exists.'}],
+            errors: [{message: location_selection_result.message}],
             warnings: [],
             success: []
           }
-          // return
+          return
         }
         
         // 2. Attach location_selection to config
