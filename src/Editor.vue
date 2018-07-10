@@ -66,6 +66,8 @@
   import Login from './views/Login.vue';
   import Instances from './views/Instances.vue';
 
+  import { get_configuration } from './lib/config'
+
   import config from './horrible_seed_data/small_valid_config.json';
 
   export default {
@@ -80,12 +82,21 @@
       return {
         active_tab: 'login',
         config_valid: false,
-        config,
+        config: null,
         geodata_layers: [],
         location_selection: null,
       };
     },
+    watch: {
+      async selected_config(selected_config) {
+        const c = await get_configuration(selected_config.id)
+        this.config = c
+      }
+    },
     computed: {
+      selected_config() {
+        return this.$store.state.instance
+      },
       user() {
         return this.$store.state.user
       }

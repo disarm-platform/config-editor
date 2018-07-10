@@ -2,8 +2,7 @@
   <div style="height: 400px;">
     <p>Please select your instance below or create a new one:</p>
 
-    <multiselect v-model="config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false">
-    </multiselect>
+    <multiselect :value="config" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false"></multiselect>
   
   </div>
 </template>
@@ -21,14 +20,22 @@
     data() {
       return {
         error: '',
-        config: null,
         configs: []
+      }
+    },
+    computed: {
+      config() {
+        return this.$store.state.instance
       }
     },
     created() {
       this.get_list_of_configurations()
     },
     methods: {
+      set_config(config) {
+        console.log('config', config);
+        this.$store.commit('set_instance', config)
+      },
       async get_list_of_configurations() {
         try {
           const configs = await get_configurations()

@@ -9,3 +9,13 @@ export async function get_configurations() {
   const res = await standard_handler(options)
   return res.data;
 }
+
+export async function get_configuration(_id) {
+  const options = {
+    method: 'get',
+    url: `/config/${_id}`
+  }
+
+  const res = await standard_handler(options)
+  return res.data
+}

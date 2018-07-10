@@ -25,7 +25,14 @@ export default Vue.extend({
   watch: {
     config: {
       handler() {
-        this.make_backup();
+        const got = get(this.config, this.path_name);
+
+        if (!got) {
+          console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
+        } else {
+          this.node_config = cloneDeep(got);
+          this.make_backup();
+        }
       },
       deep: true,
     },
