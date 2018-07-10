@@ -40,6 +40,7 @@
             width="500">
           <template slot-scope="scope">
             <el-button disabled icon="el-icon-upload" size="small"></el-button>
+            <el-button @click="download_layer(scope.row.name, scope.$index)" icon="el-icon-download" size="small"></el-button>
             <el-button @click="delete_layer(scope.row.name, scope.$index)" icon="el-icon-delete" size="small"></el-button>
           </template>
         </el-table-column>
@@ -64,6 +65,8 @@
   import {summarise, validate_layer_schema} from '@locational/geodata-support';
   import {TGeodataLayer, TGeodataLayerDefinition} from "@locational/geodata-support/build/module/config_types/TGeodata"
   import { EValidationStatus } from '@locational/geodata-support/build/main/config_types/TValidationResponse';
+  import download from 'downloadjs'
+
   import { geodata_cache } from '../geodata_cache'
   import { TFieldSummary } from '@locational/geodata-support/build/main/config_types/TGeodataSummary';
   import {upload_file_as_text} from '../helpers/upload_file_as_text'
@@ -115,6 +118,9 @@
         }
 
         this.emit_changes()
+      },
+      download_layer(layer_name: string, index: number) {
+        download(JSON.stringify(geodata_cache[layer_name]), `${this.instance.config_id}.${layer_name}.geojson`, "text/plain")
       },
       delete_layer(layer_name: string, index: number) {
         this.geodata_layers.splice(index, 1);
