@@ -89,8 +89,7 @@
     },
     watch: {
       async selected_config(selected_config) {
-        const c = await get_configuration(selected_config.id)
-        this.config = c
+        this.config = await get_configuration(selected_config.id)
       }
     },
     computed: {
@@ -99,6 +98,11 @@
       },
       user() {
         return this.$store.state.user
+      }
+    },
+    async mounted() {
+      if (this.selected_config) {
+        this.config = await get_configuration(this.selected_config.id)
       }
     },
     methods: {
