@@ -113,6 +113,7 @@
           // TODO: Fix: Maybe we should continue with validation and not return
           console.log('location_selection_result', location_selection_result);
 
+          // @ts-ignore
           this.validation_result = {
             errors: [{message: location_selection_result.message}],
             warnings: [],

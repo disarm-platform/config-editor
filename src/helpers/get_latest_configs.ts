@@ -27,7 +27,7 @@ function get_latest_version_of_instances(grouped_instances: any): any[] {
     //@ts-ignore
     const list_of_instances = grouped_instances[instance_name]
 
-    const sorted = list_of_instances.sort((a, b) => semver_compare(a.config_version, b.config_version))
+    const sorted = list_of_instances.sort((a: any, b: any) => semver_compare(a.config_version, b.config_version))
 
     instances.push(sorted[sorted.length - 1])
   }
