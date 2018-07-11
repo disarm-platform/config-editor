@@ -71,7 +71,7 @@
   import { geodata_cache } from '../geodata_cache'
   import { TFieldSummary } from '@locational/geodata-support/build/main/config_types/TGeodataSummary';
   import {upload_file_as_text} from '../helpers/upload_file_as_text'
-  import { get_levels, get_level } from '../lib/geodata'
+  import { get_levels, get_level, create_level } from '../lib/geodata'
 
   interface Data {
     geodata_layers: TGeodataLayer[];
@@ -95,7 +95,10 @@
     computed: {
       instance(): any {
         return this.$store.state.instance
-      }
+      },
+      config(): any {
+        return this.$store.state.config
+      },
     },
     watch: {
       instance() {
@@ -164,6 +167,12 @@
           field_summary,
         };
 
+        try {
+          await create_level(this.config.config_id, this.new_layer_name, geojson)
+        } catch (e) {
+          console.log('e', e);
+          return
+        }
         // @ts-ignore, not sure why this complains
         this.geodata_layers.push(new_layer);
 
