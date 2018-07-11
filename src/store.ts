@@ -29,6 +29,6 @@ const store = new Vuex.Store({
 });
 
 // @ts-ignore
-set_api_key(store.state.user ? store.state.user.key : "")
+set_api_key(store.state.user ? store.state.user.key : '');
 
-export default store
+export default store;

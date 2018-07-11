@@ -6,10 +6,10 @@
         Login
         <i v-if="user" class="el-icon-success"></i>
       </span>
-      <Login></Login>
+      <Login />
     </el-tab-pane>
 
-    <el-tab-pane name="instances">
+    <el-tab-pane name="instances" :disabled="!user">
       <span slot="label">
         Instances
       </span>
@@ -25,11 +25,12 @@
         v-if="config"
         :geodata_layers="geodata_layers"
         @geodata_layers="set_geodata_layers"
-      ></Geodata>
+      />
+      <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
     <el-tab-pane name="config" :disabled="!user">
-      <span slot="label" :class="{red: !config_valid}">
+      <span slot="label" :class="{red: user && !config_valid}">
         Config
         <i v-if="!config_valid" class="el-icon-error"></i>
         <i v-else class="el-icon-success"></i>
@@ -40,7 +41,8 @@
         @config_validation="set_config_validation"
         :geodata_layers="geodata_layers"
         @change="change"
-      ></Config>
+      />
+      <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
     <el-tab-pane name="publish" :disabled="!user">
@@ -53,7 +55,8 @@
         :config_valid="config_valid"
         :version="config.config_version"
         @save_config="save_config"
-      ></Publish>
+      />
+      <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
   </el-tabs>
@@ -109,7 +112,7 @@
       }
     },
     async mounted() {
-      if (this.selected_config) {
+      if (this.selected_config && this.selected_config.id) {
         const config = await get_configuration(this.selected_config.id)
         this.$store.commit('set_config', config) 
       }

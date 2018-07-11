@@ -3,7 +3,17 @@
     <p>Please select your instance below or create a new one:</p>
 
     <multiselect :value="config" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false"></multiselect>
-  
+
+
+    <div style="margin: 2em 0;">
+
+      <el-input type="text" v-model="new_instance_name">
+        <span slot="prepend">Instance name</span>
+      </el-input>
+
+      <el-button type="primary" style="margin-bottom: 1em;" @click="create_new_config">Create new config</el-button>
+
+    </div>
   </div>
 </template>
 
@@ -19,6 +29,7 @@
     components: {Multiselect},
     data() {
       return {
+        new_instance_name: '',
         error: '',
         configs: []
       }
@@ -32,6 +43,15 @@
       this.get_list_of_configurations()
     },
     methods: {
+      create_new_config() {
+        const empty_config = {
+          new_instance: true,
+          config_id: this.new_instance_name,
+          config_version: "1"
+        }
+
+        this.$store.commit('set_config', empty_config)
+      },
       set_config(config: any) {
         console.log('config', config);
         this.$store.commit('set_instance', config)
