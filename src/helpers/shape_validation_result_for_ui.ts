@@ -26,14 +26,14 @@ export function shape_validation_result(response: TUnifiedResponse): TShapedVali
   const success: TStandardEdgeResponse[] = [];
 
   const passed = response.status === EUnifiedStatus.Green;
-  
+
   if (!passed && !response.edge_messages.length) {
     // this is a schema error
     // @ts-ignore
     errors.push({
       // @ts-ignore
-      message: response.support_messages[0]
-    })
+      message: response.support_messages[0],
+    });
 
   }
 
@@ -50,7 +50,7 @@ export function shape_validation_result(response: TUnifiedResponse): TShapedVali
       case EStandardEdgeStatus.Green:
         success.push(edge_message);
         break;
-    
+
       default:
         break;
     }
@@ -62,8 +62,8 @@ export function shape_validation_result(response: TUnifiedResponse): TShapedVali
     errors,
     warnings,
     success,
-  }
-  
+  };
+
 
 
 

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate'
+import createPersistedState from 'vuex-persistedstate';
 import { set_api_key } from '@/lib/standard_handler';
 
 Vue.use(Vuex);

@@ -11,27 +11,27 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue'
-  
+import Vue from 'vue';
 
-  export default Vue.extend({
-    props: {
-      value: Object
-    },
-    methods: {
-      on_change(field_name: string, incoming_value: string) {
-        const config = this.value
 
-        if (incoming_value) {
-          config[field_name] = incoming_value
-        } else {
-          delete config[field_name]
-        }
+export default Vue.extend({
+  props: {
+    value: Object,
+  },
+  methods: {
+    on_change(field_name: string, incoming_value: string) {
+      const config = this.value;
 
-        this.$emit('input', config)
+      if (incoming_value) {
+        config[field_name] = incoming_value;
+      } else {
+        delete config[field_name];
       }
-    }
-  });
+
+      this.$emit('input', config);
+    },
+  },
+});
 </script>
 
 <style scoped>

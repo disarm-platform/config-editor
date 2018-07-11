@@ -1,4 +1,4 @@
-import { standard_handler } from '../lib/standard_handler'
+import { standard_handler } from '../lib/standard_handler';
 
 export async function login(username: string, password: string) {
   const options = {
@@ -7,8 +7,8 @@ export async function login(username: string, password: string) {
     data: {
       username,
       password,
-    }
-  }
-  const res = await standard_handler(options)
+    },
+  };
+  const res = await standard_handler(options);
   return res.data;
 }

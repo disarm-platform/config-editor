@@ -60,7 +60,7 @@ export default Vue.extend({
     path_name: String,
 
     config: Object as () => TConfig,
-    validation_result: Object as () => TShapedValidationResult
+    validation_result: Object as () => TShapedValidationResult,
   },
   data(): Data {
     return {
@@ -70,27 +70,27 @@ export default Vue.extend({
   },
   computed: {
     errors(): TStandardEdgeResponse[] {
-      return this.validation_result.errors.filter(response => {
-        return response.source_node_name === this.node_name || response.target_node_name === this.node_name
-      })
+      return this.validation_result.errors.filter((response) => {
+        return response.source_node_name === this.node_name || response.target_node_name === this.node_name;
+      });
     },
     warnings(): TStandardEdgeResponse[] {
-      return this.validation_result.warnings.filter(response => {
-        return response.source_node_name === this.node_name || response.target_node_name === this.node_name
-      })
+      return this.validation_result.warnings.filter((response) => {
+        return response.source_node_name === this.node_name || response.target_node_name === this.node_name;
+      });
     },
-    success(): TStandardEdgeResponse[]{
-      return this.validation_result.success.filter(response => {
-        return response.source_node_name === this.node_name || response.target_node_name === this.node_name
-      })
-    }
+    success(): TStandardEdgeResponse[] {
+      return this.validation_result.success.filter((response) => {
+        return response.source_node_name === this.node_name || response.target_node_name === this.node_name;
+      });
+    },
   },
   mounted() {
-    const config = this.get_node_config()
+    const config = this.get_node_config();
     if (!config) {
-      this.included = false
+      this.included = false;
     } else {
-      this.included = !!(Object.keys(config).length)
+      this.included = !!(Object.keys(config).length);
     }
   },
   methods: {

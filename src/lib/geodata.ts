@@ -1,4 +1,4 @@
-import {standard_handler} from './standard_handler'
+import {standard_handler} from './standard_handler';
 
 export async function create_level(instance: string, level: string, geojson: any) {
   const options = {
@@ -8,7 +8,7 @@ export async function create_level(instance: string, level: string, geojson: any
       ...geojson,
     },
   };
-  const res = await standard_handler(options)
+  const res = await standard_handler(options);
   return res.data;
 }
 
