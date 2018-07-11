@@ -11,6 +11,7 @@ const store = new Vuex.Store({
     config: null,
     instance: null,
     user: null,
+    creating_new_config: false,
   },
   mutations: {
     set_config(state, config) {
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
     set_instance(state, instance) {
       state.instance = instance;
     },
+    set_creating_new_config(state, creating_new_config) {
+      state.creating_new_config = creating_new_config;
+    },
   },
   actions: {
 
@@ -29,6 +33,6 @@ const store = new Vuex.Store({
 });
 
 // @ts-ignore
-set_api_key(store.state.user ? store.state.user.key : "")
+set_api_key(store.state.user ? store.state.user.key : '');
 
-export default store
+export default store;

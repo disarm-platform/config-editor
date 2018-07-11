@@ -6,7 +6,7 @@
     
     <el-alert
       v-if="config"
-      :title="`Selected instance: ${config.id}`"
+      :title="`Selected instance: ${config.config_id}@${config.config_version}`"
       type="info">
     </el-alert>
     
@@ -20,8 +20,8 @@
   import Vue from 'vue'
   export default Vue.extend({
     computed: {
-      config() {
-        return this.$store.state.instance
+      config(): any {
+        return this.$store.state.config
       } 
     }
   })

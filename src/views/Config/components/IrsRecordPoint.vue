@@ -3,7 +3,7 @@
 
     <Applet v-model="node_config" @input="emit_change"/>
 
-    <el-checkbox v-model="node_config.metadata.show">Show metadata page</el-checkbox>
+    <el-checkbox v-model="node_config.metadata.show" @input="emit_change">Show metadata page</el-checkbox>
 
     <h5>Custom fields (optional_fields)</h5>
 
@@ -41,11 +41,13 @@
     methods: {
       add(e: Event) {
         e.preventDefault()
+        // @ts-ignore
         this.node_config.metadata.optional_fields.push(this.field);
         this.field = ''
         this.emit_change()
       },
-      remove(index) {
+      remove(index: number) {
+        // @ts-ignore
         this.node_config.metadata.optional_fields.splice(index, 1)
         this.emit_change()
       },

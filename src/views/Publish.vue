@@ -35,7 +35,7 @@
   export default Vue.extend({
     props: {
       config_valid: Boolean,
-      version: Number,
+      version: String, // TODO: change later
     },
     methods: {
       save_update() {
