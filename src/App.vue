@@ -20,8 +20,8 @@
   import Vue from 'vue'
   export default Vue.extend({
     computed: {
-      config() {
-        return this.$store.state.instance
+      config(): any {
+        return this.$store.state.config
       } 
     }
   })

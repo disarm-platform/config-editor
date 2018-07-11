@@ -94,7 +94,8 @@
     },
     watch: {
       async selected_config(selected_config) {
-        if (!selected_config.id) return // if we are creating a new instance it won't have .id
+        if (!selected_config) return
+        if (this.creating_new_config) return 
 
         const config = await get_configuration(selected_config.id)
         this.$store.commit('set_config', config) 
@@ -109,13 +110,17 @@
       },
       user() {
         return this.$store.state.user
+      },
+      creating_new_config() {
+        return this.$store.state.creating_new_config
       }
     },
     async mounted() {
-      if (this.selected_config && this.selected_config.id) {
-        const config = await get_configuration(this.selected_config.id)
-        this.$store.commit('set_config', config) 
-      }
+      if (this.creating_new_config) return 
+      if (!this.selected_config) return
+
+      const config = await get_configuration(this.selected_config.id)
+      this.$store.commit('set_config', config) 
     },
     methods: {
       change(updated_config, pathname, included) {
@@ -154,7 +159,7 @@
 
         // update, so user can see change
         this.$store.commit('set_config', config_copy)
-
+        
         // send to remote
 
         // update local list / reload local lost
@@ -165,6 +170,7 @@
 
         try {
           await create_configuration(config_copy)
+          this.$store.commit('set_creating_new_config', false)
         } catch (e) {
           console.log('e', e);
         }

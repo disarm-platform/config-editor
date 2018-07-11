@@ -3,15 +3,15 @@
     <el-form>
     
       <el-form-item label="Title">
-        <el-input v-model="node_config.title"></el-input>
+        <el-input v-model="node_config.title" @input="emit_change"></el-input>
       </el-form-item>
       
       <el-form-item label="Location_name">
-        <el-input v-model="node_config.location_name"></el-input>
+        <el-input v-model="node_config.location_name" @input="emit_change"></el-input>
       </el-form-item>
       
       <el-form-item label="Slug">
-        <el-input disabled v-model="node_config.slug"></el-input>
+        <el-input disabled v-model="node_config.slug" @input="emit_change"></el-input>
       </el-form-item>
 
     </el-form>

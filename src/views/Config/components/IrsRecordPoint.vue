@@ -3,7 +3,7 @@
 
     <Applet v-model="node_config" @input="emit_change"/>
 
-    <el-checkbox v-model="node_config.metadata.show">Show metadata page</el-checkbox>
+    <el-checkbox v-model="node_config.metadata.show" @input="emit_change">Show metadata page</el-checkbox>
 
     <h5>Custom fields (optional_fields)</h5>
 

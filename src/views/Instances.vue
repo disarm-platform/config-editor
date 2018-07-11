@@ -1,13 +1,17 @@
 <template>
   <div style="height: 400px;">
-    <p>Please select your instance below or create a new one:</p>
+    <p>Please select an instance below or create a new one:</p>
 
-    <multiselect :value="config" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false"></multiselect>
+    <h3>Select instance</h3>
+
+    <multiselect :value="instance" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false"></multiselect>
 
 
     <div style="margin: 2em 0;">
 
-      <el-input type="text" v-model="new_instance_name">
+      <h3>Create new instance</h3>
+
+      <el-input type="text" v-model="new_instance_name" style="margin-bottom: 1em;">
         <span slot="prepend">Instance name</span>
       </el-input>
 
@@ -36,17 +40,25 @@
       }
     },
     computed: {
-      config(): any {
+      instance(): any {
         return this.$store.state.instance
+      },
+      config(): any {
+        return this.$store.state.config
+      },
+      creating_new_config(): any {
+        return this.$store.state.creating_new_config
       }
     },
-    created() {
+    mounted() {
       this.get_list_of_configurations()
+      if (this.creating_new_config && this.config) {
+        this.new_instance_name = this.config.config_id
+      }
     },
     methods: {
       create_new_config() {
-        const empty_config = {
-          new_instance: true,
+        const new_config = {
           config_id: this.new_instance_name,
           config_version: "1",
           map_focus: {
@@ -55,14 +67,18 @@
           applets: {
             irs_record_point: {
               metadata: {}
-            }
+            },
+            meta: {}
+          },
+          instance: {
+            slug: this.new_instance_name
           }
         }
-
-        this.$store.commit('set_config', empty_config)
+        this.$store.commit('set_creating_new_config', true)
+        this.$store.commit('set_config', new_config)
       },
       set_config(config: any) {
-        console.log('config', config);
+        this.$store.commit('set_creating_new_config', false)
         this.$store.commit('set_instance', config)
       },
       async get_list_of_configurations() {
