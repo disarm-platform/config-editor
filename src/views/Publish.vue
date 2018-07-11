@@ -14,12 +14,6 @@
       </div>
 
         <el-alert
-          class="alerts"
-          title="Unsaved changes"
-          type="warning">
-        </el-alert>
-
-        <el-alert
             class="alerts"
             v-if="!config_valid"
             title="Configuration is not valid"

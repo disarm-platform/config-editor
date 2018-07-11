@@ -4,7 +4,7 @@
     <el-tab-pane name="login">
       <span slot="label">
         Login
-        <i class="el-icon-success"></i>
+        <i v-if="user" class="el-icon-success"></i>
       </span>
       <Login></Login>
     </el-tab-pane>
@@ -12,7 +12,6 @@
     <el-tab-pane name="instances">
       <span slot="label">
         Instances
-        <i class="el-icon-success"></i>
       </span>
       <Instances ref="instances" />
     </el-tab-pane>
@@ -20,7 +19,7 @@
     <el-tab-pane name="geodata" :disabled="!user">
       <span slot="label">
         Geodata
-        <i class="el-icon-success"></i>
+        <i v-if="geodata_layers.length" class="el-icon-success"></i>
       </span>
       <Geodata
           :geodata_layers="geodata_layers"
@@ -29,9 +28,10 @@
     </el-tab-pane>
 
     <el-tab-pane name="config" :disabled="!user">
-      <span slot="label" style="color: red;">
+      <span slot="label" :class="{red: !config_valid}">
         Config
-        <i class="el-icon-error"></i>
+        <i v-if="!config_valid" class="el-icon-error"></i>
+        <i v-else class="el-icon-success"></i>
       </span>
       <Config
           :config="config"
@@ -66,7 +66,7 @@
   import Login from './views/Login.vue';
   import Instances from './views/Instances.vue';
 
-  import { get_configuration } from './lib/config'
+  import { get_configuration, create_configuration } from './lib/config'
 
   import config from './horrible_seed_data/small_valid_config.json';
 
@@ -136,7 +136,7 @@
           this.$store.commit('set_config', new_config)
         }
       },
-      save_config() {
+      async save_config() {
         const config_copy = {...this.config}
 
         // bump version number
@@ -151,7 +151,15 @@
 
         // update local list / reload local lost
         this.$refs.instances.get_list_of_configurations()
-        console.log('save_config', config_copy);
+
+        // remove _id as we want to create a new version
+        delete config_copy._id
+
+        try {
+          await create_configuration(config_copy)
+        } catch (e) {
+          console.log('e', e);
+        }
       },
       set_geodata_layers(geodata_layers) {
         this.geodata_layers = geodata_layers;
@@ -165,3 +173,8 @@
     },
   };
 </script>
+<style>
+  .red {
+    color: red
+  }
+</style>

@@ -32,7 +32,7 @@
       this.get_list_of_configurations()
     },
     methods: {
-      set_config(config) {
+      set_config(config: any) {
         console.log('config', config);
         this.$store.commit('set_instance', config)
       },
