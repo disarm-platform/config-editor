@@ -41,11 +41,13 @@
     methods: {
       add(e: Event) {
         e.preventDefault()
+        // @ts-ignore
         this.node_config.metadata.optional_fields.push(this.field);
         this.field = ''
         this.emit_change()
       },
-      remove(index) {
+      remove(index: number) {
+        // @ts-ignore
         this.node_config.metadata.optional_fields.splice(index, 1)
         this.emit_change()
       },

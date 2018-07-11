@@ -1,3 +1,4 @@
+// @ts-ignore
 import semver_compare from 'semver-compare'
 
 export function get_latest_configs(configs: any) : any[] {

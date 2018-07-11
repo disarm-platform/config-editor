@@ -19,6 +19,7 @@
 
 <script lang='ts'>
   import Vue from 'vue'
+  // @ts-ignore
   import Multiselect from 'vue-multiselect'
   import { login } from '../lib/auth'
   import { get_configurations } from '../lib/config'
@@ -35,7 +36,7 @@
       }
     },
     computed: {
-      config() {
+      config(): any {
         return this.$store.state.instance
       }
     },
@@ -47,7 +48,15 @@
         const empty_config = {
           new_instance: true,
           config_id: this.new_instance_name,
-          config_version: "1"
+          config_version: "1",
+          map_focus: {
+            centre: {}
+          },
+          applets: {
+            irs_record_point: {
+              metadata: {}
+            }
+          }
         }
 
         this.$store.commit('set_config', empty_config)

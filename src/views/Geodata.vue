@@ -65,6 +65,7 @@
   import {summarise, validate_layer_schema} from '@locational/geodata-support';
   import {TGeodataLayer, TGeodataLayerDefinition} from "@locational/geodata-support/build/module/config_types/TGeodata"
   import { EValidationStatus } from '@locational/geodata-support/build/main/config_types/TValidationResponse';
+  // @ts-ignore
   import download from 'downloadjs'
 
   import { geodata_cache } from '../geodata_cache'
@@ -72,8 +73,15 @@
   import {upload_file_as_text} from '../helpers/upload_file_as_text'
   import { get_levels, get_level } from '../lib/geodata'
 
+  interface Data {
+    geodata_layers: TGeodataLayer[];
+    new_layer_name: string;
+    file: any;
+    alert: any;
+  }
+
   export default Vue.extend({
-    data() {
+    data(): Data {
       return {
         geodata_layers: [],
         new_layer_name: '',
@@ -85,7 +93,7 @@
       };
     },
     computed: {
-      instance() {
+      instance(): any {
         return this.$store.state.instance
       }
     },
@@ -100,13 +108,14 @@
     methods: {
       async retrieve_geodata_for_instance() {
         if (!this.instance) return 
-        
+
         this.geodata_layers = []
         const levels = await get_levels(this.instance.config_id)
         for (const level_name of levels) {
           const level = await get_level(this.instance.config_id, level_name)
           
-          const geodata_layer = {
+          const geodata_layer: any = {
+            type: 'layer',
             name: level_name,
             file_name: '',
             validation_status: EValidationStatus.Red,
