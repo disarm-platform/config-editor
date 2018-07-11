@@ -31,7 +31,6 @@ export function shape_validation_result(response: TUnifiedResponse): TShapedVali
     // this is a schema error
     // @ts-ignore
     errors.push({
-      global: true,
       // @ts-ignore
       message: response.support_messages[0]
     })
