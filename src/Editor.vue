@@ -4,7 +4,7 @@
     <el-tab-pane name="login">
       <span slot="label">
         Login
-        <i class="el-icon-success"></i>
+        <i v-if="user" class="el-icon-success"></i>
       </span>
       <Login></Login>
     </el-tab-pane>
@@ -12,15 +12,14 @@
     <el-tab-pane name="instances">
       <span slot="label">
         Instances
-        <i class="el-icon-success"></i>
       </span>
-      <Instances />
+      <Instances ref="instances" />
     </el-tab-pane>
 
     <el-tab-pane name="geodata" :disabled="!user">
       <span slot="label">
         Geodata
-        <i class="el-icon-success"></i>
+        <i v-if="geodata_layers.length" class="el-icon-success"></i>
       </span>
       <Geodata
           :geodata_layers="geodata_layers"
@@ -29,9 +28,10 @@
     </el-tab-pane>
 
     <el-tab-pane name="config" :disabled="!user">
-      <span slot="label" style="color: red;">
+      <span slot="label" :class="{red: !config_valid}">
         Config
-        <i class="el-icon-error"></i>
+        <i v-if="!config_valid" class="el-icon-error"></i>
+        <i v-else class="el-icon-success"></i>
       </span>
       <Config
           :config="config"
@@ -48,7 +48,7 @@
       </span>
       <Publish
           :config_valid="config_valid"
-          :version="42"
+          :version="config.config_version"
           @save_config="save_config"
       ></Publish>
     </el-tab-pane>
@@ -66,7 +66,7 @@
   import Login from './views/Login.vue';
   import Instances from './views/Instances.vue';
 
-  import { get_configuration } from './lib/config'
+  import { get_configuration, create_configuration } from './lib/config'
 
   import config from './horrible_seed_data/small_valid_config.json';
 
@@ -82,17 +82,20 @@
       return {
         active_tab: 'login',
         config_valid: false,
-        config: null,
         geodata_layers: [],
         location_selection: null,
       };
     },
     watch: {
       async selected_config(selected_config) {
-        this.config = await get_configuration(selected_config.id)
+        const config = await get_configuration(selected_config.id)
+        this.$store.commit('set_config', config) 
       }
     },
     computed: {
+      config() {
+        return this.$store.state.config
+      },
       selected_config() {
         return this.$store.state.instance
       },
@@ -102,11 +105,15 @@
     },
     async mounted() {
       if (this.selected_config) {
-        this.config = await get_configuration(this.selected_config.id)
+        const config = await get_configuration(this.selected_config.id)
+        this.$store.commit('set_config', config) 
       }
     },
     methods: {
       change(updated_config, pathname, included) {
+        // save config to store here
+
+
         if (included) {
           // Need to use lodash.set so nested objects get updated
           // If not we end up with an object like:
@@ -120,17 +127,39 @@
           const new_config = {...this.config}
           set(new_config, pathname, updated_config)
 
-          this.config = new_config
+          this.$store.commit('set_config', new_config)
         } else {
           // use unset for same reason as above
           const new_config = {...this.config}
           unset(new_config, pathname)
           
-          this.config = new_config
+          this.$store.commit('set_config', new_config)
         }
       },
-      save_config() {
-        console.log('save_config', this.config);
+      async save_config() {
+        const config_copy = {...this.config}
+
+        // bump version number
+        // TODO: remove string and number conversions
+        const current_version = Number(config_copy.config_version)
+        config_copy.config_version = `${current_version + 1}`
+
+        // update, so user can see change
+        this.$store.commit('set_config', config_copy)
+
+        // send to remote
+
+        // update local list / reload local lost
+        this.$refs.instances.get_list_of_configurations()
+
+        // remove _id as we want to create a new version
+        delete config_copy._id
+
+        try {
+          await create_configuration(config_copy)
+        } catch (e) {
+          console.log('e', e);
+        }
       },
       set_geodata_layers(geodata_layers) {
         this.geodata_layers = geodata_layers;
@@ -144,3 +173,8 @@
     },
   };
 </script>
+<style>
+  .red {
+    color: red
+  }
+</style>

@@ -4,7 +4,7 @@
     <div v-if="!user">
       <el-alert v-if="error.length" :title="error"></el-alert>
 
-      <el-form  label-width="120px" @submit="login">
+      <el-form label-width="120px" @submit="login">
         <el-form-item label="Username">
           <el-input v-model="username"></el-input>
         </el-form-item>

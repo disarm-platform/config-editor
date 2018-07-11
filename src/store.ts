@@ -8,10 +8,14 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
+    config: null,
     instance: null,
     user: null,
   },
   mutations: {
+    set_config(state, config) {
+      state.config = config;
+    },
     set_user(state, user) {
       state.user = user;
     },
