@@ -7,17 +7,17 @@
 </template>
 
 <script lang="ts">
-  import ConfigNodeMixin from '../ConfigNodeMixin';
-  import Applet from './Applet.vue'
+import ConfigNodeMixin from '../ConfigNodeMixin';
+import Applet from './Applet.vue';
 
-  export default ConfigNodeMixin.extend({
-    components: {Applet},
-    methods: {
-      emit_change() {
-        this.$emit('change')
-      }
-    }
-  });
+export default ConfigNodeMixin.extend({
+  components: {Applet},
+  methods: {
+    emit_change() {
+      this.$emit('change');
+    },
+  },
+});
 </script>
 
 <style scoped>

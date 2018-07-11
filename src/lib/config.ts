@@ -9,7 +9,7 @@ export async function create_configuration(config_data: any) {
     url: '/config',
   };
 
-  const res = await standard_handler(options)
+  const res = await standard_handler(options);
   return res.data;
 }
 
@@ -19,7 +19,7 @@ export async function get_configurations() {
     url: '/config',
   };
 
-  const res = await standard_handler(options)
+  const res = await standard_handler(options);
   return res.data;
 }
 

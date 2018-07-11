@@ -31,39 +31,39 @@
 </template>
 
 <script lang='ts'>
-  import Vue from 'vue'
-  import { login } from '../lib/auth'
-  import { set_api_key } from '@/lib/standard_handler';
+import Vue from 'vue';
+import { login } from '../lib/auth';
+import { set_api_key } from '@/lib/standard_handler';
 
-  export default Vue.extend({
-    data() {
-      return {
-        error: '',
-        username: '',
-        password: ''
+export default Vue.extend({
+  data() {
+    return {
+      error: '',
+      username: '',
+      password: '',
+    };
+  },
+  computed: {
+    user(): any {
+      return this.$store.state.user;
+    },
+  },
+  methods: {
+    async login() {
+      this.error = '';
+      try {
+        const user = await login(this.username, this.password);
+        set_api_key(user.key);
+        this.$store.commit('set_user', user);
+      } catch (e) {
+        this.error = e.message;
       }
     },
-    computed: {
-      user(): any {
-        return this.$store.state.user
-      }
+    logout() {
+      this.$store.commit('set_user', null);
     },
-    methods: {
-      async login() {
-        this.error = ''
-        try {
-          const user = await login(this.username, this.password)
-          set_api_key(user.key)
-          this.$store.commit('set_user', user)
-        } catch (e) {
-          this.error = e.message
-        }
-      },
-      logout() {
-        this.$store.commit('set_user', null)
-      }
-    }
-  })
+  },
+});
 </script>
 
 <style lang="scss">

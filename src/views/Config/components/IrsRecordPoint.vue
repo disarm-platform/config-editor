@@ -28,34 +28,34 @@
 </template>
 
 <script lang="ts">
-  import ConfigNodeMixin from '../ConfigNodeMixin';
-  import Applet from './Applet.vue'
+import ConfigNodeMixin from '../ConfigNodeMixin';
+import Applet from './Applet.vue';
 
-  export default ConfigNodeMixin.extend({
-    components: {Applet},
-    data() {
-      return {
-        field: ''
-      }
+export default ConfigNodeMixin.extend({
+  components: {Applet},
+  data() {
+    return {
+      field: '',
+    };
+  },
+  methods: {
+    add(e: Event) {
+      e.preventDefault();
+      // @ts-ignore
+      this.node_config.metadata.optional_fields.push(this.field);
+      this.field = '';
+      this.emit_change();
     },
-    methods: {
-      add(e: Event) {
-        e.preventDefault()
-        // @ts-ignore
-        this.node_config.metadata.optional_fields.push(this.field);
-        this.field = ''
-        this.emit_change()
-      },
-      remove(index: number) {
-        // @ts-ignore
-        this.node_config.metadata.optional_fields.splice(index, 1)
-        this.emit_change()
-      },
-      emit_change() {
-        this.$emit('change')
-      }
-    }
-  });
+    remove(index: number) {
+      // @ts-ignore
+      this.node_config.metadata.optional_fields.splice(index, 1);
+      this.emit_change();
+    },
+    emit_change() {
+      this.$emit('change');
+    },
+  },
+});
 </script>
 
 <style scoped>

@@ -17,14 +17,14 @@
   </el-container>
 </template>
 <script lang="ts">
-  import Vue from 'vue'
-  export default Vue.extend({
-    computed: {
-      config(): any {
-        return this.$store.state.config
-      } 
-    }
-  })
+import Vue from 'vue';
+export default Vue.extend({
+  computed: {
+    config(): any {
+      return this.$store.state.config;
+    },
+  },
+});
 </script>
 
 
