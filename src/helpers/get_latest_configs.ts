@@ -15,7 +15,6 @@ function get_unique_instances_from_configs(configs: any) {
     }
     return acc
   }, {})
-  console.log('grouped', grouped);
   return grouped
 }
 
@@ -31,6 +30,5 @@ function get_latest_version_of_instances(grouped_instances: any): any[] {
 
     instances.push(sorted[sorted.length - 1])
   }
-  console.log('instances', instances);
   return instances
 }

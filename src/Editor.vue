@@ -22,8 +22,9 @@
         <i v-if="geodata_layers.length" class="el-icon-success"></i>
       </span>
       <Geodata
-          :geodata_layers="geodata_layers"
-          @geodata_layers="set_geodata_layers"
+        v-if="config"
+        :geodata_layers="geodata_layers"
+        @geodata_layers="set_geodata_layers"
       ></Geodata>
     </el-tab-pane>
 
@@ -34,10 +35,11 @@
         <i v-else class="el-icon-success"></i>
       </span>
       <Config
-          :config="config"
-          @config_validation="set_config_validation"
-          :geodata_layers="geodata_layers"
-          @change="change"
+        v-if="config"
+        :config="config"
+        @config_validation="set_config_validation"
+        :geodata_layers="geodata_layers"
+        @change="change"
       ></Config>
     </el-tab-pane>
 
@@ -47,9 +49,10 @@
         <i class="el-icon-edit"></i>
       </span>
       <Publish
-          :config_valid="config_valid"
-          :version="config.config_version"
-          @save_config="save_config"
+        v-if="config"
+        :config_valid="config_valid"
+        :version="config.config_version"
+        @save_config="save_config"
       ></Publish>
     </el-tab-pane>
 
@@ -88,6 +91,8 @@
     },
     watch: {
       async selected_config(selected_config) {
+        if (!selected_config.id) return // if we are creating a new instance it won't have .id
+
         const config = await get_configuration(selected_config.id)
         this.$store.commit('set_config', config) 
       }

@@ -99,6 +99,8 @@
     },
     methods: {
       async retrieve_geodata_for_instance() {
+        if (!this.instance) return 
+        
         this.geodata_layers = []
         const levels = await get_levels(this.instance.config_id)
         for (const level_name of levels) {
