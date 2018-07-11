@@ -142,11 +142,8 @@
           return
         }
 
-        // TODO: 6. Send validation result to parent component
-
-        
-        // console.log('validate_config', config);
-        return;
+        // 6. Send validation result to parent component
+        this.$emit('config_validation', true)
       },
     },
   });

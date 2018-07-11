@@ -14,7 +14,7 @@
         Instances
         <i class="el-icon-success"></i>
       </span>
-      <Instances />
+      <Instances ref="instances" />
     </el-tab-pane>
 
     <el-tab-pane name="geodata" :disabled="!user">
@@ -48,7 +48,7 @@
       </span>
       <Publish
           :config_valid="config_valid"
-          :version="42"
+          :version="config.config_version"
           @save_config="save_config"
       ></Publish>
     </el-tab-pane>
@@ -137,7 +137,21 @@
         }
       },
       save_config() {
-        console.log('save_config', this.config);
+        const config_copy = {...this.config}
+
+        // bump version number
+        // TODO: remove string and number conversions
+        const current_version = Number(config_copy.config_version)
+        config_copy.config_version = `${current_version + 1}`
+
+        // update, so user can see change
+        this.$store.commit('set_config', config_copy)
+
+        // send to remote
+
+        // update local list / reload local lost
+        this.$refs.instances.get_list_of_configurations()
+        console.log('save_config', config_copy);
       },
       set_geodata_layers(geodata_layers) {
         this.geodata_layers = geodata_layers;
