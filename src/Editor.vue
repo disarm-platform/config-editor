@@ -82,17 +82,20 @@
       return {
         active_tab: 'login',
         config_valid: false,
-        config: null,
         geodata_layers: [],
         location_selection: null,
       };
     },
     watch: {
       async selected_config(selected_config) {
-        this.config = await get_configuration(selected_config.id)
+        const config = await get_configuration(selected_config.id)
+        this.$store.commit('set_config', config) 
       }
     },
     computed: {
+      config() {
+        return this.$store.state.config
+      },
       selected_config() {
         return this.$store.state.instance
       },
@@ -102,11 +105,15 @@
     },
     async mounted() {
       if (this.selected_config) {
-        this.config = await get_configuration(this.selected_config.id)
+        const config = await get_configuration(this.selected_config.id)
+        this.$store.commit('set_config', config) 
       }
     },
     methods: {
       change(updated_config, pathname, included) {
+        // save config to store here
+
+
         if (included) {
           // Need to use lodash.set so nested objects get updated
           // If not we end up with an object like:
@@ -120,13 +127,13 @@
           const new_config = {...this.config}
           set(new_config, pathname, updated_config)
 
-          this.config = new_config
+          this.$store.commit('set_config', new_config)
         } else {
           // use unset for same reason as above
           const new_config = {...this.config}
           unset(new_config, pathname)
           
-          this.config = new_config
+          this.$store.commit('set_config', new_config)
         }
       },
       save_config() {
