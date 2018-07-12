@@ -28,7 +28,6 @@ import Multiselect from 'vue-multiselect';
 import { login } from '../lib/auth';
 import { get_configurations } from '../lib/config';
 import { set_api_key } from '../lib/standard_handler';
-import { get_latest_configs } from '../helpers/get_latest_configs';
 
 export default Vue.extend({
   components: {Multiselect},
@@ -87,6 +86,10 @@ export default Vue.extend({
         this.configs = configs.map((a: any) => {
           a.id = `${a.config_id}@${a.config_version}`;
           return a;
+        }).sort((a: any, b: any) => {
+          if (a.id < b.id) return -1;
+          if (a.id > b.id) return 1;
+          return 0;
         });
       } catch (e) {
         this.error = e.message;
