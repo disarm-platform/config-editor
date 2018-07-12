@@ -12,7 +12,7 @@
     </div>
 
     <el-alert
-      v-if="config"
+      v-if="user && config"
       :title="`Selected instance: ${config.config_id}@${config.config_version}`"
       type="info">
     </el-alert>
