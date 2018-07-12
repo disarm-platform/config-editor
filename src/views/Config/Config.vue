@@ -32,8 +32,12 @@
             v-if="config"
             v-for="{display_name, component_name, node_name, path_name, show_include} in component_defs"
             :key='component_name'
-            :label="display_name"
         >
+          <span slot="label">
+            {{display_name}}
+            <i class="el-icon-success"></i>
+            <i class="el-icon-error"></i>
+          </span>
           <ConfigComponentWrapper
 
               :display_name="display_name"
