@@ -57,6 +57,7 @@
 <script>
 import { set, unset } from 'lodash';
 import Vue from 'vue';
+import download from 'downloadjs'
 
 import Geodata from './views/Geodata.vue';
 import Config from './views/Config/Config.vue';
@@ -165,7 +166,8 @@ export default {
       delete config_copy._id;
 
       try {
-        await create_configuration(config_copy);
+        // await create_configuration(config_copy);
+        download(JSON.stringify(config_copy), `${config_copy.config_id}.config.json`, 'text/plain');
         this.$store.commit('set_creating_new_config', false);
       } catch (e) {
         console.log('e', e);
