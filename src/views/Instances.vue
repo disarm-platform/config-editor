@@ -1,10 +1,10 @@
 <template>
-  <div style="height: 400px;">
+  <div style="height: 500px;">
     <p>Please select an instance below or create a new one:</p>
 
     <h3>Select instance</h3>
 
-    <multiselect :value="instance" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false"></multiselect>
+    <multiselect :value="instance" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :allow-empty="false"></multiselect>
 
 
     <div style="margin: 2em 0;">
@@ -84,8 +84,7 @@ export default Vue.extend({
     async get_list_of_configurations() {
       try {
         const configs = await get_configurations();
-        // @ts-ignore
-        this.configs = get_latest_configs(configs).map((a) => {
+        this.configs = configs.map((a: any) => {
           a.id = `${a.config_id}@${a.config_version}`;
           return a;
         });
