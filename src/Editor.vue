@@ -1,22 +1,14 @@
 <template>
   <el-tabs v-model="active_tab" type="border-card">
 
-    <el-tab-pane name="login">
-      <span slot="label">
-        Login
-        <i v-if="user" class="el-icon-success"></i>
-      </span>
-      <Login />
-    </el-tab-pane>
-
-    <el-tab-pane name="instances" :disabled="!user">
+    <el-tab-pane name="instances">
       <span slot="label">
         Instances
       </span>
       <Instances ref="instances" />
     </el-tab-pane>
 
-    <el-tab-pane name="geodata" :disabled="!user">
+    <el-tab-pane name="geodata">
       <span slot="label">
         Geodata
         <i v-if="geodata_layers.length" class="el-icon-success"></i>
@@ -29,8 +21,8 @@
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
-    <el-tab-pane name="config" :disabled="!user">
-      <span slot="label" :class="{red: user && !config_valid}">
+    <el-tab-pane name="config">
+      <span slot="label" :class="{red: !config_valid}">
         Config
         <i v-if="!config_valid" class="el-icon-error"></i>
         <i v-else class="el-icon-success"></i>
@@ -45,7 +37,7 @@
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
-    <el-tab-pane name="publish" :disabled="!user">
+    <el-tab-pane name="publish">
       <span slot="label">
         Publish
         <i class="el-icon-edit"></i>
@@ -86,7 +78,7 @@ export default {
   },
   data() {
     return {
-      active_tab: 'login',
+      active_tab: 'instances',
       config_valid: false,
       geodata_layers: [],
       location_selection: null,
@@ -111,9 +103,6 @@ export default {
     },
     selected_config() {
       return this.$store.state.instance;
-    },
-    user() {
-      return this.$store.state.user;
     },
     creating_new_config() {
       return this.$store.state.creating_new_config;

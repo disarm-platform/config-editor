@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Editor from './Editor.vue';
+import Login from './views/Login.vue';
+import store from './store'
 
 Vue.use(Router);
 
@@ -10,6 +12,23 @@ export default new Router({
       path: '/',
       name: 'editor',
       component: Editor,
+      beforeEnter(to, from , next) {
+        if (!store.state.user) {
+          return next('/login')
+        }
+        next()
+      }
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
+      beforeEnter(to, from, next) {
+        if (store.state.user) {
+          return next(false)
+        }
+        next()
+      }
+    }
   ],
 });
