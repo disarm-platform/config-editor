@@ -30,7 +30,7 @@
       <el-tabs tab-position="left" style="height: 800px; overflow: scroll;">
         <el-tab-pane
             v-if="config"
-            v-for="{display_name, component_name, node_name, path_name} in component_defs"
+            v-for="{display_name, component_name, node_name, path_name, show_include} in component_defs"
             :key='component_name'
             :label="display_name"
         >
@@ -41,6 +41,7 @@
               :node_name="node_name"
               :path_name="path_name"
               :component_name="component_name"
+              :show_include="show_include"
 
               :validation_result="validation_result"
               @change="handle_change"

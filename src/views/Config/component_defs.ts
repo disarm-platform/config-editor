@@ -18,6 +18,7 @@ export interface ComponentDefinition {
   node_name: string;
   path_name: string;
   component: VueConstructor;
+  show_include?: boolean;
 }
 
 export interface ComponentList {
@@ -52,6 +53,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'irs_monitor',
     path_name: 'applets.irs_monitor',
     component: IrsMonitor,
+    show_include: true,
   },
   {
     display_name: 'Plan',
@@ -59,6 +61,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'irs_plan',
     path_name: 'applets.irs_plan',
     component: IrsPlan,
+    show_include: true,
   },
   {
     display_name: 'Record (point)',
@@ -66,6 +69,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'irs_record_point',
     path_name: 'applets.irs_record_point',
     component: IrsRecordPoint,
+    show_include: true,
   },
   {
     display_name: 'Tasker',
@@ -73,6 +77,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'irs_tasker',
     path_name: 'applets.irs_tasker',
     component: IrsTasker,
+    show_include: true,
   },
   {
     display_name: 'Form',
