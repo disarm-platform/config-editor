@@ -5,7 +5,7 @@
       <span slot="label">
         Instances
       </span>
-      <Instances ref="instances" />
+      <Instances ref="instances"/>
     </el-tab-pane>
 
     <el-tab-pane name="geodata">
@@ -15,10 +15,10 @@
         <i v-else class="el-icon-success"></i>
       </span>
       <Geodata
-        v-if="config"
-        :geodata_errors="geodata_errors"
-        :geodata_layers="geodata_layers"
-        @geodata_layers="set_geodata_layers"
+          v-if="config"
+          :geodata_errors="geodata_errors"
+          :geodata_layers="geodata_layers"
+          @geodata_layers="set_geodata_layers"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
@@ -30,10 +30,10 @@
         <i v-else class="el-icon-success"></i>
       </span>
       <Config
-        v-if="config"
-        :config="config"
-        :geodata_layers="geodata_layers"
-        @change="change"
+          v-if="config"
+          :config="config"
+          :geodata_layers="geodata_layers"
+          @change="change"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
@@ -44,10 +44,10 @@
         <i class="el-icon-edit"></i>
       </span>
       <Publish
-        v-if="config"
-        :config_valid="validation_result.passed"
-        :version="config.config_version"
-        @save_config="save_config"
+          v-if="config"
+          :config_valid="validation_result.passed"
+          :version="config.config_version"
+          @save_config="save_config"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
