@@ -48,7 +48,7 @@
 
 <script lang='ts'>
 import Vue from 'vue';
-import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
+import { ValidationStatus } from '@/store';
 
 export default Vue.extend({
   props: {
@@ -56,13 +56,16 @@ export default Vue.extend({
   },
   computed: {
     config_valid(): boolean {
-    return this.$store.state.validation_result.passed === ValidationStatus.Valid;
+      return false
+    // return this.$store.state.validation_result.passed === ValidationStatus.Valid;
     },
     config_invalid(): boolean {
-      return this.$store.state.validation_result.passed === ValidationStatus.Invalid;
+      return false
+      // return this.$store.state.validation_result.passed === ValidationStatus.Invalid;
     },
     config_not_validated(): boolean {
-      return this.$store.state.validation_result.passed === ValidationStatus.NotValidated;
+      return false
+      // return this.$store.state.validation_result.passed === ValidationStatus.NotValidated;
     },
   },
   methods: {

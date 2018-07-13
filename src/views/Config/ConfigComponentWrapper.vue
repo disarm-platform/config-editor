@@ -6,7 +6,7 @@
       <el-checkbox v-if="show_include" v-model="included" @change="save" style="margin-top: 0.5em;margin-bottom: 1em;">Include</el-checkbox>
     </div>
 
-    <ComponentMessages :errors="errors" :warnings="warnings" :success="success"/>
+    <ComponentMessages :validation_result="validation_result" :node_name="node_name"/>
 
     <!-- Component itself -->
     <component
@@ -36,7 +36,6 @@ import {TConfig} from '@locational/config-validation/build/module/lib/config_typ
 import ComponentMessages from './ComponentMessages.vue';
 import ComponentActions from './ComponentActions.vue';
 import {component_list} from '@/views/Config/component_defs';
-import { TShapedValidationResult } from '@/helpers/shape_validation_result_for_ui';
 import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 interface NodeComponent extends Vue {
@@ -60,30 +59,13 @@ export default Vue.extend({
     path_name: String,
 
     config: Object as () => TConfig,
-    validation_result: Object as () => TShapedValidationResult,
+    validation_result: Object as () => any,
   },
   data(): Data {
     return {
       messages: [],
       included: true,
     };
-  },
-  computed: {
-    errors(): TStandardEdgeResponse[] {
-      return this.validation_result.errors.filter((response) => {
-        return response.source_node_name === this.node_name || response.target_node_name === this.node_name;
-      });
-    },
-    warnings(): TStandardEdgeResponse[] {
-      return this.validation_result.warnings.filter((response) => {
-        return response.source_node_name === this.node_name || response.target_node_name === this.node_name;
-      });
-    },
-    success(): TStandardEdgeResponse[] {
-      return this.validation_result.success.filter((response) => {
-        return response.source_node_name === this.node_name || response.target_node_name === this.node_name;
-      });
-    },
   },
   mounted() {
     if (!this.show_include) {

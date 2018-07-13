@@ -26,9 +26,9 @@
             v-for="{display_name, component_name, node_name, path_name, show_include} in component_defs"
             :key='component_name'
         >
-          <span slot="label" :class="{red: errors(node_name).length}">
+          <span slot="label" :class="{red: false}">
             {{display_name}}
-            <i class="el-icon-success" v-if="!errors(node_name).length"></i>
+            <i class="el-icon-success" v-if="!false"></i>
             <i class="el-icon-error" v-else></i>
           </span>
           <ConfigComponentWrapper
@@ -54,7 +54,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {shape_validation_result, TShapedValidationResult, ValidationStatus} from '../../helpers/shape_validation_result_for_ui';
 import {component_defs, component_list, ComponentDefinition} from '@/views/Config/component_defs';
 import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
@@ -65,6 +64,7 @@ import { generate_location_selection } from '@locational/geodata-support';
 import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
 import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
 import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+import { ValidationStatus } from '@/store';
 
 export interface Data {
   validation_result_message: string;
@@ -88,7 +88,8 @@ export default Vue.extend({
       return this.$store.state.validation_result;
     },
     config_valid(): any {
-      return this.$store.state.validation_result.passed === ValidationStatus.Valid;
+      return false
+      // return this.$store.state.validation_result.passed === ValidationStatus.Valid;
     },
   },
   watch: {
@@ -97,21 +98,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    errors(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.errors.filter((response: any) => {
-        return response.source_node_name === node_name || response.target_node_name === node_name;
-      });
-    },
-    warnings(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.warnings.filter((response: any) => {
-        return response.source_node_name === node_name || response.target_node_name === node_name;
-      });
-    },
-    success(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.success.filter((response: any) => {
-        return response.source_node_name === node_name || response.target_node_name === node_name;
-      });
-    },
     handle_change(updated_config: {}, path_name: string, included: boolean) {
       this.$emit('change', updated_config, path_name, included);
     },
@@ -132,7 +118,6 @@ export default Vue.extend({
       const validation_result = validate(config);
 
       // 4. Shape validation result for consumption
-      const shaped_result = shape_validation_result(validation_result);
       if (location_selection_result && location_selection_result.status === EValidationStatus.Red) {
 
         // complicated way to get proper description of error messages
@@ -149,12 +134,12 @@ export default Vue.extend({
           support_messages: location_selection_result.support_messages,
         };
 
-        shaped_result.errors.push(lc_result);
-        shaped_result.passed = ValidationStatus.Invalid;
+        // shaped_result.errors.push(lc_result);
+        // shaped_result.passed = ValidationStatus.Invalid;
       }
-      console.log('shaped_result', shaped_result);
+      // console.log('shaped_result', shaped_result);
 
-      this.$store.commit('set_validation_result', shaped_result);
+      this.$store.commit('set_validation_result', validation_result);
     },
   },
 });

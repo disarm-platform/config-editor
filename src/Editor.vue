@@ -9,15 +9,15 @@
     </el-tab-pane>
 
     <el-tab-pane name="geodata">
-      <span slot="label" :class="{red: geodata_errors.length && config_invalid}">
+      <span slot="label" :class="{red: [].length && config_invalid}">
         Geodata
-        <i v-if="geodata_errors.length && config_invalid" class="el-icon-error"></i>
+        <i v-if="[].length && config_invalid" class="el-icon-error"></i>
         <i v-if="config_valid" class="el-icon-success"></i>
         <i v-if="config_not_validated"></i>
       </span>
       <Geodata
           v-if="config"
-          :geodata_errors="geodata_errors"
+          :geodata_errors="[]"
           :geodata_layers="geodata_layers"
           @geodata_layers="set_geodata_layers"
       />
@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+  import Vue from 'vue';
   import {set, unset} from 'lodash';
   // @ts-ignore
   import download from 'downloadjs';
@@ -69,9 +69,9 @@ import Vue from 'vue';
   import Instances from './views/Instances.vue';
 
   import {get_configuration} from './lib/config';
-  import {ValidationStatus} from '@/helpers/shape_validation_result_for_ui';
   import { TGeodataLayer } from '@locational/geodata-support/build/module/config_types/TGeodata';
   import { TLocationSelection } from '@locational/geodata-support/build/main/config_types/TLocationSelection';
+  import { ValidationStatus } from '@/store';
 
 
   interface Data {
@@ -115,20 +115,23 @@ import Vue from 'vue';
       validation_result(): any {
         return this.$store.state.validation_result;
       },
-      geodata_errors(): any {
-        const node_name = 'geodata';
-        return this.$store.state.validation_result.errors.filter((response: any) => {
-          return response.source_node_name === node_name || response.target_node_name === node_name;
-        });
-      },
+      // geodata_errors(): any {
+      //   const node_name = 'geodata';
+      //   return this.$store.state.validation_result.errors.filter((response: any) => {
+      //     return response.source_node_name === node_name || response.target_node_name === node_name;
+      //   });
+      // },
       config_valid(): any {
-        return this.validation_result.passed === ValidationStatus.Valid;
+        return false;
+        // return this.validation_result.passed === ValidationStatus.Valid;
       },
       config_invalid(): any {
-        return this.validation_result.passed === ValidationStatus.Invalid;
+        return false;
+        // return this.validation_result.passed === ValidationStatus.Invalid;
       },
       config_not_validated(): any {
-        return this.validation_result.passed === ValidationStatus.NotValidated;
+        return false;
+        // return this.validation_result.passed === ValidationStatus.NotValidated;
       },
     },
     async mounted() {
