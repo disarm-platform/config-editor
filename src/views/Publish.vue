@@ -47,30 +47,30 @@
 </template>
 
 <script lang='ts'>
-  import Vue from 'vue';
-  import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
+import Vue from 'vue';
+import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
 
-  export default Vue.extend({
-    props: {
-      version: String, // TODO: change later
+export default Vue.extend({
+  props: {
+    version: String, // TODO: change later
+  },
+  computed: {
+    config_valid(): boolean {
+    return this.$store.state.validation_result.passed === ValidationStatus.Valid;
     },
-    computed: {
-      config_valid(): boolean {
-      return this.$store.state.validation_result.passed === ValidationStatus.Valid
-      },
-      config_invalid(): boolean {
-        return this.$store.state.validation_result.passed === ValidationStatus.Invalid
-      },
-      config_not_validated(): boolean {
-        return this.$store.state.validation_result.passed === ValidationStatus.NotValidated
-      },
+    config_invalid(): boolean {
+      return this.$store.state.validation_result.passed === ValidationStatus.Invalid;
     },
-    methods: {
-      save_update() {
-        this.$emit('save_config');
-      },
+    config_not_validated(): boolean {
+      return this.$store.state.validation_result.passed === ValidationStatus.NotValidated;
     },
-  });
+  },
+  methods: {
+    save_update() {
+      this.$emit('save_config');
+    },
+  },
+});
 </script>
 <style>
   .alerts {

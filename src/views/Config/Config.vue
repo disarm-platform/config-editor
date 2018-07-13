@@ -85,15 +85,15 @@ export default Vue.extend({
   },
   computed: {
     validation_result(): any {
-      return this.$store.state.validation_result
+      return this.$store.state.validation_result;
     },
     config_valid(): any {
-      return this.$store.state.validation_result.passed === ValidationStatus.Valid
+      return this.$store.state.validation_result.passed === ValidationStatus.Valid;
     },
   },
   watch: {
     config() {
-      this.$store.commit('reset_validation_result')
+      this.$store.commit('reset_validation_result');
     },
   },
   methods: {
@@ -117,7 +117,7 @@ export default Vue.extend({
     },
     validate_config() {
       // 0. Reset old validation result
-      this.$store.commit('reset_validation_result')
+      this.$store.commit('reset_validation_result');
 
       // 1. Attempt to create location_selection, if needed for full validation
       const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
@@ -136,25 +136,25 @@ export default Vue.extend({
       if (location_selection_result && location_selection_result.status === EValidationStatus.Red) {
 
         // complicated way to get proper description of error messages
-        const message = `${location_selection_result.message} ${location_selection_result.support_messages && location_selection_result.support_messages.length ? location_selection_result.support_messages.join(' ') : ''}`
+        const message = `${location_selection_result.message} ${location_selection_result.support_messages && location_selection_result.support_messages.length ? location_selection_result.support_messages.join(' ') : ''}`;
 
         const lc_result: TStandardEdgeResponse = {
           status: EStandardEdgeStatus.Red,
-          message: message,
+          message,
           source_node_name: 'spatial_hierarchy',
           target_node_name: 'geodata',
           relationship_hint: 'fields exist',
           required: true,
           custom_edge_responses: [],
           support_messages: location_selection_result.support_messages,
-        }
+        };
 
-        shaped_result.errors.push(lc_result)
-        shaped_result.passed = ValidationStatus.Invalid
+        shaped_result.errors.push(lc_result);
+        shaped_result.passed = ValidationStatus.Invalid;
       }
       console.log('shaped_result', shaped_result);
 
-      this.$store.commit('set_validation_result', shaped_result)
+      this.$store.commit('set_validation_result', shaped_result);
     },
   },
 });

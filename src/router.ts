@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Editor from './Editor.vue';
 import Login from './views/Login.vue';
-import store from './store'
+import store from './store';
 
 Vue.use(Router);
 
@@ -14,10 +14,10 @@ export default new Router({
       component: Editor,
       beforeEnter(to, from , next) {
         if (!store.state.user) {
-          return next('/login')
+          return next('/login');
         }
-        next()
-      }
+        next();
+      },
     },
     {
       path: '/login',
@@ -25,10 +25,10 @@ export default new Router({
       component: Login,
       beforeEnter(to, from, next) {
         if (store.state.user) {
-          return next(false)
+          return next(false);
         }
-        next()
-      }
-    }
+        next();
+      },
+    },
   ],
 });

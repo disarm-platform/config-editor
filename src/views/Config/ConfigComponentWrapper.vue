@@ -87,8 +87,8 @@ export default Vue.extend({
   },
   mounted() {
     if (!this.show_include) {
-      this.included = true
-      return
+      this.included = true;
+      return;
     }
     const config = this.get_node_config();
     if (!config) {
