@@ -13,7 +13,8 @@
 
       <div>
         <el-alert
-          v-if="validation_result.passed"
+          :closable="false"
+          v-if="config_valid"
           title="Validations passed"
           type="success">
         </el-alert>
@@ -53,7 +54,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {shape_validation_result, TShapedValidationResult} from '../../helpers/shape_validation_result_for_ui';
+import {shape_validation_result, TShapedValidationResult, ValidationStatus} from '../../helpers/shape_validation_result_for_ui';
 import {component_defs, component_list, ComponentDefinition} from '@/views/Config/component_defs';
 import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
@@ -85,7 +86,10 @@ export default Vue.extend({
   computed: {
     validation_result(): any {
       return this.$store.state.validation_result
-    }
+    },
+    config_valid(): any {
+      return this.$store.state.validation_result.passed === ValidationStatus.Valid
+    },
   },
   watch: {
     config() {
@@ -146,20 +150,11 @@ export default Vue.extend({
         }
 
         shaped_result.errors.push(lc_result)
-        shaped_result.passed = false
+        shaped_result.passed = ValidationStatus.Invalid
       }
       console.log('shaped_result', shaped_result);
 
       this.$store.commit('set_validation_result', shaped_result)
-
-      // 5. Emit errors if any
-
-      if (!shaped_result.passed) {
-        return;
-      }
-
-      // 6. Send validation result to parent component
-      this.$emit('config_validation', true);
     },
   },
 });

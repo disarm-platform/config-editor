@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { set_api_key } from '@/lib/standard_handler';
+import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
 
 Vue.use(Vuex);
 
@@ -15,7 +16,7 @@ const store = new Vuex.Store({
     user: null,
     creating_new_config: false,
     validation_result: {
-      passed: false,
+      passed: ValidationStatus.NotValidated,
       errors: [],
       warnings: [],
       success: [],
@@ -39,7 +40,7 @@ const store = new Vuex.Store({
     },
     reset_validation_result(state, validation_result) {
       state.validation_result = {
-        passed: false,
+        passed: ValidationStatus.NotValidated,
         errors: [],
         warnings: [],
         success: [],

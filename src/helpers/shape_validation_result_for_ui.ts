@@ -6,8 +6,14 @@
 import {TUnifiedResponse, EUnifiedStatus} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
+export enum ValidationStatus {
+  Invalid = 'Invalid',
+  NotValidated = 'Not validated',
+  Valid = 'Valid',
+}
+
 export interface TShapedValidationResult {
-  passed: boolean;
+  passed: ValidationStatus;
   // stop validation from passing
   errors: TStandardEdgeResponse[];
 
@@ -25,7 +31,7 @@ export function shape_validation_result(response: TUnifiedResponse): TShapedVali
   const warnings: TStandardEdgeResponse[] = [];
   const success: TStandardEdgeResponse[] = [];
 
-  const passed = response.status === EUnifiedStatus.Green;
+  const passed = response.status === EUnifiedStatus.Green ? ValidationStatus.Valid : ValidationStatus.Invalid;
 
   if (!passed && !response.edge_messages.length) {
     // this is a schema error
