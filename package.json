@@ -10,6 +10,7 @@
   "dependencies": {
     "@locational/config-validation": "0.0.1",
     "@locational/geodata-support": "0.0.10",
+    "@types/downloadjs": "^1.4.0",
     "axios": "^0.18.0",
     "downloadjs": "^1.4.7",
     "element-ui": "^2.4.1",
