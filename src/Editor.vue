@@ -9,10 +9,11 @@
     </el-tab-pane>
 
     <el-tab-pane name="geodata">
-      <span slot="label" :class="{red: geodata_errors.length}">
+      <span slot="label" :class="{red: geodata_errors.length && config_invalid}">
         Geodata
-        <i v-if="geodata_errors.length" class="el-icon-error"></i>
-        <i v-else class="el-icon-success"></i>
+        <i v-if="geodata_errors.length && config_invalid" class="el-icon-error"></i>
+        <i v-if="config_valid" class="el-icon-success"></i>
+        <i v-if="config_not_validated"></i>
       </span>
       <Geodata
         v-if="config"
@@ -24,10 +25,11 @@
     </el-tab-pane>
 
     <el-tab-pane name="config">
-      <span slot="label" :class="{red: !validation_result.passed}">
+      <span slot="label" :class="{red: config_invalid}">
         Config
-        <i v-if="!validation_result.passed" class="el-icon-error"></i>
-        <i v-else class="el-icon-success"></i>
+        <i v-if="config_invalid" class="el-icon-error"></i>
+        <i v-if="config_valid" class="el-icon-success"></i>
+        <i v-if="config_not_validated"></i>
       </span>
       <Config
         v-if="config"
@@ -69,6 +71,7 @@ import Instances from './views/Instances.vue';
 import { get_configuration, create_configuration } from './lib/config';
 
 import config from './horrible_seed_data/small_valid_config.json';
+import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
 
 export default {
   components: {
@@ -81,7 +84,6 @@ export default {
   data() {
     return {
       active_tab: 'instances',
-      config_valid: false,
       geodata_layers: [],
       location_selection: null,
     };
@@ -117,7 +119,16 @@ export default {
       return this.$store.state.validation_result.errors.filter((response) => {
         return response.source_node_name === node_name || response.target_node_name === node_name;
       });
-    }
+    },
+    config_valid() {
+      return this.validation_result.passed === ValidationStatus.Valid
+    },
+    config_invalid() {
+      return this.validation_result.passed === ValidationStatus.Invalid
+    },
+    config_not_validated() {
+      return this.validation_result.passed === ValidationStatus.NotValidated
+    },
   },
   async mounted() {
     if (this.creating_new_config) {
