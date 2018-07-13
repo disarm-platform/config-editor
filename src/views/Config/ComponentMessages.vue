@@ -3,6 +3,7 @@
       <div>
         <el-alert
           class="alert"
+          :closable="false"
           v-for="(s, i) in success"
           :key="i"
           :title="s.message"
@@ -13,6 +14,7 @@
       <div>
         <el-alert
           class="alert"
+          :closable="false"
           v-for="(w, i) in warnings"
           :key="i"
           :title="w.message"
@@ -23,6 +25,7 @@
       <div>
         <el-alert
           class="alert"
+          :closable="false"
           v-for="(e, i) in errors"
           :key="i"
           :title="e.message"

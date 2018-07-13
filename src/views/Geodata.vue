@@ -6,19 +6,22 @@
       </div>
 
       <el-alert
-          v-for="(error, index) in geodata_errors"
-          :key="index"
-          :title="error.message"
-          type="error">
+        :closable="false"
+        v-for="(error, index) in geodata_errors"
+        :key="index"
+        :title="error.message"
+        type="error">
       </el-alert>
 
       <el-alert
-          v-if="alert.message"
-          :title="alert.message"
-          :type="alert.type">
+        :closable="false"
+        v-if="alert.message"
+        :title="alert.message"
+        :type="alert.type">
       </el-alert>
 
       <el-table
+          empty-text="No geodata layers"
           :data="geodata_layers"
           style="width: 900px">
         <el-table-column type="expand">

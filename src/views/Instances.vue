@@ -4,19 +4,32 @@
 
     <h3>Select instance</h3>
 
-    <multiselect :value="local_selected_instance" @input="set_local_selected_instance" track-by="id" label="id" placeholder="Select an instance" :options="configs" :allow-empty="false"></multiselect>
 
-    <el-button :disabled="!local_selected_instance" type="primary" style="margin: 1em 0;" @click="set_config">Select</el-button>
+    <el-select v-model="local_selected_instance" filterable placeholder="Select instance" no-match-text="No instances found">
+      <el-option
+        v-for="item in configs"
+        :key="item.id"
+        :label="item.id"
+        :value="item.id">
+      </el-option>
+    </el-select>
+
+    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_config">Select</el-button>
 
     <div style="margin: 2em 0;">
 
       <h3>Create new instance</h3>
+      
+      <el-form :inline="true">
+        <el-form-item>
+          <el-input type="text" placeholder="Instance name" v-model="new_instance_name" >
+          </el-input>
+        </el-form-item>
 
-      <el-input type="text" v-model="new_instance_name" style="margin-bottom: 1em;">
-        <span slot="prepend">Instance name</span>
-      </el-input>
-
-      <el-button type="primary" style="margin-bottom: 1em;" @click="create_new_config">Create new config</el-button>
+        <el-form-item>
+          <el-button type="primary"  @click="create_new_config">Create new config</el-button>
+        </el-form-item>
+      </el-form>
 
     </div>
   </div>
@@ -25,16 +38,14 @@
 <script lang='ts'>
 import Vue from 'vue';
 // @ts-ignore
-import Multiselect from 'vue-multiselect';
 import { login } from '../lib/auth';
 import { get_configurations } from '../lib/config';
 import { set_api_key } from '../lib/standard_handler';
 
 export default Vue.extend({
-  components: {Multiselect},
   data() {
     return {
-      local_selected_instance: null,
+      local_selected_instance: '',
       new_instance_name: '',
       error: '',
       configs: [],
@@ -82,8 +93,10 @@ export default Vue.extend({
       this.local_selected_instance = config;
     },
     set_config() {
+      const found = this.configs.find((c: any) => c.id === this.local_selected_instance)
+
       this.$store.commit('set_creating_new_config', false);
-      this.$store.commit('set_instance', this.local_selected_instance);
+      this.$store.commit('set_instance', found);
     },
     async get_list_of_configurations() {
       try {
@@ -103,7 +116,6 @@ export default Vue.extend({
   },
 });
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style lang="scss">
   
 </style>

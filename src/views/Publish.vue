@@ -9,15 +9,32 @@
           :disabled="!config_valid"
           @click="save_update"
           >
-          Save/update
+          Download
         </el-button>
       </div>
 
         <el-alert
-            class="alerts"
-            v-if="!config_valid"
-            title="Configuration is not valid"
-            type="warning">
+          :closable="false"
+          class="alerts"
+          v-if="config_invalid"
+          title="Configuration is not valid"
+          type="warning">
+        </el-alert>
+
+        <el-alert
+          :closable="false"
+          class="alerts"
+          v-if="config_not_validated"
+          title="Configuration has not been validated"
+          type="warning">
+        </el-alert>
+
+        <el-alert
+          :closable="false"
+          class="alerts"
+          v-if="config_valid"
+          title="Configuration is valid"
+          type="success">
         </el-alert>
         
         <div style="margin-top:1em;">
@@ -31,11 +48,22 @@
 
 <script lang='ts'>
   import Vue from 'vue';
+  import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
 
   export default Vue.extend({
     props: {
-      config_valid: Boolean,
       version: String, // TODO: change later
+    },
+    computed: {
+      config_valid(): boolean {
+      return this.$store.state.validation_result.passed === ValidationStatus.Valid
+      },
+      config_invalid(): boolean {
+        return this.$store.state.validation_result.passed === ValidationStatus.Invalid
+      },
+      config_not_validated(): boolean {
+        return this.$store.state.validation_result.passed === ValidationStatus.NotValidated
+      },
     },
     methods: {
       save_update() {
