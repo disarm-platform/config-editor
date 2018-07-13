@@ -1,17 +1,21 @@
 <template>
   <div>
-    {{messages}}
-      <!-- <div>
+    <!-- {{messages}} -->
+      
+      <div>
         <el-alert
           class="alert"
           :closable="false"
-          v-for="(s, i) in success"
+          v-for="(response, i) in responses"
           :key="i"
-          :title="s.message"
-          type="success">
+          :title="response.message"
+          type="error">
+            <p v-for="(message, index) in response.messages" :key="index">{{message}}</p>
         </el-alert>
       </div>
+
       
+      <!--
       <div>
         <el-alert
           class="alert"
@@ -60,7 +64,7 @@
       }
     },
     computed: {
-      messages() {
+      responses() {
         if (!this.validation_result) return []
 
         const edge_messages: TStandardEdgeResponse[] = this.validation_result.edge_messages.filter((edge: TStandardEdgeResponse) => {
