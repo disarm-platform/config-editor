@@ -6,6 +6,13 @@
       </div>
 
       <el-alert
+          v-for="(error, index) in geodata_errors"
+          :key="index"
+          :title="error.message"
+          type="error">
+      </el-alert>
+
+      <el-alert
           v-if="alert.message"
           :title="alert.message"
           :type="alert.type">
@@ -81,6 +88,7 @@ interface Data {
 }
 
 export default Vue.extend({
+  props: ['geodata_errors'],
   data(): Data {
     return {
       geodata_layers: [],

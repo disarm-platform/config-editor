@@ -13,14 +13,6 @@
 
       <div>
         <el-alert
-          v-if="!validation_result.passed"
-          v-for="(error, index) of validation_result.errors"
-          :key="index"
-          :title="`${error.source_node_name || ''}:${error.target_node_name || '' } ${error.message}`"
-          type="warning">
-        </el-alert>
-
-        <el-alert
           v-if="validation_result.passed"
           title="Validations passed"
           type="success">
@@ -74,7 +66,6 @@ import { EValidationStatus } from '@locational/geodata-support/build/module/conf
 import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 export interface Data {
-  validation_result: TShapedValidationResult;
   validation_result_message: string;
   component_defs: ComponentDefinition[];
 }
@@ -87,39 +78,33 @@ export default Vue.extend({
   },
   data(): Data {
     return {
-      validation_result: {
-        passed: false,
-        errors: [],
-        warnings: [],
-        success: [],
-      },
       validation_result_message: '',
       component_defs,
     };
   },
+  computed: {
+    validation_result(): any {
+      return this.$store.state.validation_result
+    }
+  },
   watch: {
     config() {
-      this.validation_result = {
-        passed: false,
-        errors: [],
-        warnings: [],
-        success: [],
-      };
+      this.$store.commit('reset_validation_result')
     },
   },
   methods: {
     errors(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.errors.filter((response) => {
+      return this.validation_result.errors.filter((response: any) => {
         return response.source_node_name === node_name || response.target_node_name === node_name;
       });
     },
     warnings(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.warnings.filter((response) => {
+      return this.validation_result.warnings.filter((response: any) => {
         return response.source_node_name === node_name || response.target_node_name === node_name;
       });
     },
     success(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.success.filter((response) => {
+      return this.validation_result.success.filter((response: any) => {
         return response.source_node_name === node_name || response.target_node_name === node_name;
       });
     },
@@ -127,6 +112,9 @@ export default Vue.extend({
       this.$emit('change', updated_config, path_name, included);
     },
     validate_config() {
+      // 0. Reset old validation result
+      this.$store.commit('reset_validation_result')
+
       // 1. Attempt to create location_selection, if needed for full validation
       const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
 
@@ -158,10 +146,11 @@ export default Vue.extend({
         }
 
         shaped_result.errors.push(lc_result)
+        shaped_result.passed = false
       }
       console.log('shaped_result', shaped_result);
-      // @ts-ignore
-      this.validation_result = shaped_result;
+
+      this.$store.commit('set_validation_result', shaped_result)
 
       // 5. Emit errors if any
 

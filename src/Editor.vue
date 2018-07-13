@@ -9,12 +9,14 @@
     </el-tab-pane>
 
     <el-tab-pane name="geodata">
-      <span slot="label">
+      <span slot="label" :class="{red: geodata_errors.length}">
         Geodata
-        <i v-if="geodata_layers.length" class="el-icon-success"></i>
+        <i v-if="geodata_errors.length" class="el-icon-error"></i>
+        <i v-else class="el-icon-success"></i>
       </span>
       <Geodata
         v-if="config"
+        :geodata_errors="geodata_errors"
         :geodata_layers="geodata_layers"
         @geodata_layers="set_geodata_layers"
       />
@@ -22,15 +24,14 @@
     </el-tab-pane>
 
     <el-tab-pane name="config">
-      <span slot="label" :class="{red: !config_valid}">
+      <span slot="label" :class="{red: !validation_result.passed}">
         Config
-        <i v-if="!config_valid" class="el-icon-error"></i>
+        <i v-if="!validation_result.passed" class="el-icon-error"></i>
         <i v-else class="el-icon-success"></i>
       </span>
       <Config
         v-if="config"
         :config="config"
-        @config_validation="set_config_validation"
         :geodata_layers="geodata_layers"
         @change="change"
       />
@@ -44,7 +45,7 @@
       </span>
       <Publish
         v-if="config"
-        :config_valid="config_valid"
+        :config_valid="validation_result.passed"
         :version="config.config_version"
         @save_config="save_config"
       />
@@ -108,6 +109,15 @@ export default {
     creating_new_config() {
       return this.$store.state.creating_new_config;
     },
+    validation_result() {
+      return this.$store.state.validation_result
+    },
+    geodata_errors() {
+      const node_name = 'geodata'
+      return this.$store.state.validation_result.errors.filter((response) => {
+        return response.source_node_name === node_name || response.target_node_name === node_name;
+      });
+    }
   },
   async mounted() {
     if (this.creating_new_config) {
@@ -178,10 +188,7 @@ export default {
     },
     set_location_selection(location_selection) {
       this.location_selection = location_selection;
-    },
-    set_config_validation(config_valid) {
-      this.config_valid = config_valid;
-    },
+    }
   },
 };
 </script>
