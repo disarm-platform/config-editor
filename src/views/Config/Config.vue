@@ -71,7 +71,7 @@ import {validate} from '@locational/config-validation';
 import { generate_location_selection } from '@locational/geodata-support';
 import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
 import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
-import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 export interface Data {
   validation_result: TShapedValidationResult;
@@ -130,19 +130,6 @@ export default Vue.extend({
       // 1. Attempt to create location_selection, if needed for full validation
       const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
 
-      if (location_selection_result.status === EValidationStatus.Red) {
-        // TODO: Fix: Maybe we should continue with validation and not return
-        console.log('location_selection_result', location_selection_result);
-
-        // @ts-ignore
-        this.validation_result = {
-          errors: [{message: location_selection_result.message}],
-          warnings: [],
-          success: [],
-        };
-        return;
-      }
-
       // 2. Attach location_selection to config
       const config: TConfig = {
         ...this.config,
@@ -154,6 +141,24 @@ export default Vue.extend({
 
       // 4. Shape validation result for consumption
       const shaped_result = shape_validation_result(validation_result);
+      if (location_selection_result && location_selection_result.status === EValidationStatus.Red) {
+
+        // complicated way to get proper description of error messages
+        const message = `${location_selection_result.message} ${location_selection_result.support_messages && location_selection_result.support_messages.length ? location_selection_result.support_messages.join(' ') : ''}`
+
+        const lc_result: TStandardEdgeResponse = {
+          status: EStandardEdgeStatus.Red,
+          message: message,
+          source_node_name: 'spatial_hierarchy',
+          target_node_name: 'geodata',
+          relationship_hint: 'fields exist',
+          required: true,
+          custom_edge_responses: [],
+          support_messages: location_selection_result.support_messages,
+        }
+
+        shaped_result.errors.push(lc_result)
+      }
       console.log('shaped_result', shaped_result);
       // @ts-ignore
       this.validation_result = shaped_result;
