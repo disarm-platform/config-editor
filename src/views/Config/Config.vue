@@ -13,6 +13,7 @@
 
       <div>
         <el-alert
+          :closable="false"
           v-if="validation_result.passed"
           title="Validations passed"
           type="success">
