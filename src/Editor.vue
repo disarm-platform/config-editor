@@ -47,7 +47,6 @@
       </span>
       <Publish
         v-if="config"
-        :config_valid="validation_result.passed"
         :version="config.config_version"
         @save_config="save_config"
       />
