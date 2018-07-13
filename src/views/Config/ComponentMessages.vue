@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- {{messages}} -->
-      
       <div>
         <el-alert
           class="alert"
@@ -9,34 +7,10 @@
           v-for="(response, i) in responses"
           :key="i"
           :title="response.message"
-          type="error">
-            <p v-for="(message, index) in response.messages" :key="index">{{message}}</p>
+          :type="response.type">
+            <p style="margin-bottom: 0;" v-for="(message, index) in response.messages" :key="index">{{message}}</p>
         </el-alert>
       </div>
-
-      
-      <!--
-      <div>
-        <el-alert
-          class="alert"
-          :closable="false"
-          v-for="(w, i) in warnings"
-          :key="i"
-          :title="w.message"
-          type="warning">
-        </el-alert>
-      </div>
-
-      <div>
-        <el-alert
-          class="alert"
-          :closable="false"
-          v-for="(e, i) in errors"
-          :key="i"
-          :title="e.message"
-          type="error">
-        </el-alert>
-      </div> -->
     </div>
 </template>
 
@@ -52,6 +26,20 @@
   }
 
   const debug_level: Array<EStandardEdgeStatus> = debug_options.errors
+
+  function get_type(status: EStandardEdgeStatus): string {
+    switch (status) {
+      case EStandardEdgeStatus.Red:
+        return 'error'
+      case EStandardEdgeStatus.Blue:
+        return 'warning'
+      case EStandardEdgeStatus.Green:
+        return 'success'
+        
+      default:
+        return 'warning'
+    }
+  }
 
   export default Vue.extend({
     props: {
@@ -75,18 +63,16 @@
           return result.source_node_name == this.node_name || result.target_node_name == this.node_name
         })
 
-        console.log('relevant_responses', relevant_responses);
-
         return relevant_responses.map((response: TStandardEdgeResponse) => {
           const messages = response.custom_edge_responses.filter((r) => r.status === ECustomEdgeStatus.Red).map(r => r.message)
           return {
+            type: get_type(response.status),
             message: response.message,
             messages
           }
         })
-
-      }
-    }
+      },
+    },
   });
 </script>
 
