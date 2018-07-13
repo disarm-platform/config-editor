@@ -33,10 +33,10 @@
             v-for="{display_name, component_name, node_name, path_name, show_include} in component_defs"
             :key='component_name'
         >
-          <span slot="label">
+          <span slot="label" :class="{red: errors(node_name).length}">
             {{display_name}}
-            <i class="el-icon-success"></i>
-            <i class="el-icon-error"></i>
+            <i class="el-icon-success" v-if="!errors(node_name).length"></i>
+            <i class="el-icon-error" v-else></i>
           </span>
           <ConfigComponentWrapper
 
@@ -71,6 +71,7 @@ import {validate} from '@locational/config-validation';
 import { generate_location_selection } from '@locational/geodata-support';
 import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
 import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
+import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 export interface Data {
   validation_result: TShapedValidationResult;
@@ -107,6 +108,21 @@ export default Vue.extend({
     },
   },
   methods: {
+    errors(node_name: string): TStandardEdgeResponse[] {
+      return this.validation_result.errors.filter((response) => {
+        return response.source_node_name === node_name || response.target_node_name === node_name;
+      });
+    },
+    warnings(node_name: string): TStandardEdgeResponse[] {
+      return this.validation_result.warnings.filter((response) => {
+        return response.source_node_name === node_name || response.target_node_name === node_name;
+      });
+    },
+    success(node_name: string): TStandardEdgeResponse[] {
+      return this.validation_result.success.filter((response) => {
+        return response.source_node_name === node_name || response.target_node_name === node_name;
+      });
+    },
     handle_change(updated_config: {}, path_name: string, included: boolean) {
       this.$emit('change', updated_config, path_name, included);
     },
@@ -154,3 +170,8 @@ export default Vue.extend({
   },
 });
 </script>
+<style>
+  .red {
+    color: red;
+  }
+</style>
