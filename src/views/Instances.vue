@@ -93,7 +93,7 @@ export default Vue.extend({
       this.local_selected_instance = config;
     },
     set_config() {
-      const found = this.configs.find((c: any) => c.id === this.local_selected_instance)
+      const found = this.configs.find((c: any) => c.id === this.local_selected_instance);
 
       this.$store.commit('set_creating_new_config', false);
       this.$store.commit('set_instance', found);
