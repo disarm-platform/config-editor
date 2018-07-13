@@ -9,7 +9,7 @@
           :disabled="!config_valid"
           @click="save_update"
           >
-          Save/update
+          Download
         </el-button>
       </div>
 
