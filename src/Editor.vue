@@ -193,7 +193,7 @@ export default {
 };
 </script>
 <style>
-.red {
-  color: red;
-}
+  .red {
+    color: red;
+  }
 </style>
