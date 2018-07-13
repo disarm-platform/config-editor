@@ -13,8 +13,9 @@
         :value="item.id">
       </el-option>
     </el-select>
-
     <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_config">Select</el-button>
+
+
 
     <div style="margin: 2em 0;">
 
@@ -23,11 +24,12 @@
       <el-form :inline="true">
         <el-form-item>
           <el-input type="text" placeholder="Instance name" v-model="new_instance_name" >
+            <el-button slot="append" type="primary"  @click="create_new_config">Create new config</el-button>
           </el-input>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary"  @click="create_new_config">Create new config</el-button>
+
         </el-form-item>
       </el-form>
 

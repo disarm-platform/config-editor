@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-  import {Vue} from 'vue';
+  import Vue from 'vue';
   import {set, unset} from 'lodash';
   import download from 'downloadjs';
 
