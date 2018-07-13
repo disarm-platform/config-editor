@@ -45,11 +45,11 @@ export default Vue.extend({
         const user = await login(this.username, this.password);
         set_api_key(user.key);
         this.$store.commit('set_user', user);
-        this.$router.push('/')
+        this.$router.push('/');
       } catch (e) {
         this.error = e.message;
       }
-    }
+    },
   },
 });
 </script>

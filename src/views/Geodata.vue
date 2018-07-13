@@ -220,6 +220,7 @@
             type: 'warning',
             message: result.message,
           };
+
           return;
         }
 
@@ -236,6 +237,13 @@
 
         try {
           await create_level(this.config.config_id, this.new_layer_name, geojson);
+
+          this.geodata_layers.push(geodata_layer);
+
+          geodata_cache[level_name] = level.geodata_data;
+
+          console.log('geodata_layer', geodata_layer);
+
         } catch (e) {
           console.log('e', e);
           return;
