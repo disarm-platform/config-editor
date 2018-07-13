@@ -92,8 +92,8 @@ export default Vue.extend({
           a.id = `${a.config_id}@${a.config_version}`;
           return a;
         }).sort((a: any, b: any) => {
-          if (a.id < b.id) return -1;
-          if (a.id > b.id) return 1;
+          if (a.id < b.id) { return -1; }
+          if (a.id > b.id) { return 1; }
           return 0;
         });
       } catch (e) {

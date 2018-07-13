@@ -134,9 +134,9 @@ export default Vue.extend({
             field_summary: summarise(level.geodata_data),
           };
           this.geodata_layers.push(geodata_layer);
-  
+
           geodata_cache[level_name] = level.geodata_data;
-  
+
           console.log('geodata_layer', geodata_layer);
         } catch (e) {
           console.log('e', e);
