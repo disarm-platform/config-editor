@@ -177,7 +177,7 @@ export default {
 
       try {
         // await create_configuration(config_copy);
-        download(JSON.stringify(config_copy), `${config_copy.config_id}.config.json`, 'text/plain');
+        download(JSON.stringify(config_copy), `${config_copy.config_id}@${config_copy.config_version}.config.json`, 'text/plain');
         this.$store.commit('set_creating_new_config', false);
       } catch (e) {
         console.log('e', e);
