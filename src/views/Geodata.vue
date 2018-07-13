@@ -5,20 +5,7 @@
         <span>Geodata</span>
       </div>
 
-      <el-alert
-        :closable="false"
-        v-for="(error, index) in geodata_errors"
-        :key="index"
-        :title="error.message"
-        type="error">
-      </el-alert>
-
-      <el-alert
-        :closable="false"
-        v-if="alert.message"
-        :title="alert.message"
-        :type="alert.type">
-      </el-alert>
+      <ComponentMessages :validation_result="validation_result" node_name="geodata"/>
 
       <el-table
           empty-text="No geodata layers"
@@ -78,6 +65,7 @@ import { EValidationStatus } from '@locational/geodata-support/build/main/config
 // @ts-ignore
 import download from 'downloadjs';
 
+import ComponentMessages from './Config/ComponentMessages.vue';
 import { geodata_cache } from '../geodata_cache';
 import { TFieldSummary } from '@locational/geodata-support/build/main/config_types/TGeodataSummary';
 import {upload_file_as_text} from '../helpers/upload_file_as_text';
@@ -91,7 +79,7 @@ interface Data {
 }
 
 export default Vue.extend({
-  props: ['geodata_errors'],
+  components: {ComponentMessages},
   data(): Data {
     return {
       geodata_layers: [],
@@ -109,6 +97,9 @@ export default Vue.extend({
     },
     config(): any {
       return this.$store.state.config;
+    },
+    validation_result(): any {
+      return this.$store.state.validation_result;
     },
   },
   watch: {

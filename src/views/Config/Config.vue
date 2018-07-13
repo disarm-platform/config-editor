@@ -65,6 +65,8 @@ import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config
 import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
 import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 import { ValidationStatus } from '@/store';
+import { EUnifiedStatus } from '@locational/config-validation/build/module/lib/TUnifiedResponse';
+import { ECustomEdgeStatus } from '@locational/config-validation/build/module/lib/TCustomEdgeResponse';
 
 export interface Data {
   validation_result_message: string;
@@ -116,28 +118,32 @@ export default Vue.extend({
 
       // 3. Run config validation
       const validation_result = validate(config);
+      debugger
 
       // 4. Shape validation result for consumption
       if (location_selection_result && location_selection_result.status === EValidationStatus.Red) {
 
-        // complicated way to get proper description of error messages
-        const message = `${location_selection_result.message} ${location_selection_result.support_messages && location_selection_result.support_messages.length ? location_selection_result.support_messages.join(' ') : ''}`;
-
         const lc_result: TStandardEdgeResponse = {
           status: EStandardEdgeStatus.Red,
-          message,
+          message: location_selection_result.message,
           source_node_name: 'spatial_hierarchy',
           target_node_name: 'geodata',
           relationship_hint: 'fields exist',
           required: true,
-          custom_edge_responses: [],
-          support_messages: location_selection_result.support_messages,
+          custom_edge_responses: (location_selection_result.support_messages as string[]).map(m => {
+            return {
+              status: ECustomEdgeStatus.Red, 
+              message: m
+            }
+          }),
+          support_messages: [],
         };
 
-        // shaped_result.errors.push(lc_result);
-        // shaped_result.passed = ValidationStatus.Invalid;
+        validation_result.edge_messages.push(lc_result);
+        if (validation_result.status === EUnifiedStatus.Green) {
+          validation_result.status = EUnifiedStatus.Red;
+        }
       }
-      // console.log('shaped_result', shaped_result);
 
       this.$store.commit('set_validation_result', validation_result);
     },

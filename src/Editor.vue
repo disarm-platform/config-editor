@@ -17,7 +17,6 @@
       </span>
       <Geodata
           v-if="config"
-          :geodata_errors="[]"
           :geodata_layers="geodata_layers"
           @geodata_layers="set_geodata_layers"
       />
