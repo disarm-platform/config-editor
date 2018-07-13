@@ -18,7 +18,7 @@ export interface ComponentDefinition {
   node_name: string;
   path_name: string;
   component: VueConstructor;
-  show_include?: boolean;
+  show_include: boolean;
 }
 
 export interface ComponentList {
@@ -32,6 +32,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'instance',
     path_name: 'instance',
     component: Instance,
+    show_include: false,
   },
   {
     display_name: 'Spatial Hierarchy',
@@ -39,6 +40,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'spatial_hierarchy',
     path_name: 'spatial_hierarchy',
     component: SpatialHierarchy,
+    show_include: false,
   },
   {
     display_name: 'Map Focus',
@@ -46,6 +48,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'map_focus',
     path_name: 'map_focus',
     component: MapFocus,
+    show_include: false,
   },
   {
     display_name: 'Monitor',
@@ -85,6 +88,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'form',
     path_name: 'form',
     component: Form,
+    show_include: false,
   },
   {
     display_name: 'Aggregations',
@@ -92,6 +96,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'aggregations',
     path_name: 'aggregations',
     component: Aggregations,
+    show_include: false,
   },
   {
     display_name: 'Decorators',
@@ -99,6 +104,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'decorators',
     path_name: 'decorators',
     component: Decorators,
+    show_include: false,
   },
   {
     display_name: 'Validations',
@@ -106,6 +112,7 @@ export const component_defs: ComponentDefinition[] = [
     node_name: 'validations',
     path_name: 'validations',
     component: Validations,
+    show_include: false,
   },
 ];
 
