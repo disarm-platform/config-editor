@@ -57,8 +57,9 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
+import Vue from 'vue';
   import {set, unset} from 'lodash';
+  // @ts-ignore
   import download from 'downloadjs';
 
   import Geodata from './views/Geodata.vue';
@@ -69,11 +70,25 @@
 
   import {get_configuration} from './lib/config';
   import {ValidationStatus} from '@/helpers/shape_validation_result_for_ui';
+  import { TGeodataLayer } from '@locational/geodata-support/build/module/config_types/TGeodata';
+  import { TLocationSelection } from '@locational/geodata-support/build/main/config_types/TLocationSelection';
+
+
+  interface Data {
+    active_tab: string;
+    geodata_layers: TGeodataLayer[];
+    location_selection: TLocationSelection;
+  }
 
   export default Vue.extend({
-    components: {Login, Instances, Config, Geodata, Publish,},
-    data() {
-      return {active_tab: 'instances', geodata_layers: [], location_selection: null,};
+    components: {Login, Instances, Config, Geodata, Publish},
+    data(): Data {
+      // @ts-ignore
+      return {
+        active_tab: 'instances',
+        geodata_layers: [],
+        location_selection: null,
+      };
     },
     watch: {
       async selected_config(selected_config) {
@@ -88,31 +103,31 @@
       },
     },
     computed: {
-      config() {
+      config(): any {
         return this.$store.state.config;
       },
-      selected_config() {
+      selected_config(): any {
         return this.$store.state.instance;
       },
-      creating_new_config() {
+      creating_new_config(): any {
         return this.$store.state.creating_new_config;
       },
-      validation_result() {
+      validation_result(): any {
         return this.$store.state.validation_result;
       },
-      geodata_errors() {
+      geodata_errors(): any {
         const node_name = 'geodata';
-        return this.$store.state.validation_result.errors.filter((response) => {
+        return this.$store.state.validation_result.errors.filter((response: any) => {
           return response.source_node_name === node_name || response.target_node_name === node_name;
         });
       },
-      config_valid() {
+      config_valid(): any {
         return this.validation_result.passed === ValidationStatus.Valid;
       },
-      config_invalid() {
+      config_invalid(): any {
         return this.validation_result.passed === ValidationStatus.Invalid;
       },
-      config_not_validated() {
+      config_not_validated(): any {
         return this.validation_result.passed === ValidationStatus.NotValidated;
       },
     },
@@ -127,7 +142,7 @@
       this.$store.commit('set_config', config);
     },
     methods: {
-      change(updated_config, pathname, included) {/* save config to store here*/
+      change(updated_config: any, pathname: string, included: boolean) {/* save config to store here*/
         if (included) {/* Need to use lodash.set so nested objects get updated If not we end up with an object like: { 'applets.irs_record_point': {} } when we want: { 'applets': {'irs_record_point: {}} }*/
           const new_config = {...this.config};
           set(new_config, pathname, updated_config);
@@ -147,6 +162,7 @@
         this.$store.commit('set_config', config_copy);
         /* send to remote*/
         /* update local list / reload local lost*/
+        // @ts-ignore
         this.$refs.instances.get_list_of_configurations();
         /* remove _id as we want to create a new version*/
         delete config_copy._id;
@@ -157,15 +173,14 @@
           console.log('e', e);
         }
       },
-      et_geodata_layers(geodata_layers) {
+      set_geodata_layers(geodata_layers: TGeodataLayer[]) {
         this.geodata_layers = geodata_layers;
       },
-      set_location_selection(location_selection) {
+      set_location_selection(location_selection: TLocationSelection) {
         this.location_selection = location_selection;
       },
     },
   });
-
 </script>
 
 <style>
