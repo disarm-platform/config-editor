@@ -4,8 +4,15 @@
       <h2>DiSARM Registry</h2>
     </el-header>
     
+    <div v-if="user" style="padding-left: 20px;">
+      <p>
+        Logged in as {{user.name}} 
+        <el-button type="text" @click="logout" style="color:red;">Logout</el-button>
+      </p>
+    </div>
+
     <el-alert
-      v-if="config"
+      v-if="user && config"
       :title="`Selected instance: ${config.config_id}@${config.config_version}`"
       type="info">
     </el-alert>
@@ -23,7 +30,16 @@ export default Vue.extend({
     config(): any {
       return this.$store.state.config;
     },
+    user(): any {
+      return this.$store.state.user;
+    },
   },
+  methods: {
+    logout() {
+      this.$store.commit('set_user', null);
+      this.$router.push('/login')
+    },
+  }
 });
 </script>
 

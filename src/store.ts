@@ -6,12 +6,20 @@ import { set_api_key } from '@/lib/standard_handler';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({
+    paths: ['config', 'instance', 'user', 'creating_new_config'],
+  })],
   state: {
     config: null,
     instance: null,
     user: null,
     creating_new_config: false,
+    validation_result: {
+      passed: false,
+      errors: [],
+      warnings: [],
+      success: [],
+    },
   },
   mutations: {
     set_config(state, config) {
@@ -25,6 +33,17 @@ const store = new Vuex.Store({
     },
     set_creating_new_config(state, creating_new_config) {
       state.creating_new_config = creating_new_config;
+    },
+    set_validation_result(state, validation_result) {
+      state.validation_result = validation_result;
+    },
+    reset_validation_result(state, validation_result) {
+      state.validation_result = {
+        passed: false,
+        errors: [],
+        warnings: [],
+        success: [],
+      };
     },
   },
   actions: {

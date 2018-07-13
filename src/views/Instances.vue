@@ -1,11 +1,12 @@
 <template>
-  <div style="height: 400px;">
+  <div style="height: 500px;">
     <p>Please select an instance below or create a new one:</p>
 
     <h3>Select instance</h3>
 
-    <multiselect :value="instance" @input="set_config" track-by="id" label="id" placeholder="Select an instance" :options="configs" :searchable="false" :allow-empty="false"></multiselect>
+    <multiselect :value="local_selected_instance" @input="set_local_selected_instance" track-by="id" label="id" placeholder="Select an instance" :options="configs" :allow-empty="false"></multiselect>
 
+    <el-button :disabled="!local_selected_instance" type="primary" style="margin: 1em 0;" @click="set_config">Select</el-button>
 
     <div style="margin: 2em 0;">
 
@@ -28,12 +29,12 @@ import Multiselect from 'vue-multiselect';
 import { login } from '../lib/auth';
 import { get_configurations } from '../lib/config';
 import { set_api_key } from '../lib/standard_handler';
-import { get_latest_configs } from '../helpers/get_latest_configs';
 
 export default Vue.extend({
   components: {Multiselect},
   data() {
     return {
+      local_selected_instance: null,
       new_instance_name: '',
       error: '',
       configs: [],
@@ -77,17 +78,23 @@ export default Vue.extend({
       this.$store.commit('set_creating_new_config', true);
       this.$store.commit('set_config', new_config);
     },
-    set_config(config: any) {
+    set_local_selected_instance(config: any) {
+      this.local_selected_instance = config;
+    },
+    set_config() {
       this.$store.commit('set_creating_new_config', false);
-      this.$store.commit('set_instance', config);
+      this.$store.commit('set_instance', this.local_selected_instance);
     },
     async get_list_of_configurations() {
       try {
         const configs = await get_configurations();
-        // @ts-ignore
-        this.configs = get_latest_configs(configs).map((a) => {
+        this.configs = configs.map((a: any) => {
           a.id = `${a.config_id}@${a.config_version}`;
           return a;
+        }).sort((a: any, b: any) => {
+          if (a.id < b.id) return -1;
+          if (a.id > b.id) return 1;
+          return 0;
         });
       } catch (e) {
         this.error = e.message;

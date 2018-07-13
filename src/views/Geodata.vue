@@ -6,6 +6,13 @@
       </div>
 
       <el-alert
+          v-for="(error, index) in geodata_errors"
+          :key="index"
+          :title="error.message"
+          type="error">
+      </el-alert>
+
+      <el-alert
           v-if="alert.message"
           :title="alert.message"
           :type="alert.type">
@@ -81,6 +88,7 @@ interface Data {
 }
 
 export default Vue.extend({
+  props: ['geodata_errors'],
   data(): Data {
     return {
       geodata_layers: [],
@@ -117,18 +125,22 @@ export default Vue.extend({
       for (const level_name of levels) {
         const level = await get_level(this.instance.config_id, level_name);
 
-        const geodata_layer: any = {
-          type: 'layer',
-          name: level_name,
-          file_name: '',
-          validation_status: EValidationStatus.Red,
-          field_summary: summarise(level.geodata_data),
-        };
-        this.geodata_layers.push(geodata_layer);
-
-        geodata_cache[level_name] = level.geodata_data;
-
-        console.log('geodata_layer', geodata_layer);
+        try {
+          const geodata_layer: any = {
+            type: 'layer',
+            name: level_name,
+            file_name: '',
+            validation_status: EValidationStatus.Red,
+            field_summary: summarise(level.geodata_data),
+          };
+          this.geodata_layers.push(geodata_layer);
+  
+          geodata_cache[level_name] = level.geodata_data;
+  
+          console.log('geodata_layer', geodata_layer);
+        } catch (e) {
+          console.log('e', e);
+        }
       }
 
       this.emit_changes();

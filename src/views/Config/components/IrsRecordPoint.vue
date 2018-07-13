@@ -36,6 +36,9 @@ export default ConfigNodeMixin.extend({
   data() {
     return {
       field: '',
+      node_config: {
+        metadata: {},
+      },
     };
   },
   methods: {

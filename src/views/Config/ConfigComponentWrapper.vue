@@ -3,7 +3,7 @@
     
     <div style="display: flex; justify-content: space-between;">
       <h1 style="margin-top: 0;">{{display_name}}</h1>
-      <el-checkbox v-model="included" @change="save" style="margin-top: 0.5em;margin-bottom: 1em;">Include</el-checkbox>
+      <el-checkbox v-if="show_include" v-model="included" @change="save" style="margin-top: 0.5em;margin-bottom: 1em;">Include</el-checkbox>
     </div>
 
     <ComponentMessages :errors="errors" :warnings="warnings" :success="success"/>
@@ -54,7 +54,7 @@ export default Vue.extend({
   components: {...component_list, ComponentMessages, ComponentActions},
   props: {
     component_name: String,
-
+    show_include: Boolean,
     display_name: String,
     node_name: String,
     path_name: String,
@@ -86,6 +86,10 @@ export default Vue.extend({
     },
   },
   mounted() {
+    if (!this.show_include) {
+      this.included = true
+      return
+    }
     const config = this.get_node_config();
     if (!config) {
       this.included = false;

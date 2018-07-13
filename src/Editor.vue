@@ -1,58 +1,51 @@
 <template>
   <el-tabs v-model="active_tab" type="border-card">
 
-    <el-tab-pane name="login">
-      <span slot="label">
-        Login
-        <i v-if="user" class="el-icon-success"></i>
-      </span>
-      <Login />
-    </el-tab-pane>
-
-    <el-tab-pane name="instances" :disabled="!user">
+    <el-tab-pane name="instances">
       <span slot="label">
         Instances
       </span>
       <Instances ref="instances" />
     </el-tab-pane>
 
-    <el-tab-pane name="geodata" :disabled="!user">
-      <span slot="label">
+    <el-tab-pane name="geodata">
+      <span slot="label" :class="{red: geodata_errors.length}">
         Geodata
-        <i v-if="geodata_layers.length" class="el-icon-success"></i>
+        <i v-if="geodata_errors.length" class="el-icon-error"></i>
+        <i v-else class="el-icon-success"></i>
       </span>
       <Geodata
         v-if="config"
+        :geodata_errors="geodata_errors"
         :geodata_layers="geodata_layers"
         @geodata_layers="set_geodata_layers"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
-    <el-tab-pane name="config" :disabled="!user">
-      <span slot="label" :class="{red: user && !config_valid}">
+    <el-tab-pane name="config">
+      <span slot="label" :class="{red: !validation_result.passed}">
         Config
-        <i v-if="!config_valid" class="el-icon-error"></i>
+        <i v-if="!validation_result.passed" class="el-icon-error"></i>
         <i v-else class="el-icon-success"></i>
       </span>
       <Config
         v-if="config"
         :config="config"
-        @config_validation="set_config_validation"
         :geodata_layers="geodata_layers"
         @change="change"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
-    <el-tab-pane name="publish" :disabled="!user">
+    <el-tab-pane name="publish">
       <span slot="label">
         Publish
         <i class="el-icon-edit"></i>
       </span>
       <Publish
         v-if="config"
-        :config_valid="config_valid"
+        :config_valid="validation_result.passed"
         :version="config.config_version"
         @save_config="save_config"
       />
@@ -65,6 +58,7 @@
 <script>
 import { set, unset } from 'lodash';
 import Vue from 'vue';
+import download from 'downloadjs'
 
 import Geodata from './views/Geodata.vue';
 import Config from './views/Config/Config.vue';
@@ -86,7 +80,7 @@ export default {
   },
   data() {
     return {
-      active_tab: 'login',
+      active_tab: 'instances',
       config_valid: false,
       geodata_layers: [],
       location_selection: null,
@@ -112,12 +106,18 @@ export default {
     selected_config() {
       return this.$store.state.instance;
     },
-    user() {
-      return this.$store.state.user;
-    },
     creating_new_config() {
       return this.$store.state.creating_new_config;
     },
+    validation_result() {
+      return this.$store.state.validation_result
+    },
+    geodata_errors() {
+      const node_name = 'geodata'
+      return this.$store.state.validation_result.errors.filter((response) => {
+        return response.source_node_name === node_name || response.target_node_name === node_name;
+      });
+    }
   },
   async mounted() {
     if (this.creating_new_config) {
@@ -176,7 +176,8 @@ export default {
       delete config_copy._id;
 
       try {
-        await create_configuration(config_copy);
+        // await create_configuration(config_copy);
+        download(JSON.stringify(config_copy), `${config_copy.config_id}.config.json`, 'text/plain');
         this.$store.commit('set_creating_new_config', false);
       } catch (e) {
         console.log('e', e);
@@ -187,10 +188,7 @@ export default {
     },
     set_location_selection(location_selection) {
       this.location_selection = location_selection;
-    },
-    set_config_validation(config_valid) {
-      this.config_valid = config_valid;
-    },
+    }
   },
 };
 </script>
