@@ -19,6 +19,7 @@
       </el-alert>
 
       <el-table
+          empty-text="No geodata layers"
           :data="geodata_layers"
           style="width: 900px">
         <el-table-column type="expand">
