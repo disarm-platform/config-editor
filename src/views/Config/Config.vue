@@ -101,11 +101,6 @@ export default Vue.extend({
       return this.$store.state.validation_status === ValidationStatus.Valid;
     },
   },
-  watch: {
-    config() {
-      this.$store.commit('reset_validation_status');
-    },
-  },
   methods: {
     handle_change(updated_config: {}, path_name: string, included: boolean) {
       this.$emit('change', updated_config, path_name, included);
