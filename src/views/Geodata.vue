@@ -7,6 +7,15 @@
 
       <ComponentMessages :validation_result="validation_result" node_name="geodata"/>
 
+      <el-alert
+        class="alert"
+        :closable="false"
+        v-if="alert"
+        title="Geodata error"
+        type="error">
+          <p style="margin-bottom: 0;">{{alert.message}}</p>
+      </el-alert>
+
       <el-table
           empty-text="No geodata layers"
           :data="geodata_layers"
