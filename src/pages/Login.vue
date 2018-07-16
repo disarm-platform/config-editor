@@ -22,6 +22,7 @@
 
 <script lang='ts'>
 import Vue from 'vue';
+import { DoumaUser } from '@locational/douma-types/main';
 import { login } from '../lib/auth';
 import { set_api_key } from '@/lib/standard_handler';
 
@@ -34,7 +35,7 @@ export default Vue.extend({
     };
   },
   computed: {
-    user(): any {
+    user(): DoumaUser {
       return this.$store.state.user;
     },
   },
@@ -42,7 +43,7 @@ export default Vue.extend({
     async login() {
       this.error = '';
       try {
-        const user = await login(this.username, this.password);
+        const user: DoumaUser = await login(this.username, this.password);
         set_api_key(user.key);
         this.$store.commit('set_user', user);
         this.$router.push('/');
