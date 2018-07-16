@@ -18,7 +18,7 @@
           class="alerts"
           v-if="config_invalid"
           title="Configuration is not valid"
-          type="warning">
+          type="error">
         </el-alert>
 
         <el-alert
@@ -55,17 +55,14 @@ export default Vue.extend({
     version: String, // TODO: change later
   },
   computed: {
-    config_valid(): boolean {
-      return false
-    // return this.$store.state.validation_result.passed === ValidationStatus.Valid;
+    config_not_validated(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.NotValidated;
     },
     config_invalid(): boolean {
-      return false
-      // return this.$store.state.validation_result.passed === ValidationStatus.Invalid;
+      return this.$store.state.validation_status === ValidationStatus.Invalid;
     },
-    config_not_validated(): boolean {
-      return false
-      // return this.$store.state.validation_result.passed === ValidationStatus.NotValidated;
+    config_valid(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.Valid;
     },
   },
   methods: {
