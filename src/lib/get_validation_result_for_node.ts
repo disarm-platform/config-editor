@@ -10,8 +10,7 @@ const debug_options = {
 
 // Can pass debug_level as arg to get_validation_result in the future
 // TODO: Rename 
-const debug_level: EStandardEdgeStatus[] = debug_options.errors;
-const types_to_include = debug_level;
+const validation_result_types_to_include: EStandardEdgeStatus[] = debug_options.errors;
 
 function get_type(status: EStandardEdgeStatus): string {
   switch (status) {
@@ -30,7 +29,7 @@ function get_type(status: EStandardEdgeStatus): string {
 export function get_validation_result_for_node(validation_result: TUnifiedResponse, node_name?: string) {
   const edge_messages: TStandardEdgeResponse[] = validation_result.edge_messages
     .filter((edge: TStandardEdgeResponse) => {
-      return debug_level.some((level) => level === edge.status);
+      return validation_result_types_to_include.some((level) => level === edge.status);
     });
 
   const relevant_responses: TStandardEdgeResponse[] = edge_messages
@@ -43,7 +42,8 @@ export function get_validation_result_for_node(validation_result: TUnifiedRespon
 
   return relevant_responses.map((response: TStandardEdgeResponse) => {
     const messages = response.custom_edge_responses
-      // TODO: Respect debug_level, 
+      // TODO: Respect debug_level
+      // cannot compare EStandardEdgeStatus to ECustomEdgeStatus, probably good enough for now
       .filter((r) => r.status === ECustomEdgeStatus.Red)
       .map((r) => r.message);
 
