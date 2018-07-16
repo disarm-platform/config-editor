@@ -118,7 +118,6 @@ export default Vue.extend({
 
       // 3. Run config validation
       const validation_result = validate(config);
-      debugger
 
       // 4. Shape validation result for consumption
       if (location_selection_result && location_selection_result.status === EValidationStatus.Red) {
