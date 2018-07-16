@@ -100,12 +100,12 @@ export default Vue.extend({
         return;
       }
       const config = await get_configuration(selected_config.id);
-      this.$store.commit('set_config', config);
+      this.$store.commit('set_applets_config', config);
     },
   },
   computed: {
     config(): any {
-      return this.$store.state.config;
+      return this.$store.state.applets_config;
     },
     selected_config(): any {
       return this.$store.state.instance;
@@ -146,7 +146,7 @@ export default Vue.extend({
       return;
     }
     const config = await get_configuration(this.selected_config.id);
-    this.$store.commit('set_config', config);
+    this.$store.commit('set_applets_config', config);
   },
   methods: {
     change(updated_config: any, pathname: string, included: boolean) {/* save config to store here*/
@@ -158,11 +158,11 @@ export default Vue.extend({
         */
         const new_config = {...this.config};
         set(new_config, pathname, updated_config);
-        this.$store.commit('set_config', new_config);
+        this.$store.commit('set_applets_config', new_config);
       } else {/* use unset for same reason as above*/
         const new_config = {...this.config};
         unset(new_config, pathname);
-        this.$store.commit('set_config', new_config);
+        this.$store.commit('set_applets_config', new_config);
       }
     },
     async save_config() {
@@ -171,7 +171,7 @@ export default Vue.extend({
       const current_version = Number(config_copy.config_version);
       config_copy.config_version = `${current_version + 1}`;
       /* update, so user can see change*/
-      this.$store.commit('set_config', config_copy);
+      this.$store.commit('set_applets_config', config_copy);
       /* send to remote*/
       /* update local list / reload local lost*/
       // @ts-ignore

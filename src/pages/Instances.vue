@@ -13,7 +13,7 @@
         :value="item.id">
       </el-option>
     </el-select>
-    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_config">Select</el-button>
+    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_applets_config">Select</el-button>
 
 
 
@@ -58,7 +58,7 @@ export default Vue.extend({
       return this.$store.state.instance;
     },
     config(): any {
-      return this.$store.state.config;
+      return this.$store.state.applets_config;
     },
     creating_new_config(): any {
       return this.$store.state.creating_new_config;
@@ -89,12 +89,12 @@ export default Vue.extend({
         },
       };
       this.$store.commit('set_creating_new_config', true);
-      this.$store.commit('set_config', new_config);
+      this.$store.commit('set_applets_config', new_config);
     },
     set_local_selected_instance(config: any) {
       this.local_selected_instance = config;
     },
-    set_config() {
+    set_applets_config() {
       const found = this.configs.find((c: any) => c.id === this.local_selected_instance);
 
       this.$store.commit('set_creating_new_config', false);

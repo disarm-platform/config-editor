@@ -153,15 +153,15 @@ export default Vue.extend({
     };
   },
   computed: {
-      instance(): any {
-        return this.$store.state.instance;
-      },
-      config(): any {
-        return this.$store.state.config;
-      },
-      validation_result(): any {
-        return this.$store.state.validation_result;
-      },
+    instance(): any {
+      return this.$store.state.instance;
+    },
+    config(): any {
+      return this.$store.state.applets_config;
+    },
+    validation_result(): any {
+      return this.$store.state.validation_result;
+    },
   },
   watch: {
     instance() {
