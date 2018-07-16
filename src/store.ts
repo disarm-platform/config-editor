@@ -15,7 +15,7 @@ export enum ValidationStatus {
 Vue.use(Vuex);
 
 interface State {
-  config: TConfig | null;
+  applets_config: TConfig | null;
   instance: any;
   user: DoumaUser | null;
   creating_new_config: boolean;
@@ -28,7 +28,7 @@ const store = new Vuex.Store({
     paths: ['config', 'instance', 'user', 'creating_new_config'],
   })],
   state: {
-    config: null,
+    applets_config: null,
     // TODO: rename instance to something else
     instance: null,
     user: null,
@@ -37,8 +37,8 @@ const store = new Vuex.Store({
     validation_status: ValidationStatus.NotValidated,
   } as State,
   mutations: {
-    set_config(state: State, config: TConfig) {
-      state.config = config;
+    set_applets_config(state: State, config: TConfig) {
+      state.applets_config = config;
     },
     set_user(state: State, user: DoumaUser) {
       state.user = user;
