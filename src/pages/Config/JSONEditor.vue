@@ -3,7 +3,10 @@
     <el-alert v-if="error_passing_json" type="error">Configuration is not valid json</el-alert>
     <el-input rows="20" type="textarea" v-model="local_node_config"></el-input>
     <div style="margin: 0.5em 0;">
+      <!-- TODO: Disabled if not valid json -->
       <el-button @click="format_as_json">Format</el-button>
+
+      <!-- TODO: Disabled if not valid json -->
       <el-button @click="save">Save</el-button>
     </div>
     <div>{{node_config}}</div>
@@ -48,10 +51,10 @@ export default Vue.extend({
     },
     save() {
       const local_config_as_object = JSON.parse(this.local_node_config);
-      this.$emit('change', local_config_as_object)
+      this.$emit('change', local_config_as_object);
     },
     format_as_json() {
-      this.local_node_config = JSON.stringify(JSON.parse(this.local_node_config), undefined, 4)
+      this.local_node_config = JSON.stringify(JSON.parse(this.local_node_config), undefined, 4);
     },
   },
 });

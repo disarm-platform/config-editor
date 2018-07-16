@@ -14,9 +14,9 @@
     methods: {
       update_node_config(node_config: any) {
         this.node_config = node_config;
-        this.emit_change()
-      }
-    }
+        this.emit_change();
+      },
+    },
   });
 </script>
 
