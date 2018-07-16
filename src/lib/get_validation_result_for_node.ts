@@ -25,7 +25,7 @@ function get_type(status: EStandardEdgeStatus): string {
   }
 }
 
-export function get_validation_result_for_node(validation_result: TUnifiedResponse, node_name: string) {
+export function get_validation_result_for_node(validation_result: TUnifiedResponse, node_name?: string) {
   const edge_messages: TStandardEdgeResponse[] = validation_result.edge_messages
     .filter((edge: TStandardEdgeResponse) => {
       return debug_level.some((level) => level === edge.status);
@@ -33,6 +33,9 @@ export function get_validation_result_for_node(validation_result: TUnifiedRespon
 
   const relevant_responses: TStandardEdgeResponse[] = edge_messages
     .filter((result: any) => {
+      if (!node_name) {
+        return true;
+      }
       return result.source_node_name === node_name || result.target_node_name === node_name;
     });
 

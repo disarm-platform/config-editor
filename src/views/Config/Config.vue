@@ -26,10 +26,11 @@
             v-for="{display_name, component_name, node_name, path_name, show_include} in component_defs"
             :key='component_name'
         >
-          <span slot="label" :class="{red: false}">
+          <span slot="label" :class="{red: !config_not_validated && errors_on_node(node_name)}">
             {{display_name}}
-            <i class="el-icon-success" v-if="!false"></i>
-            <i class="el-icon-error" v-else></i>
+            <i v-if="config_not_validated"></i>
+            <i class="el-icon-error" v-else-if="errors_on_node(node_name)"></i>
+            <i class="el-icon-success" v-else></i>
           </span>
           <ConfigComponentWrapper
 
@@ -67,6 +68,7 @@ import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-v
 import { ValidationStatus } from '@/store';
 import { EUnifiedStatus } from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import { ECustomEdgeStatus } from '@locational/config-validation/build/module/lib/TCustomEdgeResponse';
+import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
 
 export interface Data {
   validation_result_message: string;
@@ -89,22 +91,35 @@ export default Vue.extend({
     validation_result(): any {
       return this.$store.state.validation_result;
     },
-    config_valid(): any {
-      return false
-      // return this.$store.state.validation_result.passed === ValidationStatus.Valid;
+    config_not_validated(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.NotValidated;
+    },
+    config_invalid(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.Invalid;
+    },
+    config_valid(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.Valid;
     },
   },
   watch: {
     config() {
-      this.$store.commit('reset_validation_result');
+      this.$store.commit('reset_validation_status');
     },
   },
   methods: {
     handle_change(updated_config: {}, path_name: string, included: boolean) {
       this.$emit('change', updated_config, path_name, included);
     },
+    errors_on_node(node_name: string) {
+      if (!this.validation_result) {
+        return false
+      }
+
+      return get_validation_result_for_node(this.validation_result, node_name).length > 0
+    },
     validate_config() {
       // 0. Reset old validation result
+      this.$store.commit('reset_validation_status');
       this.$store.commit('reset_validation_result');
 
       // 1. Attempt to create location_selection, if needed for full validation
@@ -143,8 +158,12 @@ export default Vue.extend({
           validation_result.status = EUnifiedStatus.Red;
         }
       }
+      
+      const config_invalid = validation_result.status === EUnifiedStatus.Red;
+      const validation_status = config_invalid ?  ValidationStatus.Invalid : ValidationStatus.Valid;
 
       this.$store.commit('set_validation_result', validation_result);
+      this.$store.commit('set_validation_status', validation_status);
     },
   },
 });

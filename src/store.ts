@@ -21,6 +21,7 @@ const store = new Vuex.Store({
     user: null,
     creating_new_config: false,
     validation_result: null,
+    validation_status: ValidationStatus.NotValidated,
   },
   mutations: {
     set_config(state, config) {
@@ -35,16 +36,19 @@ const store = new Vuex.Store({
     set_creating_new_config(state, creating_new_config) {
       state.creating_new_config = creating_new_config;
     },
+
     set_validation_result(state, validation_result) {
       state.validation_result = validation_result;
     },
-    reset_validation_result(state, validation_result) {
-      // state.validation_result = {
-      //   passed: ValidationStatus.NotValidated,
-      //   errors: [],
-      //   warnings: [],
-      //   success: [],
-      // };
+    reset_validation_result(state) {
+      state.validation_result = null;
+    },
+
+    set_validation_status(state, status: ValidationStatus) {
+      state.validation_status = status;
+    },
+    reset_validation_status(state) {
+      state.validation_status = ValidationStatus.NotValidated;
     },
   },
   actions: {
