@@ -15,28 +15,33 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
-  import { EStandardEdgeStatus, TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
-  import { get_validation_result_for_node } from '../../lib/get_validation_result_for_node'
+import Vue from 'vue';
+import {
+  EStandardEdgeStatus,
+  TStandardEdgeResponse,
+} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+import { get_validation_result_for_node } from '../../lib/get_validation_result_for_node';
 
-  export default Vue.extend({
-    props: {
-      node_name: String,
-      validation_result: Object,
+export default Vue.extend({
+  props: {
+    node_name: String,
+    validation_result: Object,
+  },
+  watch: {
+    validation_result(validation_result) {
+      console.log('validation_result', validation_result);
     },
-    watch: {
-      validation_result(validation_result) {
-        console.log('validation_result', validation_result);
+  },
+  computed: {
+    responses(): any {
+      if (!this.validation_result) {
+        return [];
       }
-    },
-    computed: {
-      responses(): any {
-        if (!this.validation_result) return []
 
-        return get_validation_result_for_node(this.validation_result, this.node_name)
-      },
+      return get_validation_result_for_node(this.validation_result, this.node_name);
     },
-  });
+  },
+});
 </script>
 
 <style scoped>

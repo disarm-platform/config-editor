@@ -149,8 +149,8 @@ export default Vue.extend({
       alert: {
         message: '',
         type: '', // warning or success
-      }
-    }
+      },
+    };
   },
   computed: {
       instance(): any {
@@ -161,12 +161,12 @@ export default Vue.extend({
       },
       validation_result(): any {
         return this.$store.state.validation_result;
-      }
+      },
   },
   watch: {
     instance() {
       this.retrieve_geodata_for_instance();
-    }
+    },
   },
   methods: {
       async retrieve_geodata_for_instance() {
@@ -200,7 +200,11 @@ export default Vue.extend({
         this.emit_changes();
       },
       download_layer(layer_name: string, index: number) {
-        download(JSON.stringify(geodata_cache[layer_name]), `${this.instance.config_id}.${layer_name}.geojson`, 'text/plain');
+        download(
+          JSON.stringify(geodata_cache[layer_name]),
+          `${this.instance.config_id}.${layer_name}.geojson`,
+          'text/plain',
+        );
       },
       delete_layer(layer_name: string, index: number) {
         this.geodata_layers.splice(index, 1);

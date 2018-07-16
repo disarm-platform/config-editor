@@ -64,7 +64,10 @@ import {validate} from '@locational/config-validation';
 import { generate_location_selection } from '@locational/geodata-support';
 import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
 import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
-import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+import {
+  TStandardEdgeResponse,
+  EStandardEdgeStatus,
+} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 import { ValidationStatus } from '@/store';
 import { EUnifiedStatus } from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import { ECustomEdgeStatus } from '@locational/config-validation/build/module/lib/TCustomEdgeResponse';
@@ -107,10 +110,10 @@ export default Vue.extend({
     },
     errors_on_node(node_name: string) {
       if (!this.validation_result) {
-        return false
+        return false;
       }
 
-      return get_validation_result_for_node(this.validation_result, node_name).length > 0
+      return get_validation_result_for_node(this.validation_result, node_name).length > 0;
     },
     validate_config() {
       // 0. Reset old validation result
@@ -118,7 +121,10 @@ export default Vue.extend({
       this.$store.commit('reset_validation_result');
 
       // 1. Attempt to create location_selection, if needed for full validation
-      const location_selection_result = generate_location_selection(this.config.spatial_hierarchy as TSpatialHierarchy, geodata_cache);
+      const location_selection_result = generate_location_selection(
+        this.config.spatial_hierarchy as TSpatialHierarchy,
+        geodata_cache,
+      );
 
       // 2. Attach location_selection to config
       const config: TConfig = {
@@ -139,11 +145,11 @@ export default Vue.extend({
           target_node_name: 'geodata',
           relationship_hint: 'fields exist',
           required: true,
-          custom_edge_responses: (location_selection_result.support_messages as string[]).map(m => {
+          custom_edge_responses: (location_selection_result.support_messages as string[]).map((m) => {
             return {
-              status: ECustomEdgeStatus.Red, 
-              message: m
-            }
+              status: ECustomEdgeStatus.Red,
+              message: m,
+            };
           }),
           support_messages: [],
         };
@@ -153,7 +159,7 @@ export default Vue.extend({
           validation_result.status = EUnifiedStatus.Red;
         }
       }
-      
+
       const config_invalid = validation_result.status === EUnifiedStatus.Red;
       const validation_status = config_invalid ?  ValidationStatus.Invalid : ValidationStatus.Valid;
 

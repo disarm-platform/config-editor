@@ -66,7 +66,9 @@ export default Vue.extend({
       try {
         this.node_config = JSON.parse(val);
         this.emit_change();
-      } catch (e) {}
+      } catch (e) {
+        console.log('e', e);
+      }
     },
     tell_me() {
       return this.node_config;
