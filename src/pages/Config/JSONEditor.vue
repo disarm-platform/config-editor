@@ -1,15 +1,16 @@
 <template>
   <div>
-    <el-alert v-if="error_passing_json" type="error">Configuration is not valid json</el-alert>
-    <el-input rows="20" type="textarea" v-model="local_node_config"></el-input>
-    <div style="margin: 0.5em 0;">
-      <!-- TODO: Disabled if not valid json -->
-      <el-button @click="format_as_json">Format</el-button>
+    <el-alert v-if="error_passing_json" type="error" title="Configuration is not valid json" description="Ensure it is valid JSON and try again" />
 
-      <!-- TODO: Disabled if not valid json -->
-      <el-button @click="save">Save</el-button>
+    <el-input rows="20" type="textarea" v-model="local_node_config"></el-input>
+
+    <div style="margin: 0.5em 0;">
+      <el-button @click="format_as_json">Format</el-button>
+      <el-button  @click="save">Save</el-button>
     </div>
+
     <div>{{node_config}}</div>
+
   </div>
 </template>
 <script lang="ts">
@@ -50,11 +51,21 @@ export default Vue.extend({
       }
     },
     save() {
-      const local_config_as_object = JSON.parse(this.local_node_config);
-      this.$emit('change', local_config_as_object);
+      try {
+        const local_config_as_object = JSON.parse(this.local_node_config);
+        this.$emit('change', local_config_as_object);
+      } catch (e) {
+        this.error_passing_json = true;
+      }
     },
     format_as_json() {
-      this.local_node_config = JSON.stringify(JSON.parse(this.local_node_config), undefined, 4);
+      try {
+        this.error_passing_json = false;
+        const json = JSON.parse(this.local_node_config);
+        this.local_node_config = JSON.stringify(json, undefined, 4);
+      } catch (e) {
+        this.error_passing_json = true;
+      }
     },
   },
 });
