@@ -62,11 +62,11 @@ import {set, unset} from 'lodash';
 // @ts-ignore
 import download from 'downloadjs';
 
-import Geodata from './views/Geodata.vue';
-import Config from './views/Config/Config.vue';
-import Publish from './views/Publish.vue';
-import Login from './views/Login.vue';
-import Instances from './views/Instances.vue';
+import Geodata from './Geodata.vue';
+import Config from './Config/Config.vue';
+import Publish from './Publish.vue';
+import Login from './Login.vue';
+import Instances from './Instances.vue';
 
 import {get_configuration} from '../lib/config';
 import { TGeodataLayer } from '@locational/geodata-support/build/module/config_types/TGeodata';
