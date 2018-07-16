@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import {cloneDeep, get} from 'lodash';
 import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
-import {TStandardEdgeResponse} from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 /**
@@ -31,6 +30,7 @@ export default Vue.extend({
           // console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
         } else {
           this.node_config = cloneDeep(got);
+          // TODO: remove make_backup?
           this.make_backup();
         }
       },
@@ -47,29 +47,7 @@ export default Vue.extend({
       this.make_backup();
     }
   },
-  computed: {
-    node_config_string(): string | undefined {
-      try {
-        return JSON.stringify(this.node_config, undefined, 4);
-      } catch (e) {
-        return undefined;
-      }
-    },
-    relevant_messages(): TStandardEdgeResponse[] {
-      return this.validation_result.edge_messages.filter((message) => {
-        return message.source_node_name === this.node_name || message.target_node_name === this.node_name;
-      });
-    },
-  },
   methods: {
-    set_node_config_from_string(val: string): void {
-      try {
-        this.node_config = JSON.parse(val);
-        this.emit_change();
-      } catch (e) {
-        console.log('e', e);
-      }
-    },
     tell_me() {
       return this.node_config;
     },
