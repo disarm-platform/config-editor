@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {component_defs, component_list, ComponentDefinition} from '@/views/Config/component_defs';
+import {component_defs, component_list, ComponentDefinition} from './component_defs';
 import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 import {TGeodataLayer} from '@locational/geodata-support/build/module/config_types/TGeodata';
