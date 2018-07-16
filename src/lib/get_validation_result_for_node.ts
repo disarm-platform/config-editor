@@ -9,7 +9,9 @@ const debug_options = {
 };
 
 // Can pass debug_level as arg to get_validation_result in the future
+// TODO: Rename 
 const debug_level: EStandardEdgeStatus[] = debug_options.errors;
+const types_to_include = debug_level;
 
 function get_type(status: EStandardEdgeStatus): string {
   switch (status) {
@@ -41,6 +43,7 @@ export function get_validation_result_for_node(validation_result: TUnifiedRespon
 
   return relevant_responses.map((response: TStandardEdgeResponse) => {
     const messages = response.custom_edge_responses
+      // TODO: Respect debug_level, 
       .filter((r) => r.status === ECustomEdgeStatus.Red)
       .map((r) => r.message);
 

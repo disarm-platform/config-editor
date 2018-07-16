@@ -17,6 +17,7 @@ const store = new Vuex.Store({
   })],
   state: {
     config: null,
+    // TODO: rename instance to something else
     instance: null,
     user: null,
     creating_new_config: false,
