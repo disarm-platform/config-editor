@@ -55,7 +55,7 @@ export default Vue.extend({
   },
   computed: {
     instance(): any {
-      return this.$store.state.instance;
+      return this.$store.state.instance_id_and_version;
     },
     config(): any {
       return this.$store.state.applets_config;
@@ -98,7 +98,8 @@ export default Vue.extend({
       const found = this.configs.find((c: any) => c.id === this.local_selected_instance);
 
       this.$store.commit('set_creating_new_config', false);
-      this.$store.commit('set_instance', found);
+      console.log('found', found);
+      this.$store.commit('set_instance_id_and_version', found);
     },
     async get_list_of_configurations() {
       try {

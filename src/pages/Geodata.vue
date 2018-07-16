@@ -154,7 +154,7 @@ export default Vue.extend({
   },
   computed: {
     instance(): any {
-      return this.$store.state.instance;
+      return this.$store.state.instance_id_and_version;
     },
     config(): any {
       return this.$store.state.applets_config;

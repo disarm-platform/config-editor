@@ -16,7 +16,10 @@ Vue.use(Vuex);
 
 interface State {
   applets_config: TConfig | null;
-  instance: any;
+  instance_id_and_version: {
+    config_id: string,
+    config_version: string,
+  } | null;
   user: DoumaUser | null;
   creating_new_config: boolean;
   validation_result: TUnifiedResponse | null;
@@ -30,7 +33,7 @@ const store = new Vuex.Store({
   state: {
     applets_config: null,
     // TODO: rename instance to something else
-    instance: null,
+    instance_id_and_version: null,
     user: null,
     creating_new_config: false,
     validation_result: null,
@@ -43,8 +46,8 @@ const store = new Vuex.Store({
     set_user(state: State, user: DoumaUser) {
       state.user = user;
     },
-    set_instance(state: State, instance: any) {
-      state.instance = instance;
+    set_instance_id_and_version(state: State, instance_id_and_version: any) {
+      state.instance_id_and_version = instance_id_and_version;
     },
     set_creating_new_config(state: State, creating_new_config: boolean) {
       state.creating_new_config = creating_new_config;

@@ -108,7 +108,7 @@ export default Vue.extend({
       return this.$store.state.applets_config;
     },
     selected_config(): any {
-      return this.$store.state.instance;
+      return this.$store.state.instance_id_and_version;
     },
     creating_new_config(): any {
       return this.$store.state.creating_new_config;
