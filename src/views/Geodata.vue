@@ -5,19 +5,15 @@
         <span>Geodata</span>
       </div>
 
-      <el-alert
-          :closable="false"
-          v-for="(error, index) in geodata_errors"
-          :key="index"
-          :title="error.message"
-          type="error">
-      </el-alert>
+      <ComponentMessages :validation_result="validation_result" node_name="geodata"/>
 
       <el-alert
-          :closable="false"
-          v-if="alert.message"
-          :title="alert.message"
-          :type="alert.type">
+        class="alert"
+        :closable="false"
+        v-if="alert"
+        title="Geodata error"
+        type="error">
+          <p style="margin-bottom: 0;">{{alert.message}}</p>
       </el-alert>
 
       <el-table
@@ -122,54 +118,57 @@
 </template>
 
 <script lang='ts'>
-  import Vue from 'vue';
-  import {summarise, validate_layer_schema} from '@locational/geodata-support';
-  import {TGeodataLayer, TGeodataLayerDefinition} from '@locational/geodata-support/build/module/config_types/TGeodata';
-  import {EValidationStatus} from '@locational/geodata-support/build/main/config_types/TValidationResponse';
-  // @ts-ignore
-  import download from 'downloadjs';
+import Vue from 'vue';
+import {summarise, validate_layer_schema} from '@locational/geodata-support';
+import {TGeodataLayer, TGeodataLayerDefinition} from '@locational/geodata-support/build/module/config_types/TGeodata';
+import { EValidationStatus } from '@locational/geodata-support/build/main/config_types/TValidationResponse';
+// @ts-ignore
+import download from 'downloadjs';
 
-  import {geodata_cache} from '../geodata_cache';
-  import {upload_file_as_text} from '../helpers/upload_file_as_text';
-  import {create_level, get_level, get_levels} from '../lib/geodata';
+import ComponentMessages from './Config/ComponentMessages.vue';
+import { geodata_cache } from '../geodata_cache';
+import { TFieldSummary } from '@locational/geodata-support/build/main/config_types/TGeodataSummary';
+import {upload_file_as_text} from '../helpers/upload_file_as_text';
+import { get_levels, get_level, create_level } from '../lib/geodata';
+import { TGeodataSummary } from '@locational/geodata-support/build/module/config_types/TGeodataSummary';
 
-  interface Data {
-    geodata_layers: TGeodataLayer[];
-    new_layer_name: string;
-    file: any;
-    alert: any;
-  }
+interface Data {
+  geodata_layers: TGeodataLayerDefinition[];
+  new_layer_name: string;
+  file: any;
+  alert: any;
+}
 
-  export default Vue.extend({
-    props: ['geodata_errors'],
-    data(): Data {
-      return {
-        geodata_layers: [],
-        new_layer_name: '',
-        file: null,
-        alert: {
-          message: '',
-          type: '', // warning or success
-        },
-      };
-    },
-    computed: {
+export default Vue.extend({
+  components: {ComponentMessages},
+  data(): Data {
+    return {
+      geodata_layers: [],
+      new_layer_name: '',
+      file: null,
+      alert: {
+        message: '',
+        type: '', // warning or success
+      }
+    }
+  },
+  computed: {
       instance(): any {
         return this.$store.state.instance;
       },
       config(): any {
         return this.$store.state.config;
       },
-    },
-    watch: {
-      instance() {
-        this.retrieve_geodata_for_instance();
-      },
-    },
-    mounted() {
+      validation_result(): any {
+        return this.$store.state.validation_result;
+      }
+  },
+  watch: {
+    instance() {
       this.retrieve_geodata_for_instance();
-    },
-    methods: {
+    }
+  },
+  methods: {
       async retrieve_geodata_for_instance() {
         if (!this.instance) {
           return;
@@ -238,11 +237,11 @@
         try {
           await create_level(this.config.config_id, this.new_layer_name, geojson);
 
-          this.geodata_layers.push(geodata_layer);
+          this.geodata_layers.push(new_layer);
 
-          geodata_cache[level_name] = level.geodata_data;
+          geodata_cache[this.new_layer_name] = geojson;
 
-          console.log('geodata_layer', geodata_layer);
+          console.log('geodata_layer', new_layer);
 
         } catch (e) {
           console.log('e', e);

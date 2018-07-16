@@ -2,7 +2,12 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 import { set_api_key } from '@/lib/standard_handler';
-import { ValidationStatus } from '@/helpers/shape_validation_result_for_ui';
+
+export enum ValidationStatus {
+  NotValidated = 'Not validated',
+  Valid = 'Valid',
+  Invalid = 'Invalid',
+}
 
 Vue.use(Vuex);
 
@@ -15,12 +20,8 @@ const store = new Vuex.Store({
     instance: null,
     user: null,
     creating_new_config: false,
-    validation_result: {
-      passed: ValidationStatus.NotValidated,
-      errors: [],
-      warnings: [],
-      success: [],
-    },
+    validation_result: null,
+    validation_status: ValidationStatus.NotValidated,
   },
   mutations: {
     set_config(state, config) {
@@ -35,16 +36,19 @@ const store = new Vuex.Store({
     set_creating_new_config(state, creating_new_config) {
       state.creating_new_config = creating_new_config;
     },
+
     set_validation_result(state, validation_result) {
       state.validation_result = validation_result;
     },
-    reset_validation_result(state, validation_result) {
-      state.validation_result = {
-        passed: ValidationStatus.NotValidated,
-        errors: [],
-        warnings: [],
-        success: [],
-      };
+    reset_validation_result(state) {
+      state.validation_result = null;
+    },
+
+    set_validation_status(state, status: ValidationStatus) {
+      state.validation_status = status;
+    },
+    reset_validation_status(state) {
+      state.validation_status = ValidationStatus.NotValidated;
     },
   },
   actions: {

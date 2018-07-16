@@ -26,10 +26,11 @@
             v-for="{display_name, component_name, node_name, path_name, show_include} in component_defs"
             :key='component_name'
         >
-          <span slot="label" :class="{red: errors(node_name).length}">
+          <span slot="label" :class="{red: !config_not_validated && errors_on_node(node_name)}">
             {{display_name}}
-            <i class="el-icon-success" v-if="!errors(node_name).length"></i>
-            <i class="el-icon-error" v-else></i>
+            <i v-if="config_not_validated"></i>
+            <i class="el-icon-error" v-else-if="errors_on_node(node_name)"></i>
+            <i class="el-icon-success" v-else></i>
           </span>
           <ConfigComponentWrapper
 
@@ -54,7 +55,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {shape_validation_result, TShapedValidationResult, ValidationStatus} from '../../helpers/shape_validation_result_for_ui';
 import {component_defs, component_list, ComponentDefinition} from '@/views/Config/component_defs';
 import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
@@ -65,6 +65,10 @@ import { generate_location_selection } from '@locational/geodata-support';
 import { TSpatialHierarchy } from '@locational/geodata-support/build/main/config_types/TSpatialHierarchy';
 import { EValidationStatus } from '@locational/geodata-support/build/module/config_types/TValidationResponse';
 import { TStandardEdgeResponse, EStandardEdgeStatus } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+import { ValidationStatus } from '@/store';
+import { EUnifiedStatus } from '@locational/config-validation/build/module/lib/TUnifiedResponse';
+import { ECustomEdgeStatus } from '@locational/config-validation/build/module/lib/TCustomEdgeResponse';
+import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
 
 export interface Data {
   validation_result_message: string;
@@ -87,36 +91,35 @@ export default Vue.extend({
     validation_result(): any {
       return this.$store.state.validation_result;
     },
-    config_valid(): any {
-      return this.$store.state.validation_result.passed === ValidationStatus.Valid;
+    config_not_validated(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.NotValidated;
+    },
+    config_invalid(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.Invalid;
+    },
+    config_valid(): boolean {
+      return this.$store.state.validation_status === ValidationStatus.Valid;
     },
   },
   watch: {
     config() {
-      this.$store.commit('reset_validation_result');
+      this.$store.commit('reset_validation_status');
     },
   },
   methods: {
-    errors(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.errors.filter((response: any) => {
-        return response.source_node_name === node_name || response.target_node_name === node_name;
-      });
-    },
-    warnings(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.warnings.filter((response: any) => {
-        return response.source_node_name === node_name || response.target_node_name === node_name;
-      });
-    },
-    success(node_name: string): TStandardEdgeResponse[] {
-      return this.validation_result.success.filter((response: any) => {
-        return response.source_node_name === node_name || response.target_node_name === node_name;
-      });
-    },
     handle_change(updated_config: {}, path_name: string, included: boolean) {
       this.$emit('change', updated_config, path_name, included);
     },
+    errors_on_node(node_name: string) {
+      if (!this.validation_result) {
+        return false
+      }
+
+      return get_validation_result_for_node(this.validation_result, node_name).length > 0
+    },
     validate_config() {
       // 0. Reset old validation result
+      this.$store.commit('reset_validation_status');
       this.$store.commit('reset_validation_result');
 
       // 1. Attempt to create location_selection, if needed for full validation
@@ -132,29 +135,35 @@ export default Vue.extend({
       const validation_result = validate(config);
 
       // 4. Shape validation result for consumption
-      const shaped_result = shape_validation_result(validation_result);
       if (location_selection_result && location_selection_result.status === EValidationStatus.Red) {
-
-        // complicated way to get proper description of error messages
-        const message = `${location_selection_result.message} ${location_selection_result.support_messages && location_selection_result.support_messages.length ? location_selection_result.support_messages.join(' ') : ''}`;
 
         const lc_result: TStandardEdgeResponse = {
           status: EStandardEdgeStatus.Red,
-          message,
+          message: location_selection_result.message,
           source_node_name: 'spatial_hierarchy',
           target_node_name: 'geodata',
           relationship_hint: 'fields exist',
           required: true,
-          custom_edge_responses: [],
-          support_messages: location_selection_result.support_messages,
+          custom_edge_responses: (location_selection_result.support_messages as string[]).map(m => {
+            return {
+              status: ECustomEdgeStatus.Red, 
+              message: m
+            }
+          }),
+          support_messages: [],
         };
 
-        shaped_result.errors.push(lc_result);
-        shaped_result.passed = ValidationStatus.Invalid;
+        validation_result.edge_messages.push(lc_result);
+        if (validation_result.status === EUnifiedStatus.Green) {
+          validation_result.status = EUnifiedStatus.Red;
+        }
       }
-      console.log('shaped_result', shaped_result);
+      
+      const config_invalid = validation_result.status === EUnifiedStatus.Red;
+      const validation_status = config_invalid ?  ValidationStatus.Invalid : ValidationStatus.Valid;
 
-      this.$store.commit('set_validation_result', shaped_result);
+      this.$store.commit('set_validation_result', validation_result);
+      this.$store.commit('set_validation_status', validation_status);
     },
   },
 });

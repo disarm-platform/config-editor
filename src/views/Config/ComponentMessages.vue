@@ -4,32 +4,11 @@
         <el-alert
           class="alert"
           :closable="false"
-          v-for="(s, i) in success"
+          v-for="(response, i) in responses"
           :key="i"
-          :title="s.message"
-          type="success">
-        </el-alert>
-      </div>
-      
-      <div>
-        <el-alert
-          class="alert"
-          :closable="false"
-          v-for="(w, i) in warnings"
-          :key="i"
-          :title="w.message"
-          type="warning">
-        </el-alert>
-      </div>
-
-      <div>
-        <el-alert
-          class="alert"
-          :closable="false"
-          v-for="(e, i) in errors"
-          :key="i"
-          :title="e.message"
-          type="error">
+          :title="response.message"
+          :type="response.type">
+            <p style="margin-bottom: 0;" v-for="(message, index) in response.messages" :key="index">{{message}}</p>
         </el-alert>
       </div>
     </div>
@@ -37,12 +16,25 @@
 
 <script lang="ts">
   import Vue from 'vue';
+  import { EStandardEdgeStatus, TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
+  import { get_validation_result_for_node } from '../../lib/get_validation_result_for_node'
 
   export default Vue.extend({
     props: {
-      errors: Array,
-      warnings: Array,
-      success: Array,
+      node_name: String,
+      validation_result: Object,
+    },
+    watch: {
+      validation_result(validation_result) {
+        console.log('validation_result', validation_result);
+      }
+    },
+    computed: {
+      responses(): any {
+        if (!this.validation_result) return []
+
+        return get_validation_result_for_node(this.validation_result, this.node_name)
+      },
     },
   });
 </script>
