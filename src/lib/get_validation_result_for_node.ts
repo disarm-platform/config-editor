@@ -25,7 +25,7 @@ function get_type(status: EStandardEdgeStatus): string {
   }
 }
 
-export function get_validation_result(validation_result: TUnifiedResponse, node_name: string) {
+export function get_validation_result_for_node(validation_result: TUnifiedResponse, node_name: string) {
   const edge_messages: TStandardEdgeResponse[] = validation_result.edge_messages
     .filter((edge: TStandardEdgeResponse) => {
       return debug_level.some((level) => level === edge.status);

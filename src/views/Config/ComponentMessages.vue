@@ -17,7 +17,7 @@
 <script lang="ts">
   import Vue from 'vue';
   import { EStandardEdgeStatus, TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
-  import { get_validation_result } from '../../lib/get_validation_result'
+  import { get_validation_result_for_node } from '../../lib/get_validation_result_for_node'
 
   export default Vue.extend({
     props: {
@@ -33,7 +33,7 @@
       responses(): any {
         if (!this.validation_result) return []
 
-        return get_validation_result(this.validation_result, this.node_name)
+        return get_validation_result_for_node(this.validation_result, this.node_name)
       },
     },
   });
