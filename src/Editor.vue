@@ -9,11 +9,12 @@
     </el-tab-pane>
 
     <el-tab-pane name="geodata">
-      <span slot="label" :class="{red: [].length && config_invalid}">
+      <span slot="label" :class="{red: config_validated && geodata_has_errors}">
         Geodata
-        <i v-if="[].length && config_invalid" class="el-icon-error"></i>
-        <i v-if="config_valid" class="el-icon-success"></i>
-        <i v-if="config_not_validated"></i>
+        
+        <i v-if="config_validated && geodata_has_errors" class="el-icon-error"></i>
+        <i v-else-if="config_valid" class="el-icon-success"></i>
+        <i v-else-if="config_not_validated"></i>
       </span>
       <Geodata
           v-if="config"
@@ -71,6 +72,7 @@
   import { TGeodataLayer } from '@locational/geodata-support/build/module/config_types/TGeodata';
   import { TLocationSelection } from '@locational/geodata-support/build/main/config_types/TLocationSelection';
   import { ValidationStatus } from '@/store';
+  import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
 
 
   interface Data {
@@ -114,23 +116,26 @@
       validation_result(): any {
         return this.$store.state.validation_result;
       },
-      // geodata_errors(): any {
-      //   const node_name = 'geodata';
-      //   return this.$store.state.validation_result.errors.filter((response: any) => {
-      //     return response.source_node_name === node_name || response.target_node_name === node_name;
-      //   });
-      // },
-      config_valid(): any {
-        return false;
-        // return this.validation_result.passed === ValidationStatus.Valid;
+      config_not_validated(): boolean {
+        return this.$store.state.validation_status === ValidationStatus.NotValidated;
       },
-      config_invalid(): any {
-        return false;
-        // return this.validation_result.passed === ValidationStatus.Invalid;
+      config_validated(): boolean {
+        return !(this.$store.state.validation_status === ValidationStatus.NotValidated);
       },
-      config_not_validated(): any {
-        return false;
-        // return this.validation_result.passed === ValidationStatus.NotValidated;
+      config_invalid(): boolean {
+        return this.$store.state.validation_status === ValidationStatus.Invalid;
+      },
+      config_valid(): boolean {
+        return this.$store.state.validation_status === ValidationStatus.Valid;
+      },
+      geodata_has_errors(): boolean {
+        const validation_result = this.$store.state.validation_result
+
+        if (!validation_result) {
+          return false
+        }
+
+        return get_validation_result_for_node(validation_result, 'geodata').length > 0
       },
     },
     async mounted() {
