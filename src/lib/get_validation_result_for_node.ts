@@ -12,7 +12,6 @@ const debug_options = {
 };
 
 // Can pass debug_level as arg to get_validation_result in the future
-// TODO: Rename
 const validation_result_types_to_include: EStandardEdgeStatus[] = debug_options.errors;
 
 function get_type(status: EStandardEdgeStatus): string {
