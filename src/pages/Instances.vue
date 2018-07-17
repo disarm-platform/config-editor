@@ -7,7 +7,7 @@
 
     <el-select v-model="local_selected_instance" filterable placeholder="Select instance" no-match-text="No instances found">
       <el-option
-        v-for="item in configs"
+        v-for="item in instances"
         :key="item.id"
         :label="item.id"
         :value="item.id">
@@ -50,7 +50,7 @@ export default Vue.extend({
       local_selected_instance: '',
       new_instance_name: '',
       error: '',
-      configs: [],
+      instances: [],
     };
   },
   computed: {
@@ -95,7 +95,7 @@ export default Vue.extend({
       this.local_selected_instance = config;
     },
     set_applets_config() {
-      const found = this.configs.find((c: any) => c.id === this.local_selected_instance);
+      const found = this.instances.find((c: any) => c.id === this.local_selected_instance);
 
       this.$store.commit('set_creating_new_config', false);
       console.log('found', found);
@@ -103,8 +103,8 @@ export default Vue.extend({
     },
     async get_list_of_configurations() {
       try {
-        const configs = await get_configurations();
-        this.configs = configs.map((a: any) => {
+        const instances = await get_configurations();
+        this.instances = instances.map((a: any) => {
           a.id = `${a.config_id}@${a.config_version}`;
           return a;
         }).sort((a: any, b: any) => {
