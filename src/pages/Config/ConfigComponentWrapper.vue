@@ -59,8 +59,8 @@ export default Vue.extend({
   },
   computed: {
     config(): TConfig {
-      return this.$store.state.applets_config
-    }
+      return this.$store.state.applets_config;
+    },
   },
   mounted() {
     this.determine_included();

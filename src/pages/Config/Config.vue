@@ -96,7 +96,6 @@ export default Vue.extend({
     },
   },
   methods: {
-    
     errors_on_node(node_name: string) {
       if (!this.validation_result) {
         return false;

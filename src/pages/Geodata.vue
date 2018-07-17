@@ -162,7 +162,6 @@ export default Vue.extend({
   },
   watch: {
     instance() {
-      console.log('retrieve_geodata_for_instance')
       this.retrieve_geodata_for_instance();
     },
   },
