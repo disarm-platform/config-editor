@@ -43,6 +43,7 @@ import Vue from 'vue';
 import { login } from '../lib/auth';
 import { get_configurations } from '../lib/config';
 import { set_api_key } from '../lib/standard_handler';
+import { geodata_cache } from '@/geodata_cache';
 
 export default Vue.extend({
   data() {
@@ -90,8 +91,13 @@ export default Vue.extend({
           slug: this.new_instance_name,
         },
       };
+
+      this.reset_geodata_cache();
+      this.$store.commit('reset_validation_result');
+      this.$store.commit('reset_validation_status');
       this.$store.commit('set_creating_new_config', true);
       this.$store.commit('set_applets_config', new_config);
+      this.$store.commit('set_instance_id_and_version', null);
     },
     set_local_selected_instance(config: any) {
       this.local_selected_instance = config;
@@ -99,8 +105,10 @@ export default Vue.extend({
     set_applets_config() {
       const found = this.instances.find((c: any) => c.id === this.local_selected_instance);
 
+      this.reset_geodata_cache();
+      this.$store.commit('reset_validation_result');
+      this.$store.commit('reset_validation_status');
       this.$store.commit('set_creating_new_config', false);
-      console.log('found', found);
       this.$store.commit('set_instance_id_and_version', found);
     },
     async get_list_of_configurations() {
@@ -116,6 +124,13 @@ export default Vue.extend({
         });
       } catch (e) {
         this.error = e.message;
+      }
+    },
+    reset_geodata_cache() {
+      for (const key in geodata_cache) {
+        if (geodata_cache[key]) {
+          delete geodata_cache[key];
+        }
       }
     },
   },
