@@ -28,7 +28,7 @@ interface State {
 
 const store = new Vuex.Store({
   plugins: [createPersistedState({
-    paths: ['config', 'instance', 'user', 'creating_new_config'],
+    paths: ['applets_config', 'instance_id_and_version', 'user', 'creating_new_config'],
   })],
   state: {
     applets_config: null,
