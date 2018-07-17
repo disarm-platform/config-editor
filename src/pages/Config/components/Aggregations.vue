@@ -1,7 +1,6 @@
 <template>
   <div>
     <JSONEditor :node_config="node_config" @change="update_node_config"/>
-    <div>{{node_config}}</div>
   </div>
 </template>
 

@@ -136,7 +136,7 @@ interface Data {
   geodata_layers: TGeodataLayerDefinition[];
   new_layer_name: string;
   file: any;
-  alert: any;
+  alert: {message: string, type: string} | null;
 }
 
 export default Vue.extend({
@@ -146,10 +146,7 @@ export default Vue.extend({
       geodata_layers: [],
       new_layer_name: '',
       file: null,
-      alert: {
-        message: '',
-        type: '', // warning or success
-      },
+      alert: null,
     };
   },
   computed: {
@@ -167,6 +164,9 @@ export default Vue.extend({
     instance() {
       this.retrieve_geodata_for_instance();
     },
+  },
+  mounted() {
+    this.retrieve_geodata_for_instance();
   },
   methods: {
       async retrieve_geodata_for_instance() {
@@ -211,6 +211,7 @@ export default Vue.extend({
         this.emit_changes();
       },
       async save_new_layer() {
+        this.alert = null;
         // 1. Upload geojson file
         const geojson_string = await upload_file_as_text((this.file as any).raw as File);
         const geojson = JSON.parse(geojson_string) as TGeodataLayer;

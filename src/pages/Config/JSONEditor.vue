@@ -9,8 +9,6 @@
       <el-button  @click="save">Save</el-button>
     </div>
 
-    <div>{{node_config}}</div>
-
   </div>
 </template>
 <script lang="ts">
