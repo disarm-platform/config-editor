@@ -10,11 +10,9 @@
 
     <!-- Component itself -->
     <component
-        v-bind:is="component_name"
+        :is="component_name"
         :config="config"
-        :node_name="node_name"
         :path_name="path_name"
-        ref="actual_component"
         @change="save"
     ></component>
 

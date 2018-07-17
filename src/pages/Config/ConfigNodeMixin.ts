@@ -5,9 +5,7 @@ import {TConfig} from '@locational/config-validation/build/module/lib/config_typ
 
 export default Vue.extend({
   props: {
-    node_name: String,
     path_name: String,
-
     config: Object as () => TConfig,
   },
   data() {
@@ -21,11 +19,8 @@ export default Vue.extend({
       handler() {
         const got = get(this.config, this.path_name);
 
-        if (!got) {
-          // console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
-        } else {
+        if (got) {
           this.node_config = cloneDeep(got);
-          // TODO: remove make_backup?
           this.make_backup();
         }
       },
@@ -35,9 +30,7 @@ export default Vue.extend({
   created() {
     const got = get(this.config, this.path_name);
 
-    if (!got) {
-      // console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
-    } else {
+    if (got) {
       this.node_config = cloneDeep(got);
       this.make_backup();
     }
