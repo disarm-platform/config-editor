@@ -75,13 +75,12 @@ import { get_validation_result_for_node } from '@/lib/get_validation_result_for_
 interface Data {
   active_tab: string;
   geodata_layers: TGeodataLayer[];
-  location_selection: TLocationSelection;
+  location_selection: TLocationSelection | null;
 }
 
 export default Vue.extend({
   components: {Login, Instances, Config, Geodata, Publish},
   data(): Data {
-    // @ts-ignore
     return {
       active_tab: 'instances',
       geodata_layers: [],
