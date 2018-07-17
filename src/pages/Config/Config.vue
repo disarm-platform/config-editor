@@ -123,7 +123,6 @@ export default Vue.extend({
         unset(new_config, path_name);
         this.$store.commit('set_applets_config', new_config);
       }
-      this.$emit('change', updated_config, path_name, included);
     },
     errors_on_node(node_name: string) {
       if (!this.validation_result) {
