@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {get} from 'lodash'
+import {get} from 'lodash';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 import ComponentMessages from './ComponentMessages.vue';
@@ -37,14 +37,7 @@ import ComponentActions from './ComponentActions.vue';
 import {component_list} from './component_defs';
 import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
-interface NodeComponent extends Vue {
-  // TODO: Cannot access ConfigNodeMixin for some reason, so recreating the required parts here
-  reset: () => void;
-  tell_me: () => void;
-}
-
 export interface Data {
-  messages: string[];
   included: boolean;
 }
 
@@ -62,26 +55,28 @@ export default Vue.extend({
   },
   data(): Data {
     return {
-      messages: [],
       included: true,
     };
   },
   mounted() {
-    if (!this.show_include) {
-      this.included = true;
-      return;
-    }
-    const config = get(this.config, this.path_name)
-    if (!config) {
-      this.included = false;
-    } else {
-      this.included = !!(Object.keys(config).length);
-    }
+    this.determine_included();
   },
   methods: {
     save(node_config: any) {
       this.$emit('change', node_config, this.path_name, this.included);
-    }
+    },
+    determine_included() {
+      if (!this.show_include) {
+        this.included = true;
+        return;
+      }
+      const config = get(this.config, this.path_name);
+      if (!config) {
+        this.included = false;
+      } else {
+        this.included = !!(Object.keys(config).length);
+      }
+    },
   },
 });
 </script>
