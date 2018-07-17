@@ -68,6 +68,8 @@ export default Vue.extend({
     this.get_list_of_configurations();
     if (this.creating_new_config && this.config) {
       this.new_instance_name = this.config.config_id;
+    } else if (this.instance) {
+      this.local_selected_instance = this.instance.id
     }
   },
   methods: {

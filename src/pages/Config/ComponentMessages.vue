@@ -27,11 +27,6 @@ export default Vue.extend({
     node_name: String,
     validation_result: Object,
   },
-  watch: {
-    validation_result(validation_result) {
-      console.log('validation_result', validation_result);
-    },
-  },
   computed: {
     responses(): any {
       if (!this.validation_result) {

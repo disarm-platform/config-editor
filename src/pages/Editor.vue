@@ -33,9 +33,6 @@
       </span>
       <Config
           v-if="config"
-          :config="config"
-          :geodata_layers="geodata_layers"
-          @change="change"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
@@ -58,7 +55,6 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {set, unset} from 'lodash';
 // @ts-ignore
 import download from 'downloadjs';
 
@@ -78,17 +74,14 @@ import { get_validation_result_for_node } from '@/lib/get_validation_result_for_
 interface Data {
   active_tab: string;
   geodata_layers: TGeodataLayer[];
-  location_selection: TLocationSelection;
 }
 
 export default Vue.extend({
   components: {Login, Instances, Config, Geodata, Publish},
   data(): Data {
-    // @ts-ignore
     return {
       active_tab: 'instances',
       geodata_layers: [],
-      location_selection: null,
     };
   },
   watch: {
@@ -149,22 +142,6 @@ export default Vue.extend({
     this.$store.commit('set_applets_config', config);
   },
   methods: {
-    change(updated_config: any, pathname: string, included: boolean) {/* save config to store here*/
-      if (included) {
-        /*
-          Need to use lodash.set so nested objects get updated.
-          If not we end up with an object like: { 'applets.irs_record_point': {} }
-          when we want: { 'applets': {'irs_record_point: {}} }
-        */
-        const new_config = {...this.config};
-        set(new_config, pathname, updated_config);
-        this.$store.commit('set_applets_config', new_config);
-      } else {/* use unset for same reason as above*/
-        const new_config = {...this.config};
-        unset(new_config, pathname);
-        this.$store.commit('set_applets_config', new_config);
-      }
-    },
     async save_config() {
       const config_copy = {...this.config};
       /* bump version number TODO: remove string and number conversions*/
@@ -191,9 +168,6 @@ export default Vue.extend({
     },
     set_geodata_layers(geodata_layers: TGeodataLayer[]) {
       this.geodata_layers = geodata_layers;
-    },
-    set_location_selection(location_selection: TLocationSelection) {
-      this.location_selection = location_selection;
     },
   },
 });

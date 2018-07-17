@@ -1,19 +1,11 @@
 import Vue from 'vue';
 import {cloneDeep, get} from 'lodash';
-import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
-/**
- * All of these end up with a data property called `node_config` that they can mutate,
- * OR they can override a `tell_me` method which returns the value of the `node_config`
- */
 export default Vue.extend({
   props: {
-    node_name: String,
     path_name: String,
-
     config: Object as () => TConfig,
-    validation_result: Object as () => TUnifiedResponse,
   },
   data() {
     return {
@@ -24,33 +16,15 @@ export default Vue.extend({
   watch: {
     config: {
       handler() {
-        const got = get(this.config, this.path_name);
-
-        if (!got) {
-          // console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
-        } else {
-          this.node_config = cloneDeep(got);
-          // TODO: remove make_backup?
-          this.make_backup();
-        }
+        this.set_node_config();
       },
       deep: true,
     },
   },
   created() {
-    const got = get(this.config, this.path_name);
-
-    if (!got) {
-      // console.warn(`Cannot find configuration for path_name "${this.path_name}"`, this.config);
-    } else {
-      this.node_config = cloneDeep(got);
-      this.make_backup();
-    }
+    this.set_node_config();
   },
   methods: {
-    tell_me() {
-      return this.node_config;
-    },
     reset() {
       this.node_config = cloneDeep(this.backup_config);
     },
@@ -59,7 +33,14 @@ export default Vue.extend({
       this.backup_config = cloneDeep(got);
     },
     emit_change() {
-      this.$emit('change');
+      this.$emit('change', this.node_config);
+    },
+    set_node_config() {
+      const got = get(this.config, this.path_name);
+      if (got) {
+        this.node_config = cloneDeep(got);
+        this.make_backup();
+      }
     },
   },
 });

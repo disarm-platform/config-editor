@@ -33,16 +33,12 @@
             <i class="el-icon-success" v-else></i>
           </span>
           <ConfigComponentWrapper
-
               :display_name="display_name"
-              :config="config"
               :node_name="node_name"
               :path_name="path_name"
               :component_name="component_name"
               :show_include="show_include"
-
               :validation_result="validation_result"
-              @change="handle_change"
           >
           </ConfigComponentWrapper>
         </el-tab-pane>
@@ -55,6 +51,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {set, unset} from 'lodash';
 import {component_defs, component_list, ComponentDefinition} from './component_defs';
 import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
@@ -74,40 +71,32 @@ import { ECustomEdgeStatus } from '@locational/config-validation/build/module/li
 import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
 
 export interface Data {
-  validation_result_message: string;
   component_defs: ComponentDefinition[];
 }
 
 export default Vue.extend({
   components: {ConfigComponentWrapper, ...component_list},
-  props: {
-    config: {} as () => TConfig,
-    geodata_layers: Array as () => TGeodataLayer[],
-  },
   data(): Data {
     return {
-      validation_result_message: '',
       component_defs,
     };
   },
   computed: {
+    config(): TConfig {
+      return this.$store.state.applets_config;
+    },
     validation_result(): any {
       return this.$store.state.validation_result;
     },
     config_not_validated(): boolean {
       return this.$store.state.validation_status === ValidationStatus.NotValidated;
     },
-    config_invalid(): boolean {
-      return this.$store.state.validation_status === ValidationStatus.Invalid;
-    },
     config_valid(): boolean {
       return this.$store.state.validation_status === ValidationStatus.Valid;
     },
   },
   methods: {
-    handle_change(updated_config: {}, path_name: string, included: boolean) {
-      this.$emit('change', updated_config, path_name, included);
-    },
+    
     errors_on_node(node_name: string) {
       if (!this.validation_result) {
         return false;

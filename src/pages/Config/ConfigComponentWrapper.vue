@@ -10,11 +10,9 @@
 
     <!-- Component itself -->
     <component
-        v-bind:is="component_name"
+        :is="component_name"
         :config="config"
-        :node_name="node_name"
         :path_name="path_name"
-        ref="actual_component"
         @change="save"
     ></component>
 
@@ -31,6 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {get, set, unset} from 'lodash';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 import ComponentMessages from './ComponentMessages.vue';
@@ -38,14 +37,7 @@ import ComponentActions from './ComponentActions.vue';
 import {component_list} from './component_defs';
 import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
-interface NodeComponent extends Vue {
-  // TODO: Cannot access ConfigNodeMixin for some reason, so recreating the required parts here
-  reset: () => void;
-  tell_me: () => void;
-}
-
 export interface Data {
-  messages: string[];
   included: boolean;
 }
 
@@ -58,39 +50,49 @@ export default Vue.extend({
     node_name: String,
     path_name: String,
 
-    config: Object as () => TConfig,
     validation_result: Object as () => any,
   },
   data(): Data {
     return {
-      messages: [],
       included: true,
     };
   },
-  mounted() {
-    if (!this.show_include) {
-      this.included = true;
-      return;
-    }
-    const config = this.get_node_config();
-    if (!config) {
-      this.included = false;
-    } else {
-      this.included = !!(Object.keys(config).length);
+  computed: {
+    config(): TConfig {
+      return this.$store.state.applets_config
     }
   },
+  mounted() {
+    this.determine_included();
+  },
   methods: {
-    save() {
-      this.$emit('change', this.get_node_config(), this.path_name, this.included);
+    save(updated_config: any) {
+      if (this.included) {
+        /*
+          Need to use lodash.set so nested objects get updated.
+          If not we end up with an object like: { 'applets.irs_record_point': {} }
+          when we want: { 'applets': {'irs_record_point: {}} }
+        */
+        const new_config = {...this.config};
+        set(new_config, this.path_name, updated_config);
+        this.$store.commit('set_applets_config', new_config);
+      } else {/* use unset for same reason as above*/
+        const new_config = {...this.config};
+        unset(new_config, this.path_name);
+        this.$store.commit('set_applets_config', new_config);
+      }
     },
-    reset() {
-      (this.$refs.actual_component as NodeComponent).reset();
-    },
-    get_node_config() {
-      return (this.$refs.actual_component as NodeComponent).tell_me();
-    },
-    tell_me() {
-      console.log('value is', JSON.stringify(this.get_node_config()));
+    determine_included() {
+      if (!this.show_include) {
+        this.included = true;
+        return;
+      }
+      const config = get(this.config, this.path_name);
+      if (!config) {
+        this.included = false;
+      } else {
+        this.included = !!(Object.keys(config).length);
+      }
     },
   },
 });
