@@ -55,6 +55,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {set, unset} from 'lodash';
 import {component_defs, component_list, ComponentDefinition} from './component_defs';
 import ConfigComponentWrapper from './ConfigComponentWrapper.vue';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
@@ -81,7 +82,6 @@ export interface Data {
 export default Vue.extend({
   components: {ConfigComponentWrapper, ...component_list},
   props: {
-    config: {} as () => TConfig,
     geodata_layers: Array as () => TGeodataLayer[],
   },
   data(): Data {
@@ -91,6 +91,9 @@ export default Vue.extend({
     };
   },
   computed: {
+    config(): TConfig {
+      return this.$store.state.applets_config;
+    },
     validation_result(): any {
       return this.$store.state.validation_result;
     },
@@ -105,7 +108,21 @@ export default Vue.extend({
     },
   },
   methods: {
-    handle_change(updated_config: {}, path_name: string, included: boolean) {
+    handle_change(updated_config: any, path_name: string, included: boolean) {
+      if (included) {
+        /*
+          Need to use lodash.set so nested objects get updated.
+          If not we end up with an object like: { 'applets.irs_record_point': {} }
+          when we want: { 'applets': {'irs_record_point: {}} }
+        */
+        const new_config = {...this.config};
+        set(new_config, path_name, updated_config);
+        this.$store.commit('set_applets_config', new_config);
+      } else {/* use unset for same reason as above*/
+        const new_config = {...this.config};
+        unset(new_config, path_name);
+        this.$store.commit('set_applets_config', new_config);
+      }
       this.$emit('change', updated_config, path_name, included);
     },
     errors_on_node(node_name: string) {
