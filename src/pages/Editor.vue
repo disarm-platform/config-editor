@@ -33,7 +33,6 @@
       </span>
       <Config
           v-if="config"
-          :geodata_layers="geodata_layers"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
@@ -75,7 +74,6 @@ import { get_validation_result_for_node } from '@/lib/get_validation_result_for_
 interface Data {
   active_tab: string;
   geodata_layers: TGeodataLayer[];
-  location_selection: TLocationSelection | null;
 }
 
 export default Vue.extend({
@@ -84,7 +82,6 @@ export default Vue.extend({
     return {
       active_tab: 'instances',
       geodata_layers: [],
-      location_selection: null,
     };
   },
   watch: {
@@ -171,9 +168,6 @@ export default Vue.extend({
     },
     set_geodata_layers(geodata_layers: TGeodataLayer[]) {
       this.geodata_layers = geodata_layers;
-    },
-    set_location_selection(location_selection: TLocationSelection) {
-      this.location_selection = location_selection;
     },
   },
 });

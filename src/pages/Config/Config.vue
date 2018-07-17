@@ -75,18 +75,13 @@ import { ECustomEdgeStatus } from '@locational/config-validation/build/module/li
 import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
 
 export interface Data {
-  validation_result_message: string;
   component_defs: ComponentDefinition[];
 }
 
 export default Vue.extend({
   components: {ConfigComponentWrapper, ...component_list},
-  props: {
-    geodata_layers: Array as () => TGeodataLayer[],
-  },
   data(): Data {
     return {
-      validation_result_message: '',
       component_defs,
     };
   },
@@ -99,9 +94,6 @@ export default Vue.extend({
     },
     config_not_validated(): boolean {
       return this.$store.state.validation_status === ValidationStatus.NotValidated;
-    },
-    config_invalid(): boolean {
-      return this.$store.state.validation_status === ValidationStatus.Invalid;
     },
     config_valid(): boolean {
       return this.$store.state.validation_status === ValidationStatus.Valid;
