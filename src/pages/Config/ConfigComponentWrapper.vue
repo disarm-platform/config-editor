@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {get} from 'lodash'
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 import ComponentMessages from './ComponentMessages.vue';
@@ -72,7 +73,7 @@ export default Vue.extend({
       this.included = true;
       return;
     }
-    const config = this.get_node_config();
+    const config = get(this.config, this.path_name)
     if (!config) {
       this.included = false;
     } else {
@@ -80,18 +81,9 @@ export default Vue.extend({
     }
   },
   methods: {
-    save() {
-      this.$emit('change', this.get_node_config(), this.path_name, this.included);
-    },
-    reset() {
-      (this.$refs.actual_component as NodeComponent).reset();
-    },
-    get_node_config() {
-      return (this.$refs.actual_component as NodeComponent).tell_me();
-    },
-    tell_me() {
-      console.log('value is', JSON.stringify(this.get_node_config()));
-    },
+    save(node_config: any) {
+      this.$emit('change', node_config, this.path_name, this.included);
+    }
   },
 });
 </script>

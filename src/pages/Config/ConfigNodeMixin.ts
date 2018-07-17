@@ -3,17 +3,12 @@ import {cloneDeep, get} from 'lodash';
 import {TUnifiedResponse} from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
-/**
- * All of these end up with a data property called `node_config` that they can mutate,
- * OR they can override a `tell_me` method which returns the value of the `node_config`
- */
 export default Vue.extend({
   props: {
     node_name: String,
     path_name: String,
 
     config: Object as () => TConfig,
-    validation_result: Object as () => TUnifiedResponse,
   },
   data() {
     return {
@@ -48,9 +43,6 @@ export default Vue.extend({
     }
   },
   methods: {
-    tell_me() {
-      return this.node_config;
-    },
     reset() {
       this.node_config = cloneDeep(this.backup_config);
     },
@@ -59,7 +51,7 @@ export default Vue.extend({
       this.backup_config = cloneDeep(got);
     },
     emit_change() {
-      this.$emit('change');
+      this.$emit('change', this.node_config);
     },
   },
 });
