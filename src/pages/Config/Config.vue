@@ -33,16 +33,12 @@
             <i class="el-icon-success" v-else></i>
           </span>
           <ConfigComponentWrapper
-
               :display_name="display_name"
-              :config="config"
               :node_name="node_name"
               :path_name="path_name"
               :component_name="component_name"
               :show_include="show_include"
-
               :validation_result="validation_result"
-              @change="handle_change"
           >
           </ConfigComponentWrapper>
         </el-tab-pane>
@@ -100,22 +96,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    handle_change(updated_config: any, path_name: string, included: boolean) {
-      if (included) {
-        /*
-          Need to use lodash.set so nested objects get updated.
-          If not we end up with an object like: { 'applets.irs_record_point': {} }
-          when we want: { 'applets': {'irs_record_point: {}} }
-        */
-        const new_config = {...this.config};
-        set(new_config, path_name, updated_config);
-        this.$store.commit('set_applets_config', new_config);
-      } else {/* use unset for same reason as above*/
-        const new_config = {...this.config};
-        unset(new_config, path_name);
-        this.$store.commit('set_applets_config', new_config);
-      }
-    },
+    
     errors_on_node(node_name: string) {
       if (!this.validation_result) {
         return false;

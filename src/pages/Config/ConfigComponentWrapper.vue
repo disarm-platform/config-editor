@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {get} from 'lodash';
+import {get, set, unset} from 'lodash';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 import ComponentMessages from './ComponentMessages.vue';
@@ -50,7 +50,6 @@ export default Vue.extend({
     node_name: String,
     path_name: String,
 
-    config: Object as () => TConfig,
     validation_result: Object as () => any,
   },
   data(): Data {
@@ -58,12 +57,30 @@ export default Vue.extend({
       included: true,
     };
   },
+  computed: {
+    config(): TConfig {
+      return this.$store.state.applets_config
+    }
+  },
   mounted() {
     this.determine_included();
   },
   methods: {
-    save(node_config: any) {
-      this.$emit('change', node_config, this.path_name, this.included);
+    save(updated_config: any) {
+      if (this.included) {
+        /*
+          Need to use lodash.set so nested objects get updated.
+          If not we end up with an object like: { 'applets.irs_record_point': {} }
+          when we want: { 'applets': {'irs_record_point: {}} }
+        */
+        const new_config = {...this.config};
+        set(new_config, this.path_name, updated_config);
+        this.$store.commit('set_applets_config', new_config);
+      } else {/* use unset for same reason as above*/
+        const new_config = {...this.config};
+        unset(new_config, this.path_name);
+        this.$store.commit('set_applets_config', new_config);
+      }
     },
     determine_included() {
       if (!this.show_include) {
