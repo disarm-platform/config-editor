@@ -7,13 +7,13 @@
 
     <el-select v-model="local_selected_instance" filterable placeholder="Select instance" no-match-text="No instances found">
       <el-option
-        v-for="item in configs"
+        v-for="item in instances"
         :key="item.id"
         :label="item.id"
         :value="item.id">
       </el-option>
     </el-select>
-    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_config">Select</el-button>
+    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_applets_config">Select</el-button>
 
 
 
@@ -50,15 +50,15 @@ export default Vue.extend({
       local_selected_instance: '',
       new_instance_name: '',
       error: '',
-      configs: [],
+      instances: [],
     };
   },
   computed: {
     instance(): any {
-      return this.$store.state.instance;
+      return this.$store.state.instance_id_and_version;
     },
     config(): any {
-      return this.$store.state.config;
+      return this.$store.state.applets_config;
     },
     creating_new_config(): any {
       return this.$store.state.creating_new_config;
@@ -89,21 +89,22 @@ export default Vue.extend({
         },
       };
       this.$store.commit('set_creating_new_config', true);
-      this.$store.commit('set_config', new_config);
+      this.$store.commit('set_applets_config', new_config);
     },
     set_local_selected_instance(config: any) {
       this.local_selected_instance = config;
     },
-    set_config() {
-      const found = this.configs.find((c: any) => c.id === this.local_selected_instance);
+    set_applets_config() {
+      const found = this.instances.find((c: any) => c.id === this.local_selected_instance);
 
       this.$store.commit('set_creating_new_config', false);
-      this.$store.commit('set_instance', found);
+      console.log('found', found);
+      this.$store.commit('set_instance_id_and_version', found);
     },
     async get_list_of_configurations() {
       try {
-        const configs = await get_configurations();
-        this.configs = configs.map((a: any) => {
+        const instances = await get_configurations();
+        this.instances = instances.map((a: any) => {
           a.id = `${a.config_id}@${a.config_version}`;
           return a;
         }).sort((a: any, b: any) => {

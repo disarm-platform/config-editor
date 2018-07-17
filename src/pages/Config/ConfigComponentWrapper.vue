@@ -35,7 +35,7 @@ import {TConfig} from '@locational/config-validation/build/module/lib/config_typ
 
 import ComponentMessages from './ComponentMessages.vue';
 import ComponentActions from './ComponentActions.vue';
-import {component_list} from '@/views/Config/component_defs';
+import {component_list} from './component_defs';
 import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 interface NodeComponent extends Vue {
