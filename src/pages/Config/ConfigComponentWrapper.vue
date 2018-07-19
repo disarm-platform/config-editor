@@ -10,6 +10,7 @@
 
     <!-- Component itself -->
     <component
+        v-show="included"
         :is="component_name"
         :config="config"
         :path_name="path_name"
