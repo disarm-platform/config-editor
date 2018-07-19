@@ -6,10 +6,10 @@
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
-          :disabled="!config_valid"
           @click="save_update"
           >
           Download
+          <span v-if="!config_valid">(Warning config is not valid)</span>
         </el-button>
       </div>
 
