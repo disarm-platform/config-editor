@@ -62,6 +62,11 @@ export default Vue.extend({
       return this.$store.state.applets_config;
     },
   },
+  watch: {
+    config() {
+      this.determine_included()
+    }
+  },
   mounted() {
     this.determine_included();
   },
