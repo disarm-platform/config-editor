@@ -240,7 +240,7 @@ export default Vue.extend({
         };
 
         try {
-          await create_level(this.config.config_id, this.new_layer_name, geojson);
+          // await create_level(this.config.config_id, this.new_layer_name, geojson);
 
           this.geodata_layers.push(new_layer);
 
