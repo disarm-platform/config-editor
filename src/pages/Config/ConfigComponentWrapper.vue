@@ -3,7 +3,10 @@
     
     <div style="display: flex; justify-content: space-between;">
       <h1 style="margin-top: 0;">{{display_name}}</h1>
-      <el-checkbox v-if="show_include" v-model="included" @change="save" style="margin-top: 0.5em;margin-bottom: 1em;">Include</el-checkbox>
+      <div>
+      <el-checkbox v-if="show_include" v-model="included" @change="handle_included_change" style="margin-top: 0.5em;margin-bottom: 1em;">Include</el-checkbox>
+      <el-button v-if="show_include && show_backup_button" style="margin-left: 10px;" type="text" @click="reset">Reset</el-button>
+      </div>
     </div>
 
     <ComponentMessages :validation_result="validation_result" :node_name="node_name"/>
@@ -11,6 +14,7 @@
     <!-- Component itself -->
     <component
         v-show="included"
+        :included="included"
         :is="component_name"
         :config="config"
         :path_name="path_name"
@@ -30,7 +34,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {get, set, unset} from 'lodash';
+import {get, set, unset, cloneDeep} from 'lodash';
 import {TConfig} from '@locational/config-validation/build/module/lib/config_types/TConfig';
 
 import ComponentMessages from './ComponentMessages.vue';
@@ -39,6 +43,8 @@ import {component_list} from './component_defs';
 import { TStandardEdgeResponse } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
 
 export interface Data {
+  backup_config: null;
+  show_backup_button: boolean;
   included: boolean;
 }
 
@@ -55,6 +61,8 @@ export default Vue.extend({
   },
   data(): Data {
     return {
+      backup_config: null,
+      show_backup_button: false,
       included: true,
     };
   },
@@ -64,14 +72,28 @@ export default Vue.extend({
     },
   },
   watch: {
-    config() {
+    instance_id_and_version() {
       this.determine_included()
     }
   },
   mounted() {
     this.determine_included();
+    this.make_backup()
   },
   methods: {
+    handle_included_change() {
+      if (this.included) {
+        // show backup button, if we have a backup
+        if (this.backup_config) {
+          this.show_backup_button = true
+        }
+      } else {
+        // config is being excluded now
+        // take backup
+        this.make_backup()
+      }
+      this.save({})
+    },
     save(updated_config: any) {
       if (this.included) {
         /*
@@ -100,6 +122,14 @@ export default Vue.extend({
         this.included = !!(Object.keys(config).length);
       }
     },
+    make_backup() {
+      const got = get(this.config, this.path_name);
+      this.backup_config = cloneDeep(got);
+    },
+    reset() {
+      this.show_backup_button = false;
+      this.save(this.backup_config)
+    }
   },
 });
 </script>
