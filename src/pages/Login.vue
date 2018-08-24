@@ -44,7 +44,7 @@ export default Vue.extend({
       this.error = '';
       try {
         const user: DoumaUser = await login(this.username, this.password);
-        set_api_key(user.key);
+        set_api_key(user.api_key);
         this.$store.commit('set_user', user);
         this.$router.push('/');
       } catch (e) {
