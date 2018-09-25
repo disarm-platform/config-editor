@@ -253,10 +253,10 @@ export default Vue.extend({
           return;
         }
         // @ts-ignore, not sure why this complains
-        this.geodata_layers.push(new_layer);
+        //this.geodata_layers.push(new_layer);
 
         // 5. Store geojson in cache somewhere outside vue
-        geodata_cache[this.new_layer_name] = geojson;
+       // geodata_cache[this.new_layer_name] = geojson;
 
         // 6. reset ui
         // @ts-ignore
