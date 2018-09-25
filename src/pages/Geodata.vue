@@ -218,10 +218,11 @@ export default Vue.extend({
     },
     delete_layer(layer_name: string, index: number) {
       this.geodata_layers.splice(index, 1);
+      //TODO remove layer from geodata_cache
       this.emit_changes();
     },
     upload_geodata_layer(name: any, index: any) {
-      console.log("Saving Geodata", name, index);
+      console.log("Saving Geodata", name, geodata_cache[name]);
     },
     async save_layer(geojson_string: any) {
       try {
