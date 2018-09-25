@@ -50,20 +50,22 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
+import Vue from "vue";
 // @ts-ignore
-import { login } from '../lib/auth';
-import { get_configurations } from '../lib/config';
-import { set_api_key } from '../lib/standard_handler';
-import { geodata_cache } from '@/geodata_cache';
+import { login } from "../lib/auth";
+import { get_configurations } from "../lib/config";
+import { set_api_key } from "../lib/standard_handler";
+import { geodata_cache } from "@/geodata_cache";
 
 export default Vue.extend({
   data() {
     return {
-      local_selected_instance: '',
-      new_instance_name: '',
-      error: '',
+      local_selected_instance: "",
+      new_instance_name: "",
+      selected_config: {},
+      error: "",
       instances: [],
+      instance_configs_list: [{}]
     };
   },
   computed: {
@@ -75,10 +77,11 @@ export default Vue.extend({
     },
     creating_new_config(): any {
       return this.$store.state.creating_new_config;
-    },
+    }
   },
   mounted() {
     this.get_list_of_configurations();
+    this.load_instances();
     if (this.creating_new_config && this.config) {
       this.new_instance_name = this.config.config_id;
     } else if (this.instance) {
@@ -86,54 +89,86 @@ export default Vue.extend({
     }
   },
   methods: {
+    async create_new_instance() {
+      console.log(
+        `TODO: POST the new instance data say to /instance${{
+          name: this.new_instance_name
+        }}`
+      );
+    },
+    async load_instances() {
+      console.log("//TODO Get instances from /instace");
+      //TODO instaces = insatnces_loaded from /instance
+      //for now
+    },
+    async load_instance_configs(instance_id: string) {
+      console.log("//TODO Get instance configs from /config");
+      //TODO instaces =  from /config
+      //for now
+      this.instance_configs_list = [
+        { version: "1", id: "8713786" },
+        { version: "2", id: "87786" }
+      ];  
+    },
+    select_instance_config(){
+      console.log(`GET /configs/${this.selected_config}`)
+    },
     create_new_config() {
       const new_config = {
         config_id: this.new_instance_name,
-        config_version: '1',
+        config_version: "1",
         map_focus: {
-          centre: {},
+          centre: {}
         },
         applets: {
           irs_record_point: {
-            metadata: {},
+            metadata: {}
           },
-          meta: {},
+          meta: {}
         },
         instance: {
-          slug: this.new_instance_name,
-        },
+          slug: this.new_instance_name
+        }
       };
 
       this.reset_geodata_cache();
-      this.$store.commit('reset_validation_result');
-      this.$store.commit('reset_validation_status');
-      this.$store.commit('set_creating_new_config', true);
-      this.$store.commit('set_applets_config', new_config);
-      this.$store.commit('set_instance_id_and_version', null);
+      this.$store.commit("reset_validation_result");
+      this.$store.commit("reset_validation_status");
+      this.$store.commit("set_creating_new_config", true);
+      this.$store.commit("set_applets_config", new_config);
+      this.$store.commit("set_instance_id_and_version", null);
     },
     set_local_selected_instance(config: any) {
       this.local_selected_instance = config;
     },
     set_applets_config() {
-      const found = this.instances.find((c: any) => c.id === this.local_selected_instance);
+      const found = this.instances.find(
+        (c: any) => c.id === this.local_selected_instance
+      );
 
       this.reset_geodata_cache();
-      this.$store.commit('reset_validation_result');
-      this.$store.commit('reset_validation_status');
-      this.$store.commit('set_creating_new_config', false);
-      this.$store.commit('set_instance_id_and_version', found);
+      this.$store.commit("reset_validation_result");
+      this.$store.commit("reset_validation_status");
+      this.$store.commit("set_creating_new_config", false);
+      this.$store.commit("set_instance_id_and_version", found);
     },
     async get_list_of_configurations() {
       try {
         const instances = await get_configurations();
-        this.instances = instances.map((a: any) => {
-          a.id = `${a.config_id}@${a.config_version}`;
-          return a;
-        }).sort((a: any, b: any) => {
-          if (a.id < b.id) { return -1; }
-          if (a.id > b.id) { return 1; }
-          return 0;
-        });
+        this.instances = instances
+          .map((a: any) => {
+            a.id = `${a.config_id}@${a.config_version}`;
+            return a;
+          })
+          .sort((a: any, b: any) => {
+            if (a.id < b.id) {
+              return -1;
+            }
+            if (a.id > b.id) {
+              return 1;
+            }
+            return 0;
+          });
       } catch (e) {
         this.error = e.message;
       }
@@ -144,10 +179,9 @@ export default Vue.extend({
           delete geodata_cache[key];
         }
       }
-    },
-  },
+    }
+  }
 });
 </script>
 <style lang="scss">
-  
 </style>
