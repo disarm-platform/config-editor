@@ -93,7 +93,7 @@
             label="Operations"
             width="500">
           <template slot-scope="scope">
-            <el-button disabled icon="el-icon-upload" size="small"></el-button>
+            <el-button icon="el-icon-upload" size="small" @click="upload_geodata_layer(scope.row.name, scope.$index)"></el-button>
             <el-button @click="download_layer(scope.row.name, scope.$index)" icon="el-icon-download"
                        size="small"></el-button>
             <el-button @click="delete_layer(scope.row.name, scope.$index)" icon="el-icon-delete"
@@ -209,15 +209,21 @@ export default Vue.extend({
         "text/plain"
       );
     },
+    load_geodata_layer(layer: string, config_id: string) {
+      // GET geodata from /geodata/config_id/layer
+      //TODO Fetch data from the API
+      console.log("Fetching geodata");
+      const layer_data = "{}"; //Result from /geodata/config_id/layer
+      this.save_layer(layer_data);
+    },
     delete_layer(layer_name: string, index: number) {
       this.geodata_layers.splice(index, 1);
       this.emit_changes();
     },
-    async save_new_layer() {
-      this.alert = null;
-      // 1. Upload geojson file
-      const geojson_string = await upload_file_as_text((this.file as any)
-        .raw as File);
+    upload_geodata_layer(name: any, index: any) {
+      console.log("Saving Geodata", name, index);
+    },
+    async save_layer(geojson_string: any) {
       try {
         const geojson = JSON.parse(geojson_string) as TGeodataLayer;
         const result = validate_layer_schema(geojson);
@@ -241,19 +247,23 @@ export default Vue.extend({
           field_summary
         };
 
-   
-          // await create_level(this.config.config_id, this.new_layer_name, geojson);
+        // await create_level(this.config.config_id, this.new_layer_name, geojson);
 
-          this.geodata_layers.push(new_layer);
+        this.geodata_layers.push(new_layer);
 
-          geodata_cache[this.new_layer_name] = geojson;
+        geodata_cache[this.new_layer_name] = geojson;
 
-          console.log("geodata_layer", new_layer);
-  
+        console.log("geodata_layer", new_layer);
       } catch (jsonerror) {
-        console.log('JSON Error',jsonerror);
+        console.log("JSON Error", jsonerror);
       }
-
+    },
+    async save_new_layer() {
+      this.alert = null;
+      // 1. Upload geojson file
+      const geojson_string = await upload_file_as_text((this.file as any)
+        .raw as File);
+      this.save_layer(geojson_string);
       // 6. reset ui
       // @ts-ignore
       this.$refs.upload.clearFiles();
