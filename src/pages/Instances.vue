@@ -4,7 +4,8 @@
 
     <h3>Select instance</h3>
 
-
+<el-row :gutter="20">
+   <el-col :span="6">
     <el-select v-model="local_selected_instance" filterable placeholder="Select instance" no-match-text="No instances found">
       <el-option
         v-for="item in instances"
@@ -13,9 +14,20 @@
         :value="item.id">
       </el-option>
     </el-select>
-    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="set_applets_config">Select</el-button>
-
-
+    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="load_instance_configs">Select</el-button>
+   </el-col>
+ <el-col :span="6" v-if="local_selected_instance">
+    <el-select v-model="selected_config" filterable placeholder="Select Config" no-match-text="No configs found">
+      <el-option
+        v-for="item in instance_configs_list"
+        :key="item.id"
+        :label="item.id"
+        :value="item.id">
+      </el-option>
+    </el-select>
+    <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="select_instance_config">Select</el-button>
+ </el-col>
+</el-row>
 
     <div style="margin: 2em 0;">
 
