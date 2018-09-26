@@ -6,7 +6,26 @@
             style="width: 100%"
             @selection-change="handleSelectionChange">
             <el-table-column
+                width="120"
+                fixed
+                label="Operations">
+                <template slot-scope="scope">
+                    <el-button
+                        size="mini"
+                        @click="handleEdit(scope.$index, scope.row)">
+                        <i class="el-icon-edit"></i>
+                    </el-button>
+                    <el-button
+                        size="mini"
+                        type="danger"
+                        @click="handleDelete(scope.$index, scope.row)">
+                        <i class="el-icon-delete"></i>    
+                    </el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
                 property="name"
+                fixed
                 label="Name"
                 width="120">
             </el-table-column>
@@ -115,6 +134,12 @@ export default Vue.extend({
     },
     permission(row: any, permission: string): boolean {
       return _.includes(this.users[row.$index].permissions, row.column.label);
+    },
+    handleEdit(){
+
+    },
+    handleDelete(){
+
     }
   }
 });
