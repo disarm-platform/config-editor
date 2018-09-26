@@ -25,7 +25,25 @@
 </template>
 <script  lang="ts">
 import Vue from "vue";
-import _ from 'lodash'
+import _ from "lodash";
+const base_permissions = [
+  "irs_monitor:read",
+  "irs_record_point:read",
+  "irs_plan:read",
+  "irs_tasker",
+  "structure_recorder:read",
+  "data_wizard:read",
+  "debug:read",
+  "config:read",
+  "irs_monitor:write",
+  "irs_record_point:write",
+  "irs_plan:write",
+  "irs_tasker:write",
+  "structure_recorder:write",
+  "data_wizard:write",
+  "debug:write",
+  "config:write"
+];
 export default Vue.extend({
   name: "users",
   data() {
@@ -33,57 +51,71 @@ export default Vue.extend({
       users: [
         {
           name: "Tom1",
-          permissions:['irs_monitor:read','plan:write','plan:read','config:read']
+          permissions: [
+            "irs_monitor:read",
+            "plan:write",
+            "plan:read",
+            "config:read"
+          ]
         },
         {
           name: "Tom2",
-          permissions:['irs_monitor:read','plan:write','plan:read']
+          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
         },
         {
           name: "Tom3",
-          permissions:['irs_monitor:read','plan:write','plan:read','config-write']
+          permissions: [
+            "irs_monitor:read",
+            "plan:write",
+            "plan:read",
+            "config-write"
+          ]
         },
         {
           name: "Tom4",
-          permissions:['irs_monitor:read','plan:write','plan:read']
+          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
         },
         {
           name: "Tom5",
-          permissions:['irs_monitor:read','plan:write','plan:read']
+          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
         },
         {
           name: "Tom6",
-          permissions:['irs_monitor:read','plan:write','plan:read']
+          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
         },
         {
           name: "Tom",
-          permissions:['irs_monitor:read','plan:write','plan:read']
+          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
         }
       ]
     };
   },
-  computed:{
-      permissions_list():string[]{
-        let permissions = this.users
-        .reduce((acc:string[],u):string[] =>  acc.concat(u.permissions),[])
-        return _.uniq(permissions)
-      },
-
+  computed: {
+    permissions_list(): string[] {
+      let permissions = this.users.reduce(
+        (acc: string[], u): string[] => acc.concat(u.permissions),
+        base_permissions
+      );
+      return _.uniq(permissions);
+    }
   },
-  methods:{
-      handleSelectionChange(event:any){
-          console.log(event)
-      },
-      update_permission(row:any,checked:boolean){
-          if(checked){
-              this.users[row.$index].permissions.push(row.column.label)
-          }else{
-              this.users[row.$index].permissions.splice(this.users[row.$index].permissions.indexOf(row.column.label),1)
-          }
-      },
-      permission(row:any, permission:string):boolean{
-          return _.includes(this.users[row.$index].permissions,row.column.label)
+  methods: {
+    handleSelectionChange(event: any) {
+      console.log(event);
+    },
+    update_permission(row: any, checked: boolean) {
+      if (checked) {
+        this.users[row.$index].permissions.push(row.column.label);
+      } else {
+        this.users[row.$index].permissions.splice(
+          this.users[row.$index].permissions.indexOf(row.column.label),
+          1
+        );
       }
+    },
+    permission(row: any, permission: string): boolean {
+      return _.includes(this.users[row.$index].permissions, row.column.label);
+    }
   }
 });
 </script>
