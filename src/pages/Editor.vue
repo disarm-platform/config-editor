@@ -50,6 +50,19 @@
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
 
+      <el-tab-pane name="users">
+      <span slot="label">
+        Users
+        <i class="el-icon-person"></i>
+      </span>
+      <Users
+          v-if="config"
+          :version="config.config_version"
+          @save_config="save_config"
+      />
+      <p v-else>Please select a config or create a new one</p>
+    </el-tab-pane>
+
   </el-tabs>
 </template>
 
@@ -59,6 +72,7 @@ import Vue from 'vue';
 import download from 'downloadjs';
 
 import Geodata from './Geodata.vue';
+import Users from './Users/Users.vue';
 import Config from './Config/Config.vue';
 import Publish from './Publish.vue';
 import Login from './Login.vue';
@@ -77,7 +91,7 @@ interface Data {
 }
 
 export default Vue.extend({
-  components: {Login, Instances, Config, Geodata, Publish},
+  components: {Login, Instances, Config, Geodata, Publish, Users},
   data(): Data {
     return {
       active_tab: 'instances',

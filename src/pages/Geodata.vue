@@ -174,13 +174,14 @@ export default Vue.extend({
   methods: {
     async retrieve_geodata_for_instance() {
       if (!this.instance) {
+        console.log('No instance')
         return;
       }
 
       this.geodata_layers = [];
-      const levels = await get_levels(this.instance.config_id);
+      const levels = await get_levels(this.instance.config_id); //Needs a config_id should return a list of levels with leve_name and level_id
       for (const level_name of levels) {
-        const level = await get_level(this.instance.config_id, level_name);
+        const level = await get_level(this.instance.config_id, level_name); 
 
         try {
           const geodata_layer: any = {
