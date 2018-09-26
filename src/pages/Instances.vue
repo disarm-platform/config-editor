@@ -152,27 +152,6 @@ export default Vue.extend({
       this.$store.commit("set_creating_new_config", false);
       this.$store.commit("set_instance_id_and_version", found);
     },
-    async get_list_of_configurations() {
-      try {
-        const instances = await get_configurations();
-        this.instances = instances
-          .map((a: any) => {
-            a.id = `${a.config_id}@${a.config_version}`;
-            return a;
-          })
-          .sort((a: any, b: any) => {
-            if (a.id < b.id) {
-              return -1;
-            }
-            if (a.id > b.id) {
-              return 1;
-            }
-            return 0;
-          });
-      } catch (e) {
-        this.error = e.message;
-      }
-    },
     reset_geodata_cache() {
       for (const key in geodata_cache) {
         if (geodata_cache[key]) {
