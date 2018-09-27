@@ -36,7 +36,7 @@
       <el-form :inline="true">
         <el-form-item>
           <el-input type="text" placeholder="Instance name" v-model="new_instance_name" >
-            <el-button slot="append" type="primary"  @click="create_new_config">Create new config</el-button>
+            <el-button slot="append" type="primary"  @click="create_new_instance">Create new Instance</el-button>
           </el-input>
         </el-form-item>
 

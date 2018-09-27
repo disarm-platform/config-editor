@@ -81,7 +81,7 @@ import Instances from './Instances.vue';
 import {get_configuration} from '../lib/config';
 import { TGeodataLayer } from '@locational/geodata-support/build/module/config_types/TGeodata';
 import { TLocationSelection } from '@locational/geodata-support/build/main/config_types/TLocationSelection';
-import { ValidationStatus } from '@/store';
+import { ValidationStatus } from '@/store/types';
 import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
 
 
