@@ -65,7 +65,7 @@ import {
   TStandardEdgeResponse,
   EStandardEdgeStatus,
 } from '@locational/config-validation/build/module/lib/TStandardEdgeResponse';
-import { ValidationStatus } from '@/store';
+import { ValidationStatus } from '@/store/types';
 import { EUnifiedStatus } from '@locational/config-validation/build/module/lib/TUnifiedResponse';
 import { ECustomEdgeStatus } from '@locational/config-validation/build/module/lib/TCustomEdgeResponse';
 import { get_validation_result_for_node } from '@/lib/get_validation_result_for_node';
