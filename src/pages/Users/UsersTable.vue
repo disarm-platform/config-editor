@@ -12,13 +12,13 @@
                 <template slot-scope="scope">
                     <el-button
                         size="mini"
-                        @click="handleEdit(scope.$index, scope.row)">
+                        @click="handleEdit(scope)">
                         <i class="el-icon-edit"></i>
                     </el-button>
                     <el-button
                         size="mini"
                         type="danger"
-                        @click="handleDelete(scope.$index, scope.row)">
+                        @click="handleDelete(scope)">
                         <i class="el-icon-delete"></i>    
                     </el-button>
                 </template>
@@ -65,6 +65,10 @@ const base_permissions = [
 ];
 export default Vue.extend({
   name: "users",
+  props:{
+      users_list:Array,
+      permissions:Array
+  },
   data() {
     return {
       users: [
