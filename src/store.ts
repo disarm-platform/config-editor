@@ -68,7 +68,63 @@ const store = new Vuex.Store({
     },
   },
   actions: {
+    create_instance(){
 
+    },
+    delete_instance(){
+
+    },
+    get_instances(){
+
+    },
+    create_instance_config(){
+
+    },
+    delete_instance_config(){
+
+    },
+    list_instance_configs(){
+
+    },
+    get_instance_config(){
+
+    },
+    create_geodata_level(){
+
+    },
+    delete_level(){
+
+    },
+    list_geodata_levels(){
+
+    },
+    get_geodata_level(){
+
+    },
+    create_user(){
+
+    },
+    get_instance_users(){
+
+    },
+    get_all_users(){
+
+    },
+    delete_user(){
+
+    },
+    update_user(){
+
+    },
+    get_instance_permissions(){
+
+    },
+    create_permission(){
+
+    },
+    remove_permission(){
+      
+    }
   },
 });
 
