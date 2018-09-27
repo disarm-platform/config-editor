@@ -12,12 +12,13 @@ import { RootState } from '../types';
 
 
 export const actions: ActionTree<ConfigState, RootState> = {
-    create({ commit }): any {
+    async create({ commit }, config_data) {
+        commit('config_created', await create_configuration(config_data));
     },
-    get({ commit }): any {
-
+    async get({ commit }) {
+        commit('list_loaded', await get_configurations())
     },
-    get_one({ commit }): any {
-
+    async get_one({ commit },config_id:string){
+        commit('config_loaded', await get_configuration(config_id))
     }
 };
