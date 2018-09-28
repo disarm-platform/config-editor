@@ -11,13 +11,28 @@ import { RootState } from '../types';
 
 
 export const actions: ActionTree<InstanceState, RootState> = {
-    create({ commit }): any {
-
+    async create({ commit },instance_data) {
+        try{
+            const result = await create_instance(instance_data);
+            commit('instance_created',result)
+        }catch(error){
+            commit('instance_error',error);
+        }
     },
-    get({ commit }): any {
-
+    async get({ commit }) {
+        try{
+            const result = await get_instances();
+            commit('instance_list_loaded',result);
+        }catch(error){
+            commit('instance_error',error);
+        }
     },
-    get_one({ commit }): any {
-
+    async get_one({ commit }, instance_id) {
+        try{
+            const result = await get_instance(instance_id);
+            commit('instance_loaded',result);
+        }catch(error){
+            commit('instance_error',error);
+        }
     }
 };
