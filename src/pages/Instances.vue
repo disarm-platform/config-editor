@@ -16,7 +16,7 @@
     </el-select>
     <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="load_instance_configs">Select</el-button>
    </el-col>
- <el-col :span="6" v-if="local_selected_instance">
+ <el-col :span="6" >
     <el-select v-model="selected_config" filterable placeholder="Select Config" no-match-text="No configs found">
       <el-option
         v-for="item in instance_configs_list"
@@ -80,7 +80,6 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.get_list_of_configurations();
     this.load_instances();
     if (this.creating_new_config && this.config) {
       this.new_instance_name = this.config.config_id;
@@ -108,13 +107,11 @@ export default Vue.extend({
       this.instance_configs_list = [
         { version: "1", id: "8713786" },
         { version: "2", id: "87786" }
-      ];  
+      ];
     },
-    select_instance_config(){
-      console.log(`GET /configs/${this.selected_config}`)
-    },
-    create_new_config() {
-      const new_config = {
+    select_instance_config() {
+      console.log(`GET /configs/${this.selected_config}`);
+      const mock_loaded_config = {
         config_id: this.new_instance_name,
         config_version: "1",
         map_focus: {
@@ -135,9 +132,10 @@ export default Vue.extend({
       this.$store.commit("reset_validation_result");
       this.$store.commit("reset_validation_status");
       this.$store.commit("set_creating_new_config", true);
-      this.$store.commit("set_applets_config", new_config);
+      this.$store.commit("set_applets_config", mock_loaded_config);
       this.$store.commit("set_instance_id_and_version", null);
     },
+    create_new_config() {},
     set_local_selected_instance(config: any) {
       this.local_selected_instance = config;
     },
