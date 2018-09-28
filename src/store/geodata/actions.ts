@@ -16,12 +16,29 @@ import { RootState } from '../types';
 
 
 export const actions: ActionTree<GeodataState, RootState> = {
-    create({ commit }): any {
+    async create({ commit },{instance,level,geojson}){
+        try{
+            let result = await create_level(instance,level,geojson)
+            commit('layer_created', result)
+        }catch(error){
+            commit('layer_error',error)
+        }
+        
     },
-    get({ commit }): any {
-
+    async get({ commit },{instance}) {
+        try{
+            let result = await get_levels(instance)
+            commit('layer_list_loaded', result)
+        }catch(error){
+            commit('layer_error',error)
+        } 
     },
-    get_one({ commit }): any {
-
+    async get_one({ commit },{instance,level}){
+        try{
+            let result = await get_level(instance,level)
+            commit('layer_loaded', result)
+        }catch(error){
+            commit('layer_error',error)
+        }
     }
 };

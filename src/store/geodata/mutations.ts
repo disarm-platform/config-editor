@@ -11,6 +11,9 @@ export const mutations: MutationTree<GeodataState> = {
         state.error = false;
         state.geodata_layer = payload;
     },
+    layer_created(state,payload:any){
+        state.error = false;
+    },
     layer_list_loaded(state, payload:any){
         state.layer_list = payload
     },
