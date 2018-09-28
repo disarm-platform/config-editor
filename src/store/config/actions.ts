@@ -13,12 +13,29 @@ import { RootState } from '../types';
 
 export const actions: ActionTree<ConfigState, RootState> = {
     async create({ commit }, config_data) {
-        commit('config_created', await create_configuration(config_data));
+        try {
+            const result = await create_configuration(config_data)
+            commit('config_created', result);
+        } catch (error) {
+            commit('config_error', error)
+        }
     },
     async get({ commit }) {
-        commit('list_loaded', await get_configurations())
+        try {
+            const result = await get_configurations()
+            commit('list_loaded', result)
+        } catch (error) {
+            commit('config_error', error);
+        }
+
     },
-    async get_one({ commit },config_id:string){
-        commit('config_loaded', await get_configuration(config_id))
+    async get_one({ commit }, config_id: string) {
+        try{
+            const result = await get_configuration(config_id)
+            commit('config_loaded', result)
+        }catch(error){
+            commit('config_error',error)
+        }
+       
     }
 };
