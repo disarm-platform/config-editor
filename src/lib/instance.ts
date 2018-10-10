@@ -18,9 +18,13 @@ export async function get_instances() {
     method: 'get',
     url: '/instance',
   };
-
-  const res = await standard_handler(options);
-  return res.data;
+  try{
+    const res = await standard_handler(options);
+    return res.data;
+  }
+  catch(e){
+      throw(e)
+  }
 }
 
 export async function get_instance(id: string) {

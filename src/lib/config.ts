@@ -13,7 +13,7 @@ export async function create_configuration(config_data: any) {
   return res.data;
 }
 
-export async function get_configurations() {
+export async function get_configurations(instance_id:any) {
   const options = {
     method: 'get',
     url: '/config',

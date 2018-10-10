@@ -9,9 +9,9 @@
     <el-select v-model="local_selected_instance" filterable placeholder="Select instance" no-match-text="No instances found">
       <el-option
         v-for="item in instances"
-        :key="item.id"
-        :label="item.id"
-        :value="item.id">
+        :key="item.name"
+        :label="item.name"
+        :value="item.name">
       </el-option>
     </el-select>
     <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;" @click="load_instance_configs">Select</el-button>
@@ -56,6 +56,7 @@ import { login } from "../lib/auth";
 import { get_configurations } from "../lib/config";
 import { set_api_key } from "../lib/standard_handler";
 import { geodata_cache } from "@/geodata_cache";
+import { mapActions ,mapState} from 'vuex';
 
 export default Vue.extend({
   data() {
@@ -64,11 +65,13 @@ export default Vue.extend({
       new_instance_name: "",
       selected_config: {},
       error: "",
-      instances: [],
       instance_configs_list: [{}]
     };
   },
   computed: {
+    instances():any{
+      return this.$store.state.instance.instance_list
+    },
     instance(): any {
       return this.$store.state.instance_id_and_version;
     },
@@ -80,7 +83,8 @@ export default Vue.extend({
     }
   },
   mounted() {
-    this.load_instances();
+    //this.load_instances();
+    this.load_instance_configs('bwa')
     if (this.creating_new_config && this.config) {
       this.new_instance_name = this.config.config_id;
     } else if (this.instance) {
@@ -96,9 +100,7 @@ export default Vue.extend({
       );
     },
     async load_instances() {
-      console.log("//TODO Get instances from /instace");
-      //TODO instaces = insatnces_loaded from /instance
-      //for now
+      this.$store.dispatch('instance/get')
     },
     async load_instance_configs(instance_id: string) {
       console.log("//TODO Get instance configs from /config");
@@ -108,6 +110,7 @@ export default Vue.extend({
         { version: "1", id: "8713786" },
         { version: "2", id: "87786" }
       ];
+      this.$store.dispatch('configs/get',instance_id)
     },
     select_instance_config() {
       console.log(`GET /configs/${this.selected_config}`);

@@ -65,10 +65,10 @@ const base_permissions = [
 ];
 export default Vue.extend({
   name: "users",
-  props:{
+ /* props:{
       users_list:Array,
       permissions:Array
-  },
+  },*/
   data() {
     return {
       users: [
@@ -126,17 +126,22 @@ export default Vue.extend({
     handleSelectionChange(event: any) {
       console.log(event);
     },
+    
     update_permission(row: any, checked: boolean) {
       if (checked) {
+        // @ts-ignore
         this.users[row.$index].permissions.push(row.column.label);
       } else {
+        // @ts-ignore
         this.users[row.$index].permissions.splice(
+          // @ts-ignore
           this.users[row.$index].permissions.indexOf(row.column.label),
           1
         );
       }
     },
     permission(row: any, permission: string): boolean {
+      // @ts-ignore
       return _.includes(this.users[row.$index].permissions, row.column.label);
     },
     handleEdit(){
