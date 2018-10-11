@@ -4,7 +4,7 @@ export async function create_instance(instance_data: any) {
   const options = {
     method: 'post',
     data: {
-      instance_data,
+      ...instance_data
     },
     url: '/instance',
   };

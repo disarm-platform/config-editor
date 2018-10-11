@@ -2,7 +2,7 @@ import axios from 'axios';
 import COMMON from './common';
 
 export const standard_handler = axios.create({
-  baseURL: COMMON.api_url,
+  baseURL: `${COMMON.api_url}/v8`,
   params: {
     country: 'app',
   },
