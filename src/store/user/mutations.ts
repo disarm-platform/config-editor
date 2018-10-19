@@ -3,9 +3,9 @@ import { UserState } from './types';
 import { DoumaUser } from '@locational/douma-types';
 
 export const mutations: MutationTree<UserState> = {
-    users_loaded(state, payload: DoumaUser) {
+    users_loaded(state, payload:any) {
         state.error = false;
-        state.user = payload;
+        state.user_list = payload;
     },
     user_created(state, payload: any){
         state.error = false
