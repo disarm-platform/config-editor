@@ -1,6 +1,6 @@
 export interface InstanceState {
     instance_list?: [any]| never[];
-    instace?: TInstance | null;
+    instance?: TInstance | null;
     error: boolean;
 }
 
