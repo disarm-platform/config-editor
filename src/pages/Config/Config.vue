@@ -107,18 +107,24 @@ export default Vue.extend({
       // 0. Reset old validation result
       this.$store.commit('reset_validation_status');
       this.$store.commit('reset_validation_result');
+        let location_selection_result = {}
 
-      // 1. Attempt to create location_selection, if needed for full validation
-      const location_selection_result = generate_location_selection(
-        this.config.spatial_hierarchy as TSpatialHierarchy,
-        geodata_cache,
-      );
+        if(!!this.config.spatial_hierarchy&&geodata_cache){
+          location_selection_result = generate_location_selection(
+                this.config.spatial_hierarchy as TSpatialHierarchy,
+                geodata_cache,
+            );
+        }
+        // 1. Attempt to create location_selection, if needed for full validation
+
+
 
       // 2. Attach location_selection to config
       const config: TConfig = {
         ...this.config,
         location_selection: location_selection_result.location_selection,
       };
+
 
       // 3. Run config validation
       const validation_result = validate(config);
