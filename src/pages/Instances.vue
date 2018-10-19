@@ -12,21 +12,21 @@
                             v-for="item in instances"
                             :key="item.name"
                             :label="item.name"
-                            :value="item.name">
+                            :value="item">
                     </el-option>
                 </el-select>
                 <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;"
-                           @click="load_instance_configs">Select
+                           @click="load_instance()">Select
                 </el-button>
             </el-col>
             <el-col :span="6">
                 <el-select v-model="selected_config" filterable placeholder="Select Config"
                            no-match-text="No configs found">
                     <el-option
-                            v-for="item in instance_configs_list"
-                            :key="item.id"
-                            :label="item.id"
-                            :value="item.id">
+                            v-for="item in config_list"
+                            :key="item._id"
+                            :label="'Version'+item.version"
+                            :value="item._id">
                     </el-option>
                 </el-select>
                 <el-button :disabled="!local_selected_instance" type="primary" style="margin-left: 1em;"
@@ -85,6 +85,9 @@
             config(): any {
                 return this.$store.state.applets_config;
             },
+            config_list(): any {
+              return this.$store.state.config.config_list;
+            },
             creating_new_config(): any {
                 return this.$store.state.creating_new_config;
             }
@@ -105,15 +108,16 @@
             async load_instances() {
                 this.$store.dispatch("instance/get");
             },
+            async load_instance(instance){
+                this.$store.commit('instance/instance_loaded',this.local_selected_instance)
+                this.load_instance_configs(this.local_selected_instance._id)
+                this.$store.dispatch('user/get',{instance_id:this.local_selected_instance._id})
+            },
             async load_instance_configs(instance_id: string) {
                 console.log("//TODO Get instance configs from /config");
                 //TODO instaces =  from /config
                 //for now
-                this.instance_configs_list = [
-                    {version: "1", id: "8713786"},
-                    {version: "2", id: "87786"}
-                ];
-                this.$store.dispatch("config/get", instance_id);
+                this.$store.dispatch("config/get", {instance_id});
             },
             select_instance_config() {
                 console.log(`GET /configs/${this.selected_config}`);
