@@ -8,15 +8,15 @@
                      <el-input v-model="form.name" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="Username" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                    <el-input v-model="form.username" autocomplete="off"></el-input>
                 </el-form-item>
                  <el-form-item label="Password" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                    <el-input v-model="form.password" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">Save</el-button>
+                <el-button type="primary" @click="save">Save</el-button>
             </span>
         </el-dialog>
     </div>
@@ -35,6 +35,13 @@ export default Vue.extend({
       },
       formLabelWidth: "120px"
     };
-  }
+  },
+    methods:{
+      save(){
+          const instance_id = this.$store.state.instance.instance._id;
+          this.dialogFormVisible = false
+          this.$emit('save',{user_data:this.form,instance_id})
+      }
+    }
 });
 </script>
