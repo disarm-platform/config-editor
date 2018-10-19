@@ -46,6 +46,7 @@
           v-if="config"
           :version="config.config_version"
           @save_config="save_config"
+          @publish_config="publish_config"
       />
       <p v-else>Please select a config or create a new one</p>
     </el-tab-pane>
@@ -156,6 +157,13 @@ export default Vue.extend({
     this.$store.commit('set_applets_config', config);
   },
   methods: {
+      async publish_config(){
+          const config_data = this.$store.state.applets_config
+          const instance_id = this.$store.state.instance.instance._id;
+          console.log(config_data)
+          this.$store.dispatch('config/create',{config_data,instance_id})
+      },
+
     async save_config() {
       const config_copy = {...this.config};
       /* bump version number TODO: remove string and number conversions*/
@@ -166,7 +174,8 @@ export default Vue.extend({
       /* send to remote*/
       /* update local list / reload local lost*/
       // @ts-ignore
-      this.$refs.instances.get_list_of_configurations();
+      //this.$refs.instances.get_list_of_configurations();
+      console.log(this.$refs)
       /* remove _id as we want to create a new version*/
       delete config_copy._id;
       try {/* await create_configuration(config_copy);*/

@@ -3,6 +3,14 @@
     <el-card>
       <div slot="header">
         <span>Check and Publish</span>
+          <el-button
+                  style="float: right; padding-left: 30px; padding-top: 3px;"
+                  type="text"
+                  @click="publish"
+          >
+              Publish
+          </el-button>
+          <span>    </span>
         <el-button
           style="float: right; padding: 3px 0"
           type="text"
@@ -36,7 +44,7 @@
           title="Configuration is valid"
           type="success">
         </el-alert>
-        
+
         <div style="margin-top:1em;">
           <el-input type="number" disabled v-model="version">
             <span slot="prepend">Version</span>
@@ -69,6 +77,9 @@ export default Vue.extend({
     save_update() {
       this.$emit('save_config');
     },
+      publish(){
+        this.$emit('publish_config')
+      }
   },
 });
 </script>

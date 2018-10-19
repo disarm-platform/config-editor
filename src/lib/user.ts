@@ -1,22 +1,23 @@
 import { standard_handler } from '@/lib/standard_handler';
 
-export async function create_user(user_data: any) {
+export async function create_user(user_data: any, instance_id:string) {
   const options = {
     method: 'post',
     data: {
-      user_data,
+      ...user_data,
+        instance_id
     },
-    url: '/user',
+    url: `/user`,
   };
 
   const res = await standard_handler(options);
   return res.data;
 }
 
-export async function get_users() {
+export async function get_users(instance_id:any) {
   const options = {
     method: 'get',
-    url: '/user',
+    url: `/user?instance_id=${instance_id}`,
   };
 
   const res = await standard_handler(options);
@@ -25,7 +26,7 @@ export async function get_users() {
 
 export async function update_user(id: string, user_data:any) {
     const options = {
-      method: 'post',
+      method: 'put',
       url: `/user/${id}`,
       data:{
           user_data
