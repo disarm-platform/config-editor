@@ -7,5 +7,8 @@ export const getters: GetterTree<UserState, RootState> = {
         const { user } = state;
         //@ts-ignore
         return 'user._id';
+    },
+    users(state):any {
+        return state.user_list
     }
 };

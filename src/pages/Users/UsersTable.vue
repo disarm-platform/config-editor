@@ -24,7 +24,7 @@
                 </template>
             </el-table-column>
             <el-table-column
-                property="name"
+                property="username"
                 fixed
                 label="Name"
                 width="120">
@@ -71,56 +71,23 @@ export default Vue.extend({
   },*/
   data() {
     return {
-      users: [
-        {
-          name: "Tom1",
-          permissions: [
-            "irs_monitor:read",
-            "plan:write",
-            "plan:read",
-            "config:read"
-          ]
-        },
-        {
-          name: "Tom2",
-          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
-        },
-        {
-          name: "Tom3",
-          permissions: [
-            "irs_monitor:read",
-            "plan:write",
-            "plan:read",
-            "config-write"
-          ]
-        },
-        {
-          name: "Tom4",
-          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
-        },
-        {
-          name: "Tom5",
-          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
-        },
-        {
-          name: "Tom6",
-          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
-        },
-        {
-          name: "Tom",
-          permissions: ["irs_monitor:read", "plan:write", "plan:read"]
-        }
-      ]
+        permissions:[]
     };
   },
+    watch:{
+      ''
+    },
   computed: {
     permissions_list(): string[] {
-      let permissions = this.users.reduce(
+   /*   let permissions = this.users.reduce(
         (acc: string[], u): string[] => acc.concat(u.permissions),
         base_permissions
-      );
-      return _.uniq(permissions);
-    }
+      );*/
+      return base_permissions//_.uniq(permissions);
+    },
+      users(){
+        return this.$store.state.user.user_list
+      }
   },
   methods: {
     handleSelectionChange(event: any) {
@@ -130,16 +97,17 @@ export default Vue.extend({
     update_permission(row: any, checked: boolean) {
       if (checked) {
         // @ts-ignore
-        this.users[row.$index].permissions.push(row.column.label);
+          let instance_id = this.$store.state.instance.instance._id
+          console.log({user_id:row.row._id,value:row.column.label,instance_id})
+        this.permissions.push(row.column.label);
       } else {
         // @ts-ignore
-        this.users[row.$index].permissions.splice(
-          // @ts-ignore
-          this.users[row.$index].permissions.indexOf(row.column.label),
-          1
-        );
+
       }
     },
+      save_permissions(){
+        console.log(this.users)
+      },
     permission(row: any, permission: string): boolean {
       // @ts-ignore
       return _.includes(this.users[row.$index].permissions, row.column.label);
