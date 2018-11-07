@@ -71,11 +71,10 @@ export default Vue.extend({
   },*/
   data() {
     return {
-        permissions:[]
+        permissions:[{}]
     };
   },
     watch:{
-      ''
     },
   computed: {
     permissions_list(): string[] {

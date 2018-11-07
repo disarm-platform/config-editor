@@ -68,7 +68,7 @@ export default Vue.extend({
   },
   computed: {
     config(): TConfig {
-      return this.$store.state.applets_config;
+      return this.$store.state.config.applets_config;
     },
   },
   watch: {

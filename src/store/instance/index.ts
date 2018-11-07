@@ -7,7 +7,7 @@ import { RootState } from '../types';
 
 export const state: InstanceState = {
     instance_list: [],
-    instace: null,
+    instance: null,
     error: false
 };
 

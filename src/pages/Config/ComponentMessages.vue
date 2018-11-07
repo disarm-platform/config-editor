@@ -32,7 +32,6 @@ export default Vue.extend({
       if (!this.validation_result) {
         return [];
       }
-
       return get_validation_result_for_node(this.validation_result, this.node_name);
     },
   },

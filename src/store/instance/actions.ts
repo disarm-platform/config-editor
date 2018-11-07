@@ -14,7 +14,7 @@ export const actions: ActionTree<InstanceState, RootState> = {
     async create({ commit }, instance_data) {
         try {
             const result = await create_instance(instance_data);
-            commit('instance_created', result)
+            return result
         } catch (error) {
             commit('instance_error', error);
         }

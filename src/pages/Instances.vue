@@ -103,24 +103,7 @@
         },
         methods: {
             async create_new_instance() {
-                this.$store.dispatch("instance/create", {name: this.new_instance_name});
-            },
-            async load_instances() {
-                this.$store.dispatch("instance/get");
-            },
-            async load_instance(instance){
-                this.$store.commit('instance/instance_loaded',this.local_selected_instance)
-                this.load_instance_configs(this.local_selected_instance._id)
-                this.$store.dispatch('user/get',{instance_id:this.local_selected_instance._id})
-            },
-            async load_instance_configs(instance_id: string) {
-                console.log("//TODO Get instance configs from /config");
-                //TODO instaces =  from /config
-                //for now
-                this.$store.dispatch("config/get", {instance_id});
-            },
-            select_instance_config() {
-                console.log(`GET /configs/${this.selected_config}`);
+                const result = await this.$store.dispatch("instance/create", {name: this.new_instance_name});
                 const mock_loaded_config = {
                     config_id: this.new_instance_name,
                     config_version: "1",
@@ -137,12 +120,32 @@
                         slug: this.new_instance_name
                     }
                 };
+                this.$store.commit("config/config_created", mock_loaded_config);
+            },
+
+            async load_instances() {
+                this.$store.dispatch("instance/get");
+            },
+            async load_instance(instance){
+                this.$store.commit('instance/instance_loaded',this.local_selected_instance)
+                this.load_instance_configs(this.local_selected_instance._id)
+                this.$store.dispatch('user/get',{instance_id:this.local_selected_instance._id})
+            },
+            async load_instance_configs(instance_id: string) {
+                console.log("//TODO Get instance configs from /config");
+                //TODO instaces =  from /config
+                //for now
+                this.$store.dispatch("config/get", {instance_id});
+            },
+            async select_instance_config() {
+                const loaded_instance_config = await this.$store.dispatch('config/get_one',this.selected_config)
+               // debugger
 
                 this.reset_geodata_cache();
                 this.$store.commit("reset_validation_result");
                 this.$store.commit("reset_validation_status");
                 this.$store.commit("set_creating_new_config", true);
-                this.$store.commit("set_applets_config", mock_loaded_config);
+
                 this.$store.commit("set_instance_id_and_version", null);
             },
             create_new_config() {
@@ -155,7 +158,6 @@
                 const found = this.instances.find(
                     (c: any) => c.id === this.local_selected_instance
                 );
-
                 this.reset_geodata_cache();
                 this.$store.commit("reset_validation_result");
                 this.$store.commit("reset_validation_status");

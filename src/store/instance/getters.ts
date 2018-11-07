@@ -4,7 +4,7 @@ import { RootState } from '../types';
 
 export const getters: GetterTree<InstanceState, RootState> = {
     instance_id(state): any {
-        const { instace } = state;
+        const { instance } = state;
         //@ts-ignore
         return 'instace._id';
     }
