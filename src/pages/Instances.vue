@@ -83,7 +83,7 @@
                 return this.$store.state.instance_id_and_version;
             },
             config(): any {
-                return this.$store.state.applets_config;
+                return this.$store.state.config.applets_config;
             },
             config_list(): any {
               return this.$store.state.config.config_list;
@@ -104,23 +104,6 @@
         methods: {
             async create_new_instance() {
                 const result = await this.$store.dispatch("instance/create", {name: this.new_instance_name});
-                const mock_loaded_config = {
-                    config_id: this.new_instance_name,
-                    config_version: "1",
-                    map_focus: {
-                        centre: {}
-                    },
-                    applets: {
-                        irs_record_point: {
-                            metadata: {}
-                        },
-                        meta: {}
-                    },
-                    instance: {
-                        slug: this.new_instance_name
-                    }
-                };
-                this.$store.commit("config/config_created", mock_loaded_config);
             },
 
             async load_instances() {
