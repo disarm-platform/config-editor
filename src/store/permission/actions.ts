@@ -4,12 +4,12 @@ import {
     remove,
     get_user_permissions
 } from '@/lib/permission';
-import {PermisionState} from './types';
+import {PermissionState} from './types';
 
 import {RootState} from '../types';
 
 
-export const actions: ActionTree<PermisionState, RootState> = {
+export const actions: ActionTree<PermissionState, RootState> = {
     async create({commit}, {user_id, value, instance_id}) {
         try {
             const result = await create({user_id,value,instance_id});

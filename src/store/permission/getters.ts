@@ -1,8 +1,8 @@
 import { GetterTree } from 'vuex';
-import { PermisionState } from './types';
+import { PermissionState } from './types';
 import { RootState } from '../types';
 
-export const getters: GetterTree<PermisionState, RootState> = {
+export const getters: GetterTree<PermissionState, RootState> = {
     config_id(state): any {
         const { permission } = state;
         //@ts-ignore

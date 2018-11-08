@@ -1,8 +1,8 @@
 import { MutationTree } from 'vuex';
-import { PermisionState } from './types';
+import { PermissionState } from './types';
 import { DoumaUser } from '@locational/douma-types';
 
-export const mutations: MutationTree<PermisionState> = {
+export const mutations: MutationTree<PermissionState> = {
     permissions_loaded(state, payload:any) {
         state.error = false;
         state.permission_list = payload;

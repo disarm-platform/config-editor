@@ -15,7 +15,7 @@ export const actions: ActionTree<ConfigState, RootState> = {
     async create({ commit }, {config_data,instance_id}) {
         try {
             const result = await create_configuration(config_data,instance_id)
-            commit('config_created', result);
+            //commit('config_created', result);
         } catch (error) {
             commit('config_error', error)
         }

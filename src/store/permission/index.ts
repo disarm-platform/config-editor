@@ -2,10 +2,10 @@ import { Module } from 'vuex';
 import { getters } from './getters';
 import { actions } from './actions';
 import { mutations } from './mutations';
-import { PermisionState } from './types';
+import { PermissionState } from './types';
 import { RootState } from '../types';
 
-export const state: PermisionState = {
+export const state: PermissionState = {
     permission_list: [],
     permission: null,
     error: false
@@ -13,7 +13,7 @@ export const state: PermisionState = {
 
 const namespaced: boolean = true;
 
-export const permission: Module<PermisionState, RootState> = {
+export const permission: Module<PermissionState, RootState> = {
     namespaced,
     state,
     getters,
