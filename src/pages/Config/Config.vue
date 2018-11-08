@@ -159,7 +159,7 @@ export default Vue.extend({
 
       this.$store.commit('set_validation_result', validation_result);
       this.$store.commit('set_validation_status', validation_status);
-    },
+    }
   },
 });
 </script>

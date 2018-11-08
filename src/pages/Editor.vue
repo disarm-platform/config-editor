@@ -34,7 +34,7 @@
       <Config
           v-if="config"
       />
-      <p v-else>Please select a config or create a new one</p>
+      <p v-else>Please select a config or <el-button type="text" @click="make_new_config()">create a new one</el-button></p>
     </el-tab-pane>
 
     <el-tab-pane name="publish">
@@ -48,7 +48,7 @@
           @save_config="save_config"
           @publish_config="publish_config"
       />
-      <p v-else>Please select a config or create a new one</p>
+      <p v-else>Please select a config or <el-button type="text" @click="make_new_config()">create a new one</el-button></p>
     </el-tab-pane>
 
       <el-tab-pane name="users">
@@ -61,7 +61,7 @@
           :version="config.config_version"
           @save_config="save_config"
       />
-      <p v-else>Please select a config or create a new one</p>
+      <p v-else>Please select a config or <el-button type="text" @click="make_new_config()">create a new one</el-button></p>
     </el-tab-pane>
 
   </el-tabs>
@@ -113,7 +113,7 @@ export default Vue.extend({
   },
   computed: {
     config(): any {
-      return this.$store.state.applets_config;
+      return this.$store.state.config.applets_config;
     },
     selected_config(): any {
       return this.$store.state.instance_id_and_version;
@@ -158,7 +158,7 @@ export default Vue.extend({
   },
   methods: {
       async publish_config(){
-          const config_data = this.$store.state.applets_config
+          const config_data = this.$store.state.config.applets_config
           const instance_id = this.$store.state.instance.instance._id;
           console.log(config_data)
           this.$store.dispatch('config/create',{config_data,instance_id})
@@ -192,7 +192,38 @@ export default Vue.extend({
     set_geodata_layers(geodata_layers: TGeodataLayer[]) {
       this.geodata_layers = geodata_layers;
     },
+      make_new_config(){
+          const instance = this.$store.state.instance.instance;
+
+          console.log(this.$store.state.instance.instance)
+
+          if(!instance){
+              return   this.$notify.error({
+                  title: 'Error',
+                  message: 'An instance must be selected first'
+              });
+          }
+          const mock_loaded_config = {
+              config_id: instance.name,
+              config_version: "1",
+              map_focus: {
+                  centre: {}
+              },
+              applets: {
+                  irs_record_point: {
+                      metadata: {}
+                  },
+                  meta: {}
+              },
+              instance: {
+                  slug: instance.name
+              }
+          };
+
+          this.$store.commit("config/config_created", mock_loaded_config);
+      }
   },
+
 });
 </script>
 
