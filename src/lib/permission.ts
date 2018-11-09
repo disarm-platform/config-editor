@@ -30,10 +30,10 @@ export async function remove({user_id,value,instance_id}: any) {
     return res.data;
 }
 
-export async function get_user_permissions(instance_id:any,user_id:any) {
+export async function get_permissions() {
     const options = {
         method: 'get',
-        url: `permission/${user_id}/:${instance_id}`,
+        url: `permission/`,
     };
 
     const res = await standard_handler(options);

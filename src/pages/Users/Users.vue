@@ -1,7 +1,7 @@
 <template>
     <div>
         <new-user @save="create_user"/>
-        <users-table/>
+        <users-table />
     </div>
 </template>
 <script lang="ts">
@@ -16,10 +16,14 @@
             return {};
         },
         mounted() {
+            this.$store.dispatch("user/get")
+        },
+        computed:{
         },
         methods: {
-            create_user(user_data) {
-                this.$store.dispatch("user/create", user_data);
+            async create_user(user_data) {
+                await this.$store.dispatch("user/create", user_data);
+                this.$store.dispatch("user/get")
             }
         }
     });

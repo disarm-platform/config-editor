@@ -57,8 +57,7 @@
         <i class="el-icon-person"></i>
       </span>
       <Users
-          v-if="config"
-          :version="config.config_version"
+          v-if="instances"
           @save_config="save_config"
       />
       <p v-else>Please select a config or <el-button type="text" @click="make_new_config()">create a new one</el-button></p>
@@ -112,6 +111,9 @@ export default Vue.extend({
     },
   },
   computed: {
+      instances(){
+          return this.$store.state.instance.instance_list
+      },
     config(): any {
       return this.$store.state.config.applets_config;
     },

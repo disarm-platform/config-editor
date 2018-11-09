@@ -14,10 +14,10 @@ export async function create_user(user_data: any, instance_id:string) {
   return res.data;
 }
 
-export async function get_users(instance_id:any) {
+export async function get_users() {
   const options = {
     method: 'get',
-    url: `/user?instance_id=${instance_id}`,
+    url: `/all_users`,
   };
 
   const res = await standard_handler(options);

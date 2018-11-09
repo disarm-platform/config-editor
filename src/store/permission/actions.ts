@@ -2,7 +2,7 @@ import {ActionTree} from 'vuex';
 import {
     create,
     remove,
-    get_user_permissions
+    get_permissions
 } from '@/lib/permission';
 import {PermissionState} from './types';
 
@@ -26,9 +26,9 @@ export const actions: ActionTree<PermissionState, RootState> = {
             commit('permission_error', e.message);
         }
     },
-    async get({commit},{instance_id,user_id}){
+    async get({commit}){
         try {
-            const result = await remove({user_id,instance_id});
+            const result = await get_permissions();
             commit('permissions_loaded', result);
         } catch (e) {
             commit('permission_error', e.message);

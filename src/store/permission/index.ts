@@ -4,10 +4,12 @@ import { actions } from './actions';
 import { mutations } from './mutations';
 import { PermissionState } from './types';
 import { RootState } from '../types';
+import { DoumaReadPermissions } from '@locational/douma-types';
+import { DoumaWritePermissions } from '@locational/douma-types';
 
 export const state: PermissionState = {
     permission_list: [],
-    permission: null,
+    permission : {} as DoumaReadPermissions | DoumaWritePermissions,
     error: false
 };
 

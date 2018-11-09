@@ -20,10 +20,10 @@ export const actions: ActionTree<UserState, RootState> = {
             commit('user_error', e.message);
         }
     },
-    async get({commit}, {instance_id}) {
+    async get({commit}) {
         try {
             console.log('Load users');
-            const result = await get_users(instance_id);
+            const result = await get_users();
             commit('users_loaded', result);
         } catch (e) {
             commit('user_error', e.message);

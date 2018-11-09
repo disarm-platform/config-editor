@@ -30,13 +30,33 @@
                     width="120">
             </el-table-column>
             <el-table-column
-                    v-for="(perm) in permissions_list"
-                    v-bind:key="perm"
-                    :property="perm"
-                    :label="perm"
+                    v-for="(instance) in instances"
+                    v-bind:key="instance._id"
+                    :property="instance._id"
+                    :label="instance.name"
             >
                 <template slot-scope="scope">
-                    <el-checkbox :checked="permission(scope,perm)" @change="update_permission(scope,$event)"/>
+                    <el-tag
+                            :key="tag"
+                            v-for="tag in dynamicTags"
+                            closable
+                            size="mini"
+                            :disable-transitions="false"
+                            @close="handleClose(tag)">
+                        {{tag}}
+                    </el-tag>
+                    <el-input
+                            class="input-new-tag"
+                            v-if="inputVisible"
+                            v-model="inputValue"
+                            ref="saveTagInput"
+                            size="mini"
+                            @keyup.enter.native="handleInputConfirm"
+                            @blur="handleInputConfirm"
+                    >
+                    </el-input>
+                    <el-button v-else class="button-new-tag" size="mini" @click="showInput">+</el-button>
+
                 </template>
             </el-table-column>
         </el-table>
@@ -159,29 +179,31 @@
             value: "write:seasons"
         },
         {
-            value: 'admin'
+            value: "admin"
         }
-    ].map(p => p.value)
+    ].map(p => p.value);
 
     export default Vue.extend({
         name: "users",
-        /* props:{
-             users_list:Array,
-             permissions:Array
-         },*/
         data() {
             return {
-                permissions: [{}]
+                dynamicTags: ['Tag 1', 'Tag 2', 'Tag 3'],
+                inputVisible: false,
+                inputValue: ''
             };
         },
-        watch: {},
+        created(){
+            this.$store.dispatch("permission/get",)
+        },
         computed: {
-            permissions_list(): string[] {
-                /*   let permissions = this.users.reduce(
-                     (acc: string[], u): string[] => acc.concat(u.permissions),
-                     base_permissions
-                   );*/
-                return base_permissions;//_.uniq(permissions);
+            permissions_string_list(): string[] {
+                return base_permissions;
+            },
+            permissions(){
+                return this.$store.state.permission.permission_list;
+            },
+            instances(){
+              return this.$store.state.instance.instance_list
             },
             users() {
                 return this.$store.state.user.user_list;
@@ -191,34 +213,66 @@
             handleSelectionChange(event: any) {
                 console.log(event);
             },
-
             update_permission(row: any, checked: boolean) {
+                let instance_id = this.$store.state.instance.instance._id;
+                let permission = {user_id: row.row._id, value: row.column.label, instance_id};
                 if (checked) {
-                    // @ts-ignore
-                    let instance_id = this.$store.state.instance.instance._id;
-                    console.log({user_id: row.row._id, value: row.column.label, instance_id});
-                    this.permissions.push(row.column.label);
-                    this.$store.dispatch('permission/create',{user_id: row.row._id, value: row.column.label, instance_id})
+                    this.$store.dispatch("permission/create",permission);
                 } else {
-                    // @ts-ignore
-                    let instance_id = this.$store.state.instance.instance._id;
-                    console.log({user_id: row.row._id, value: row.column.label, instance_id});
-                    this.$store.dispatch('permission/remove',{user_id: row.row._id, value: row.column.label, instance_id})
+                    this.$store.dispatch("permission/remove",permission);
                 }
             },
             save_permissions() {
                 console.log(this.users);
             },
-            permission(row: any, permission: string): boolean {
-                // @ts-ignore
-                return _.includes(this.users[row.$index].permissions, row.column.label);
+            permission(row: any): boolean {
+
+                const checked = this.permissions
+                console.log(checked,row.column.label,)
+                return checked;
             },
             handleEdit() {
 
             },
             handleDelete() {
 
+            },
+            handleClose(tag) {
+                this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+            },
+
+            showInput() {
+                this.inputVisible = true;
+                this.$nextTick(_ => {
+                    this.$refs.saveTagInput.$refs.input.focus();
+                });
+            },
+
+            handleInputConfirm() {
+                let inputValue = this.inputValue;
+                if (inputValue) {
+                    this.dynamicTags.push(inputValue);
+                }
+                this.inputVisible = false;
+                this.inputValue = '';
             }
         }
     });
 </script>
+<style>
+    .el-tag + .el-tag {
+        margin-left: 10px;
+    }
+    .button-new-tag {
+        margin-left: 10px;
+        height: 32px;
+        line-height: 30px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .input-new-tag {
+        width: 90px;
+        margin-left: 10px;
+        vertical-align: bottom;
+    }
+</style>
