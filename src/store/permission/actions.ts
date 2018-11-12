@@ -13,7 +13,7 @@ export const actions: ActionTree<PermissionState, RootState> = {
     async create({commit}, {user_id, value, instance_id}) {
         try {
             const result = await create({user_id,value,instance_id});
-            commit('permission_created', result);
+            return result;
         } catch (e) {
             commit('permission_error', e.message);
         }

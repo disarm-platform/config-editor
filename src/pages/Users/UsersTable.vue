@@ -4,7 +4,7 @@
                 ref="multipleTable"
                 :data="users"
                 style="width: 100%"
-                @selection-change="handleSelectionChange">
+        >
             <el-table-column
                     width="120"
                     fixed
@@ -37,167 +37,40 @@
             >
                 <template slot-scope="scope">
                     <el-tag
-                            :key="tag"
-                            v-for="tag in dynamicTags"
+                            :key="tag._id"
+                            v-for="tag in filtered_permissions(scope)"
                             closable
                             size="mini"
                             :disable-transitions="false"
-                            @close="handleClose(tag)">
-                        {{tag}}
+                            @close="handleDelete(tag)">
+                        {{tag.value}}
                     </el-tag>
-                    <el-input
-                            class="input-new-tag"
-                            v-if="inputVisible"
-                            v-model="inputValue"
-                            ref="saveTagInput"
-                            size="mini"
-                            @keyup.enter.native="handleInputConfirm"
-                            @blur="handleInputConfirm"
-                    >
-                    </el-input>
-                    <el-button v-else class="button-new-tag" size="mini" @click="showInput">+</el-button>
-
+                    <el-button class="button-new-tag" size="mini" @click="showInput(scope)">+</el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <el-button type="text">Save Permissions</el-button>
     </div>
 </template>
 <script lang="ts">
     import Vue from "vue";
     import _ from "lodash";
 
-    const base_permissions = [
-        {
-            applet: "irs_monitor",
-            type: "read",
-            value: "read:irs_monitor"
-        },
-        {
-            applet: "irs_record_point",
-            type: "read",
-            value: "read:irs_record_point"
-        },
-        {
-            applet: "irs_plan",
-            type: "read",
-            value: "read:irs_plan"
-        },
-        {
-            applet: "irs_tasker",
-            type: "read",
-            value: "read:irs_tasker"
-        },
-        {
-            applet: "structure_recorder",
-            type: "read",
-            value: "read:structure_recorder"
-        },
-        {
-            applet: "data_wizard",
-            type: "read",
-            value: "read:data_wizard"
-        },
-        {
-            applet: "debug",
-            type: "read",
-            value: "read:debug"
-        },
-        {
-            applet: "unity_dashboard",
-            type: "read",
-            value: "read:unity_dashboard"
-        },
-        {
-            applet: "foci",
-            type: "read",
-            value: "read:foci"
-        },
-        {
-            applet: "config",
-            type: "read",
-            value: "read:config"
-        },
-        {
-            applet: "seasons",
-            type: "read",
-            value: "read:seasons"
-        },
-        {
-            applet: "irs_monitor",
-            type: "write",
-            value: "write:irs_monitor"
-        },
-        {
-            applet: "irs_record_point",
-            type: "write",
-            value: "write:irs_record_point"
-        },
-        {
-            applet: "irs_plan",
-            type: "write",
-            value: "write:irs_plan"
-        },
-        {
-            applet: "irs_tasker",
-            type: "write",
-            value: "write:irs_tasker"
-        },
-        {
-            applet: "structure_recorder",
-            type: "write",
-            value: "write:structure_recorder"
-        },
-        {
-            applet: "data_wizard",
-            type: "write",
-            value: "write:data_wizard"
-        },
-        {
-            applet: "debug",
-            type: "write",
-            value: "write:debug"
-        },
-        {
-            applet: "unity_dashboard",
-            type: "write",
-            value: "write:unity_dashboard"
-        },
-        {
-            applet: "foci",
-            type: "write",
-            value: "write:foci"
-        },
-        {
-            applet: "config",
-            type: "write",
-            value: "write:config"
-        },
-        {
-            applet: "seasons",
-            type: "write",
-            value: "write:seasons"
-        },
-        {
-            value: "admin"
-        }
-    ].map(p => p.value);
-
     export default Vue.extend({
         name: "users",
+        props: {
+            base_permissions: Array,
+        },
         data() {
             return {
-                dynamicTags: ['Tag 1', 'Tag 2', 'Tag 3'],
-                inputVisible: false,
-                inputValue: ''
+                dynamicTags: ['Tag 1', 'Tag 2', 'Tag 3']
             };
         },
         created(){
-            this.$store.dispatch("permission/get",)
+            this.$store.dispatch("permission/get")
         },
         computed: {
             permissions_string_list(): string[] {
-                return base_permissions;
+                return this.base_permissions.map(p => p.value);
             },
             permissions(){
                 return this.$store.state.permission.permission_list;
@@ -210,9 +83,6 @@
             }
         },
         methods: {
-            handleSelectionChange(event: any) {
-                console.log(event);
-            },
             update_permission(row: any, checked: boolean) {
                 let instance_id = this.$store.state.instance.instance._id;
                 let permission = {user_id: row.row._id, value: row.column.label, instance_id};
@@ -225,41 +95,31 @@
             save_permissions() {
                 console.log(this.users);
             },
-            permission(row: any): boolean {
-
-                const checked = this.permissions
-                console.log(checked,row.column.label,)
-                return checked;
+            filtered_permissions(cell: any): boolean {
+                return this.permissions
+                    .filter(perm => perm.user_id===cell.row._id)
+                    .filter(perm => perm.instance_id===cell.column.property)
+                   // .map(perm => perm.value)
             },
             handleEdit() {
 
             },
-            handleDelete() {
-
-            },
-            handleClose(tag) {
-                this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
-            },
-
-            showInput() {
-                this.inputVisible = true;
-                this.$nextTick(_ => {
-                    this.$refs.saveTagInput.$refs.input.focus();
-                });
-            },
-
-            handleInputConfirm() {
-                let inputValue = this.inputValue;
-                if (inputValue) {
-                    this.dynamicTags.push(inputValue);
+            handleDelete(permission:any) {
+                try{
+                    const result = this.$store.dispatch('permission/remove',permission);
+                    this.$store.dispatch("permission/get")
+                }catch (e) {
+                   console.log(e) ;
                 }
-                this.inputVisible = false;
-                this.inputValue = '';
+
+            },
+            showInput(data){
+                this.$emit('show_input',{user_id: data.row._id, instance_id: data.column.property})
             }
         }
     });
 </script>
-<style>
+<style scoped>
     .el-tag + .el-tag {
         margin-left: 10px;
     }
@@ -270,9 +130,13 @@
         padding-top: 0;
         padding-bottom: 0;
     }
-    .input-new-tag {
-        width: 90px;
-        margin-left: 10px;
-        vertical-align: bottom;
+    .el-input__inner {
+
+    }
+    .flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 </style>
