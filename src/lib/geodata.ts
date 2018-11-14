@@ -2,10 +2,11 @@ import {standard_handler} from '@/lib/standard_handler';
 
 export async function create_level(instance: string, level: string, geojson: any) {
   const options = {
-    url: `/geodata/${instance}/${level}`,
+    url: `/geodata/${instance}`,
     method: 'post',
     data: {
-      ...geojson,
+      level_name:level,
+      geojson,
     },
   };
   const res = await standard_handler(options);
