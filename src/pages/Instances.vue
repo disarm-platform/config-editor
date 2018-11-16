@@ -83,7 +83,7 @@
                 return this.$store.state.instance_id_and_version;
             },
             config(): any {
-                return this.$store.state.config.applets_config;
+                return this.$store.state.applets_config;
             },
             config_list(): any {
               return this.$store.state.config.config_list;

@@ -125,7 +125,7 @@
                 return this.$store.state.instance.instance;
             },
             config(): any {
-                return this.$store.state.config.applets_config;
+                return this.$store.state.applets_config;
             },
             selected_config(): any {
                 return this.$store.state.instance_id_and_version;
@@ -170,12 +170,9 @@
         },
         methods: {
             async publish_config() {
-                const config_data = this.$store.state.config.applets_config;
+                const config_data = this.$store.state.applets_config;
                 const instance_id = this.$store.state.instance.instance._id;
                 this.$store.dispatch("config/create", {config_data, instance_id});
-                for (layer in this.geodata_layers) {
-                    console.log(this.geodata_layers);
-                }
             },
             async save_config() {
                 const config_copy = {...this.config};

@@ -83,7 +83,7 @@ export default Vue.extend({
   },
   computed: {
     config(): TConfig {
-      return this.$store.state.config.applets_config;
+      return this.$store.state.applets_config;
     },
     validation_result(): any {
       return this.$store.state.validation_result;

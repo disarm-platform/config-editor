@@ -30,7 +30,7 @@
   export default Vue.extend({
     computed: {
       config(): any {
-        return this.$store.state.config.applets_config;
+        return this.$store.state.applets_config;
       },
       user(): any {
         return this.$store.state.user;
