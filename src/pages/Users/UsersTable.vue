@@ -52,11 +52,11 @@
     </div>
 </template>
 <script lang="ts">
-    import Vue from "vue";
-    import _ from "lodash";
+    import Vue from 'vue';
+    import _ from 'lodash';
 
     export default Vue.extend({
-        name: "users",
+        name: 'users',
         props: {
             base_permissions: Array,
         },
@@ -66,7 +66,7 @@
             };
         },
         created(){
-            this.$store.dispatch("permission/get")
+            this.$store.dispatch('permission/get')
         },
         computed: {
             permissions_string_list(): string[] {
