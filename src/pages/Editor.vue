@@ -183,11 +183,11 @@
                 const current_version = Number(config_copy.config_version);
                 config_copy.config_version = `${current_version + 1}`;
                 /* update, so user can see change*/
-                this.$store.commit("set_applets_config", config_copy);
+                this.$store.commit('set_applets_config', config_copy);
                 /* send to remote*/
                 /* update local list / reload local lost*/
                 // @ts-ignore
-                //this.$refs.instances.get_list_of_configurations();
+                // this.$refs.instances.get_list_of_configurations();
                 console.log(this.$refs);
                 /* remove _id as we want to create a new version*/
                 delete config_copy._id;
