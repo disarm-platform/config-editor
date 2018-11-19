@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <h2>DiSARM registry-client</h2>
+      <h2>DiSARM Config Editor</h2>
     </el-header>
 
     <div v-if="user" style="padding-left: 20px;">
