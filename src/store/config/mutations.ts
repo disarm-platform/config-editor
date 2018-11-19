@@ -1,7 +1,6 @@
 import { MutationTree } from 'vuex';
 import { ConfigState } from './types';
 import { TConfig } from '@locational/config-validation/build/module/lib/config_types/TConfig';
-import { stat } from 'fs';
 
 export const mutations: MutationTree<ConfigState> = {
     config_loaded(state, payload: TConfig) {
