@@ -8,16 +8,16 @@ export const mutations: MutationTree<ConfigState> = {
         state.error = false;
         state.applets_config = payload;
     },
-    list_loaded(state,payload:any){
+    list_loaded(state, payload: any) {
         state.config_list =  payload;
         state.error = false;
     },
-    config_created(state,payload:TConfig){
+    config_created(state, payload: TConfig) {
         state.applets_config = payload;
         state.error = false;
     },
     config_error(state) {
         state.error = true;
         state.applets_config = undefined;
-    }
+    },
 };

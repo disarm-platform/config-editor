@@ -8,7 +8,7 @@ import { RootState } from '../types';
 export const state: UserState = {
     user_list: [],
     user: null,
-    error: false
+    error: false,
 };
 
 const namespaced: boolean = true;
@@ -18,5 +18,5 @@ export const user: Module<UserState, RootState> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 };

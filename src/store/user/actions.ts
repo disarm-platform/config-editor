@@ -4,7 +4,7 @@ import {
     get_user,
     get_users,
     update_user,
-    delete_user
+    delete_user,
 } from '@/lib/user';
 import {UserState} from './types';
 
@@ -51,5 +51,5 @@ export const actions: ActionTree<UserState, RootState> = {
         } catch (e) {
             commit('user_error', e.message);
         }
-    }
+    },
 };

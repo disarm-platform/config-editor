@@ -3,8 +3,8 @@ import { ActionTree } from 'vuex';
 import {
     create_instance,
     get_instance,
-    get_instances
-} from '@/lib/instance'
+    get_instances,
+} from '@/lib/instance';
 import { InstanceState } from './types';
 
 import { RootState } from '../types';
@@ -14,7 +14,7 @@ export const actions: ActionTree<InstanceState, RootState> = {
     async create({ commit }, instance_data) {
         try {
             const result = await create_instance(instance_data);
-            return result
+            return result;
         } catch (error) {
             commit('instance_error', error);
         }
@@ -24,7 +24,7 @@ export const actions: ActionTree<InstanceState, RootState> = {
             const result = await get_instances();
             commit('instance_list_loaded', result);
         } catch (error) {
-            //console.log('Request Error',error)
+            // console.log('Request Error',error)
            // commit('instance_error', error);
         }
     },
@@ -35,5 +35,5 @@ export const actions: ActionTree<InstanceState, RootState> = {
         } catch (error) {
             commit('instance_error', error);
         }
-    }
+    },
 };

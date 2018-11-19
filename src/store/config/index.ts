@@ -8,7 +8,7 @@ import { RootState } from '../types';
 export const state: ConfigState = {
     config_list: [],
     applets_config: null,
-    error: false
+    error: false,
 };
 
 const namespaced: boolean = true;
@@ -18,5 +18,5 @@ export const config: Module<ConfigState, RootState> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 };

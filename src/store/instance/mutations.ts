@@ -7,13 +7,13 @@ export const mutations: MutationTree<InstanceState> = {
         state.instance = payload;
     },
     instance_list_loaded(state, payload: any) {
-        console.log('instance list',payload)
+        console.log('instance list', payload);
         state.instance_list = payload;
         state.error = false;
     },
     instance_error(state) {
-        console.log('Instance Error')
+        console.log('Instance Error');
         state.error = true;
         state.instance = undefined;
-    }
+    },
 };

@@ -8,7 +8,7 @@ import { RootState } from '../types';
 export const state: InstanceState = {
     instance_list: [],
     instance: null,
-    error: false
+    error: false,
 };
 
 const namespaced: boolean = true;
@@ -18,5 +18,5 @@ export const instance: Module<InstanceState, RootState> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 };

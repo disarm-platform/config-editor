@@ -13,10 +13,10 @@ export async function create_configuration(config_data: any, instance_id: any) {
   return res.data;
 }
 
-export async function get_configurations(instance_id:any) {
+export async function get_configurations(instance_id: any) {
   const options = {
     method: 'get',
-    url: `/instance/${instance_id}/published_instanceconfigs`
+    url: `/instance/${instance_id}/published_instanceconfigs`,
   };
 
   const res = await standard_handler(options);

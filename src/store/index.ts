@@ -72,8 +72,8 @@ const store = new Vuex.Store({
         instance,
         geodata,
         permission,
-        config
-    }
+        config,
+    },
 });
 
 // @ts-ignore

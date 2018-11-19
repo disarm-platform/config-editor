@@ -5,7 +5,7 @@ export async function create_level(instance: string, level: string, geojson: any
     url: `/geodata/${instance}`,
     method: 'post',
     data: {
-      level_name:level,
+      level_name: level,
       geojson,
     },
   };

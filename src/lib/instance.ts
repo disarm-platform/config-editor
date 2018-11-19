@@ -4,7 +4,7 @@ export async function create_instance(instance_data: any) {
   const options = {
     method: 'post',
     data: {
-      ...instance_data
+      ...instance_data,
     },
     url: '/instance',
   };
@@ -18,12 +18,11 @@ export async function get_instances() {
     method: 'get',
     url: '/instance',
   };
-  try{
+  try {
     const res = await standard_handler(options);
     return res.data;
-  }
-  catch(e){
-      throw(e)
+  } catch (e) {
+      throw(e);
   }
 }
 

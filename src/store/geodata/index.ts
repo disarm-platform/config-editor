@@ -8,7 +8,7 @@ import { RootState } from '../types';
 export const state: GeodataState = {
     layer_list: [],
     geodata_layer: null,
-    error: false
+    error: false,
 };
 
 const namespaced: boolean = true;
@@ -18,5 +18,5 @@ export const geodata: Module<GeodataState, RootState> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 };

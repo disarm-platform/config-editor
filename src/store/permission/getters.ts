@@ -5,10 +5,10 @@ import { RootState } from '../types';
 export const getters: GetterTree<PermissionState, RootState> = {
     config_id(state): any {
         const { permission } = state;
-        //@ts-ignore
+        // @ts-ignore
         return 'user._id';
     },
-    permissions(state):any {
-        return state.permission_list
-    }
+    permissions(state): any {
+        return state.permission_list;
+    },
 };

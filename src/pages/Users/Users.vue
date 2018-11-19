@@ -8,7 +8,7 @@
     </div>
 </template>
 <script lang="ts">
-    import Vue from "vue";
+    import Vue from 'vue';
     import UsersTable from "./UsersTable.vue";
     import NewUser from "./NewUser.vue";
     import NewPermission from "./NewPermission";
@@ -41,9 +41,9 @@
             value: "read:structure_recorder"
         },
         {
-            applet: "data_wizard",
-            type: "read",
-            value: "read:data_wizard"
+            applet: 'data_wizard',
+            type: 'read',
+            value: 'read:data_wizard'
         },
         {
             applet: "debug",
@@ -58,101 +58,101 @@
         {
             applet: "foci",
             type: "read",
-            value: "read:foci"
+            value: 'read:foci'
         },
         {
-            applet: "config",
-            type: "read",
-            value: "read:config"
+            applet: 'config',
+            type: 'read',
+            value: 'read:config'
         },
         {
-            applet: "seasons",
-            type: "read",
-            value: "read:seasons"
+            applet: 'seasons',
+            type: 'read',
+            value: 'read:seasons'
         },
         {
-            applet: "irs_monitor",
-            type: "write",
-            value: "write:irs_monitor"
+            applet: 'irs_monitor',
+            type: 'write',
+            value: 'write:irs_monitor'
         },
         {
-            applet: "irs_record_point",
-            type: "write",
-            value: "write:irs_record_point"
+            applet: 'irs_record_point',
+            type: 'write',
+            value: 'write:irs_record_point'
         },
         {
-            applet: "irs_plan",
-            type: "write",
-            value: "write:irs_plan"
+            applet: 'irs_plan',
+            type: 'write',
+            value: 'write:irs_plan'
         },
         {
-            applet: "irs_tasker",
-            type: "write",
-            value: "write:irs_tasker"
+            applet: 'irs_tasker',
+            type: 'write',
+            value: 'write:irs_tasker'
         },
         {
-            applet: "structure_recorder",
-            type: "write",
-            value: "write:structure_recorder"
+            applet: 'structure_recorder',
+            type: 'write',
+            value: 'write:structure_recorder'
         },
         {
-            applet: "data_wizard",
-            type: "write",
-            value: "write:data_wizard"
+            applet: 'data_wizard',
+            type: 'write',
+            value: 'write:data_wizard'
         },
         {
-            applet: "debug",
-            type: "write",
-            value: "write:debug"
+            applet: 'debug',
+            type: 'write',
+            value: 'write:debug'
         },
         {
-            applet: "unity_dashboard",
-            type: "write",
-            value: "write:unity_dashboard"
+            applet: 'unity_dashboard',
+            type: 'write',
+            value: 'write:unity_dashboard'
         },
         {
-            applet: "foci",
-            type: "write",
-            value: "write:foci"
+            applet: 'foci',
+            type: 'write',
+            value: 'write:foci'
         },
         {
-            applet: "config",
-            type: "write",
-            value: "write:config"
+            applet: 'config',
+            type: 'write',
+            value: 'write:config'
         },
         {
-            applet: "seasons",
-            type: "write",
-            value: "write:seasons"
+            applet: 'seasons',
+            type: 'write',
+            value: 'write:seasons'
         },
         {
-            value: "admin"
-        }
+            value: 'admin'
+        },
     ];
 
     export default Vue.extend({
-        name: "users",
+        name: 'users',
         components: {UsersTable, NewUser, NewPermission},
         data() {
             return {};
         },
         mounted() {
-            this.$store.dispatch("user/get");
+            this.$store.dispatch('user/get');
         },
         computed: {
             base_permissions() {
                 return base_permissions;
-            }
+            },
         },
         methods: {
-            async create_user(user_data) {
-                await this.$store.dispatch("user/create", user_data);
-                this.$store.dispatch("user/get");
+            async create_user(user_data: any) {
+                await this.$store.dispatch('user/create', user_data);
+                this.$store.dispatch('user/get');
             },
-            show_permission_input(input) {
-                this.$refs["permission_input"].show_input(input);
-            }
-        }
+            show_permission_input(input: any) {
+                this.$refs.permission_input.show_input(input);
+            },
+        },
     });
 
 </script>

@@ -10,7 +10,7 @@ import { DoumaWritePermissions } from '@locational/douma-types';
 export const state: PermissionState = {
     permission_list: [],
     permission : {} as DoumaReadPermissions | DoumaWritePermissions,
-    error: false
+    error: false,
 };
 
 const namespaced: boolean = true;
@@ -20,5 +20,5 @@ export const permission: Module<PermissionState, RootState> = {
     state,
     getters,
     actions,
-    mutations
+    mutations,
 };

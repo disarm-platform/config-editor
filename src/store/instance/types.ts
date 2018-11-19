@@ -5,6 +5,6 @@ export interface InstanceState {
 }
 
 export interface TInstance {
-    name:string,
-    _id?:string
+    name: string;
+    _id?: string;
 }
