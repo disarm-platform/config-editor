@@ -57,22 +57,22 @@
 </template>
 
 <script lang='ts'>
-    import Vue from "vue";
+    import Vue from 'vue';
     // @ts-ignore
-    import {login} from "../lib/auth";
-    import {get_configurations} from "../lib/config";
-    import {set_api_key} from "../lib/standard_handler";
-    import {geodata_cache} from "@/geodata_cache";
-    import {mapActions, mapState} from "vuex";
+    import {login} from '@/lib/auth';
+    import {get_configurations} from '@/lib/config';
+    import {set_api_key} from '@/lib/standard_handler';
+    import {geodata_cache} from '@/geodata_cache';
+    import {mapActions, mapState} from 'vuex';
 
     export default Vue.extend({
         data() {
             return {
-                local_selected_instance: "",
-                new_instance_name: "",
+                local_selected_instance: '',
+                new_instance_name: '',
                 selected_config: {},
-                error: "",
-                instance_configs_list: [{}]
+                error: '',
+                instance_configs_list: [{}],
             };
         },
         computed: {
@@ -103,19 +103,19 @@
         },
         methods: {
             async create_new_instance() {
-                const result = await this.$store.dispatch("instance/create", {name: this.new_instance_name});
+                const result = await this.$store.dispatch('instance/create', {name: this.new_instance_name});
             },
 
             async load_instances() {
-                this.$store.dispatch("instance/get");
+                this.$store.dispatch('instance/get');
             },
-            async load_instance(instance){
-                this.$store.commit('instance/instance_loaded',this.local_selected_instance)
-                this.load_instance_configs(this.local_selected_instance._id)
-                this.$store.dispatch('user/get',{instance_id:this.local_selected_instance._id})
+            async load_instance(instance: any){
+                this.$store.commit('instance/instance_loaded',this.local_selected_instance);
+                this.load_instance_configs(this.local_selected_instance._id);
+                this.$store.dispatch('user/get',{instance_id:this.local_selected_instance._id});
             },
             async load_instance_configs(instance_id: string) {
-                console.log("//TODO Get instance configs from /config");
+                console.log('//TODO Get instance configs from /config');
                 //TODO instaces =  from /config
                 //for now
                 this.$store.dispatch("config/get", {instance_id});
@@ -143,9 +143,9 @@
                 );
                 this.reset_geodata_cache();
                 this.$store.commit("reset_validation_result");
-                this.$store.commit("reset_validation_status");
-                this.$store.commit("set_creating_new_config", false);
-                this.$store.commit("set_instance_id_and_version", found);
+                this.$store.commit('reset_validation_status');
+                this.$store.commit('set_creating_new_config', false);
+                this.$store.commit('set_instance_id_and_version', found);
             },
             reset_geodata_cache() {
                 for (const key in geodata_cache) {
@@ -154,7 +154,7 @@
                     }
                 }
             }
-        }
+        },
     });
 </script>
 <style lang="scss">
