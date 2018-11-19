@@ -53,94 +53,96 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'vue';
+import Vue from 'vue';
 
-  export default Vue.extend({
-    name: 'users',
-    props: {
-      base_permissions: Array,
+export default Vue.extend({
+  name: 'users',
+  props: {
+    base_permissions: () => [],
+  },
+  data() {
+    return {
+      dynamicTags: ['Tag 1', 'Tag 2', 'Tag 3'],
+    };
+  },
+  created() {
+    this.$store.dispatch('permission/get');
+  },
+  computed: {
+    permissions_string_list(): string[] {
+      return this.base_permissions.map((p: any) => p.value);
     },
-    data() {
-      return {
-        dynamicTags: ['Tag 1', 'Tag 2', 'Tag 3']
+    permissions(): any {
+      return this.$store.state.permission.permission_list;
+    },
+    instances(): any {
+      return this.$store.state.instance.instance_list;
+    },
+    users(): any {
+      return this.$store.state.user.user_list;
+    },
+  },
+  methods: {
+    update_permission(row: any, checked: boolean) {
+      const instance_id = this.$store.state.instance.instance._id;
+      const permission = {
+        user_id: row.row._id,
+        value: row.column.label,
+        instance_id,
       };
-    },
-    created() {
-      this.$store.dispatch('permission/get');
-    },
-    computed: {
-      permissions_string_list(): string[] {
-        return this.base_permissions.map(p => p.value);
-      },
-      permissions() {
-        return this.$store.state.permission.permission_list;
-      },
-      instances() {
-        return this.$store.state.instance.instance_list;
-      },
-      users() {
-        return this.$store.state.user.user_list;
+      if (checked) {
+        this.$store.dispatch('permission/create', permission);
+      } else {
+        this.$store.dispatch('permission/remove', permission);
       }
     },
-    methods: {
-      update_permission(row: any, checked: boolean) {
-        let instance_id = this.$store.state.instance.instance._id;
-        let permission = {user_id: row.row._id, value: row.column.label, instance_id};
-        if (checked) {
-          this.$store.dispatch('permission/create', permission);
-        } else {
-          this.$store.dispatch('permission/remove', permission);
-        }
-      },
-      save_permissions() {
-        console.log(this.users);
-      },
-      filtered_permissions(cell: any): boolean {
-        return this.permissions
-          .filter(perm => perm.user_id === cell.row._id)
-          .filter(perm => perm.instance_id === cell.column.property);
-        // .map(perm => perm.value)
-      },
-      handleEdit() {
-        console.log('handleEdit: currently a noop');
-      },
-      handleDelete(permission: any) {
-        try {
-          const result = this.$store.dispatch('permission/remove', permission);
-          this.$store.dispatch('permission/get');
-        } catch (e) {
-          console.log(e);
-        }
-
-      },
-      showInput(data) {
-        this.$emit('show_input', {user_id: data.row._id, instance_id: data.column.property});
+    save_permissions() {
+      console.log(this.users);
+    },
+    filtered_permissions(cell: any): boolean {
+      return this.permissions
+        .filter((perm: any) => perm.user_id === cell.row._id)
+        .filter((perm: any) => perm.instance_id === cell.column.property);
+      // .map(perm => perm.value)
+    },
+    handleEdit() {
+      console.log('handleEdit: currently a noop');
+    },
+    handleDelete(permission: any) {
+      try {
+        const result = this.$store.dispatch('permission/remove', permission);
+        this.$store.dispatch('permission/get');
+      } catch (e) {
+        console.log(e);
       }
-    }
-  });
+    },
+    showInput(data: any) {
+      this.$emit('show_input', {
+        user_id: data.row._id,
+        instance_id: data.column.property,
+      });
+    },
+  },
+});
 </script>
 
 <style scoped>
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
 
-  .button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 
-  .el-input__inner {
-
-  }
-
-  .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
 </style>
