@@ -107,9 +107,9 @@ export default Vue.extend({
       // 0. Reset old validation result
       this.$store.commit('reset_validation_status');
       this.$store.commit('reset_validation_result');
-        let location_selection_result = {}
+      let location_selection_result = {} as TLocationSelectionResponse;
 
-        if(!!this.config.spatial_hierarchy&&geodata_cache){
+      if (!!this.config.spatial_hierarchy && geodata_cache) {
           location_selection_result = generate_location_selection(
                 this.config.spatial_hierarchy as TSpatialHierarchy,
                 geodata_cache,

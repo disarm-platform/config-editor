@@ -73,24 +73,24 @@
 </template>
 
 <script lang="ts">
-    import Vue from "vue";
+    import Vue from 'vue';
     // @ts-ignore
-    import download from "downloadjs";
+    import download from 'downloadjs';
 
-    import Geodata from "./Geodata.vue";
-    import Users from "./Users/Users.vue";
-    import Config from "./Config/Config.vue";
-    import Publish from "./Publish.vue";
-    import Login from "./Login.vue";
-    import Instances from "./Instances.vue";
+    import Geodata from './Geodata.vue';
+    import Users from './Users/Users.vue';
+    import Config from './Config/Config.vue';
+    import Publish from './Publish.vue';
+    import Login from './Login.vue';
+    import Instances from './Instances.vue';
 
-    import {get_configuration} from "../lib/config";
-    import {TGeodataLayer} from "@locational/geodata-support/build/module/config_types/TGeodata";
-    import {TLocationSelection} from "@locational/geodata-support/build/main/config_types/TLocationSelection";
-    import {ValidationStatus} from "@/store/types";
-    import {get_validation_result_for_node} from "@/lib/get_validation_result_for_node";
+    import {get_configuration} from '../lib/config';
+    import {TGeodataLayer} from '@locational/geodata-support/build/module/config_types/TGeodata';
+    import {TLocationSelection} from '@locational/geodata-support/build/main/config_types/TLocationSelection';
+    import {ValidationStatus} from '@/store/types';
+    import {get_validation_result_for_node} from '@/lib/get_validation_result_for_node';
 
-    import {geodata_cache} from "../geodata_cache";
+    import {geodata_cache} from '../geodata_cache';
 
     interface Data {
         active_tab: string;
@@ -101,7 +101,7 @@
         components: {Login, Instances, Config, Geodata, Publish, Users},
         data(): Data {
             return {
-                active_tab: "instances",
+                active_tab: 'instances',
                 geodata_layers: [],
             };
         },
@@ -114,14 +114,14 @@
                     return;
                 }
                 const config = await get_configuration(selected_config.id);
-                this.$store.commit("set_applets_config", config);
+                this.$store.commit('set_applets_config', config);
             },
         },
         computed: {
-            instances() {
+            instances(): any {
                 return this.$store.state.instance.instance_list;
             },
-            instance(){
+            instance(): Instance {
                 return this.$store.state.instance.instance;
             },
             config(): any {
@@ -155,7 +155,7 @@
                     return false;
                 }
 
-                return get_validation_result_for_node(validation_result, "geodata").length > 0;
+                return get_validation_result_for_node(validation_result, 'geodata').length > 0;
             },
         },
         async mounted() {
@@ -166,13 +166,13 @@
                 return;
             }
             const config = await get_configuration(this.selected_config.id);
-            this.$store.commit("set_applets_config", config);
+            this.$store.commit('set_applets_config', config);
         },
         methods: {
             async publish_config() {
                 const config_data = this.$store.state.applets_config;
                 const instance_id = this.$store.state.instance.instance._id;
-                this.$store.dispatch("config/create", {config_data, instance_id});
+                this.$store.dispatch('config/create', {config_data, instance_id});
             },
             async save_config() {
                 const config_copy = {...this.config};
@@ -192,11 +192,11 @@
                     download(
                         JSON.stringify(config_copy),
                         `${config_copy.config_id}@${config_copy.config_version}.config.json`,
-                        "text/plain",
+                        'text/plain',
                     );
-                    this.$store.commit("set_creating_new_config", false);
+                    this.$store.commit('set_creating_new_config', false);
                 } catch (e) {
-                    console.log("e", e);
+                    console.log('e', e);
                 }
             },
             set_geodata_layers(geodata_layers: TGeodataLayer[]) {
@@ -209,13 +209,13 @@
 
                 if (!instance) {
                     return this.$notify.error({
-                        title: "Error",
-                        message: "An instance must be selected first"
+                        title: 'Error',
+                        message: 'An instance must be selected first',
                     });
                 }
                 const mock_loaded_config = {
                     config_id: instance.name,
-                    config_version: "1",
+                    config_version: '1',
                     map_focus: {
                         centre: {}
                     },
@@ -227,11 +227,11 @@
                     },
                     instance: {
                         slug: instance.name
-                    }
+                    },
                 };
 
-                this.$store.commit("config/config_created", mock_loaded_config);
-            }
+                this.$store.commit('config/config_created', mock_loaded_config);
+            },
         },
 
     });

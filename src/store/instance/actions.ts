@@ -5,18 +5,25 @@ import {
     get_instance,
     get_instances,
 } from '@/lib/instance';
+
+import {MUTATIONS} from './mutations'
+
 import { InstanceState } from './types';
 
 import { RootState } from '../types';
 
+export const ACTIONS = {
+    CREATE: 'create',
+};
+
 
 export const actions: ActionTree<InstanceState, RootState> = {
-    async create({ commit }, instance_data) {
+    async [ACTIONS.CREATE]({ commit }, instance_data) {
         try {
             const result = await create_instance(instance_data);
             return result;
         } catch (error) {
-            commit('instance_error', error);
+            commit(MUTATIONS.INSTANCE_ERROR, error);
         }
     },
     async get({ commit }) {

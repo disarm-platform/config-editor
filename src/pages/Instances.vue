@@ -116,20 +116,18 @@
             },
             async load_instance_configs(instance_id: string) {
                 console.log('//TODO Get instance configs from /config');
-                //TODO instaces =  from /config
-                //for now
-                this.$store.dispatch("config/get", {instance_id});
+                // TODO instaces =  from /config
+                // for now
+                this.$store.dispatch('config/get', {instance_id});
             },
             async select_instance_config() {
-                const loaded_instance_config = await this.$store.dispatch('config/get_one',this.selected_config)
-               // debugger
-
+                const loaded_instance_config = await this.$store.dispatch('config/get_one', this.selected_config);
                 this.reset_geodata_cache();
-                this.$store.commit("reset_validation_result");
-                this.$store.commit("reset_validation_status");
-                this.$store.commit("set_creating_new_config", true);
+                this.$store.commit('reset_validation_result');
+                this.$store.commit('reset_validation_status');
+                this.$store.commit('set_creating_new_config', true);
 
-                this.$store.commit("set_instance_id_and_version", null);
+                this.$store.commit('set_instance_id_and_version', null);
             },
             create_new_config() {
 
@@ -139,10 +137,10 @@
             },
             set_applets_config() {
                 const found = this.instances.find(
-                    (c: any) => c.id === this.local_selected_instance
+                    (c: any) => c.id === this.local_selected_instance,
                 );
                 this.reset_geodata_cache();
-                this.$store.commit("reset_validation_result");
+                this.$store.commit('reset_validation_result');
                 this.$store.commit('reset_validation_status');
                 this.$store.commit('set_creating_new_config', false);
                 this.$store.commit('set_instance_id_and_version', found);
